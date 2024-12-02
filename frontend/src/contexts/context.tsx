@@ -63,6 +63,7 @@ export const ChatBoxProvider = ({
       recentConversation[recentConversation.length - 1].user = question;
 
       if (res.data) {
+        console.log(res.data.answer);
         recentConversation[recentConversation.length - 1].ai = res.data.answer;
       }
       setContentConversation(recentConversation);

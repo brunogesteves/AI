@@ -4,11 +4,11 @@ export interface IConversation {
 }
 
 export interface IUserProps {
-  content: string;
-}
-
-export interface IAiProps {
-  content: string;
+  firstname: string;
+  lastname: string;
+  password: string;
+  birthDate: Date;
+  email: string;
 }
 
 export interface IChatBoxArea {
@@ -19,4 +19,9 @@ export interface IChatBoxArea {
   question: string;
   setQuestion: (newState: string) => void;
   askAI: (question: string) => void;
+}
+
+export interface ISignProps {
+  isOpen: boolean;
+  hasSignUp: (newState: boolean) => void;
 }

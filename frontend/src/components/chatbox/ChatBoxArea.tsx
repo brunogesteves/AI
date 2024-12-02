@@ -23,8 +23,8 @@ export default function ChatBoxArea() {
   }, [messageAi, typeText]);
 
   return (
-    <div className="bg-gray-300 w-full h-full p-4 rounded-lg flex flex-col-reverse text-black  overflow-auto ">
-      {contentConversation.toReversed().map((content, i) => {
+    <div className="bg-gray-300 w-full h-full p-4 rounded-r-lg flex flex-col-reverse text-black  overflow-auto ">
+      {contentConversation.reverse().map((content, i) => {
         return (
           <div key={i}>
             <User content={content.user} />

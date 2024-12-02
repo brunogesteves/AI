@@ -1,21 +1,22 @@
-// import Image from "next/image";
-import Sidebar from "@/components/sidebar";
-import ChatBox from "@/components/chatbox/Chatbox";
+"use client";
 import { ChatBoxProvider } from "@/contexts/context";
 
+import ChatArea from "@/components/chatbox/ChatArea";
+
+import { useState } from "react";
+import Sign from "@/components/sign/sign";
+
 export default function Home() {
+  const [isLogged, setIsLogged] = useState<boolean>(false);
   return (
-    <ChatBoxProvider>
-      <div className="bg-yellow-500 h-screen p-5">
-        <div className="bg-yellow-700 h-full  flex justify-start">
-          <div className="w-1/5 h-auto rounded-l-lg p-2 bg-red-950">
-            <Sidebar />
-          </div>
-          <div className="w-4/5 pl-2 h-auto ">
-            <ChatBox />
-          </div>
-        </div>
-      </div>
-    </ChatBoxProvider>
+    <>
+      {isLogged ? (
+        <ChatBoxProvider>
+          <ChatArea />
+        </ChatBoxProvider>
+      ) : (
+        <Sign />
+      )}
+    </>
   );
 }

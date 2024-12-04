@@ -92,7 +92,11 @@ export default function SignUp({ isOpen, hasSignUp }: ISignProps) {
             </div>
             <div className="flex-1">
               <span className="text-sm">Already Registered? </span>
-              <button className="text-sm" onClick={() => hasSignUp(true)}>
+              <button
+                type="button"
+                className="text-sm"
+                onClick={() => hasSignUp(true)}
+              >
                 Click here.
               </button>
             </div>

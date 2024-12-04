@@ -1,34 +1,44 @@
 import * as UsersRepository from "../repository/users";
 import { Request, Response } from "express";
-import fs from "fs";
+
 import { User } from "@prisma/client";
+import { createJWTUser } from "../../utils/jwt";
 
 export const createUser = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  console.log("api");
-  console.log(req.body);
+  const { values } = req.body;
 
   try {
-    const data = UsersRepository.createUser(req.body.values);
+    const data = UsersRepository.createUser(values);
     res.json({ result: data });
   } catch (error) {}
   //   const createUser = UsersRepository.createUser;
 };
 
-// export const list = async (req: Request, res: Response): Promise<void> => {
-//   try {
-//     const usersList = await UsersServices.getAllUsers();
-//     usersList.forEach((element) => {
-//       delete element.password;
-//     });
+export const loginUser = async (req: Request, res: Response): Promise<void> => {
+  const { email, password } = req.params;
 
-//     res.json({ results: usersList });
-//   } catch (e) {
-//     res.status(500).send("Erro");
-//   }
-// };
+  try {
+    const loginUserData = await UsersRepository.loginUser(email, password);
+    if (loginUserData) {
+      const dataToken = {
+        firstname: loginUserData.firstname,
+        lastname: loginUserData.lastname,
+        email: loginUserData.email,
+        generations: loginUserData.generations,
+        birthDate: loginUserData.birthDate,
+      };
+      const token = createJWTUser(dataToken);
+      res.json({ status: true, token });
+    } else {
+      res.json({ status: false });
+    }
+  } catch (e) {
+    res.status(500).send("Erro");
+  }
+};
 
 // export const getByEmail = async (
 //   req: Request,

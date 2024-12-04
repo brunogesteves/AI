@@ -28,7 +28,6 @@ export const SignUpLogic = (hasSignUp: (newState: boolean) => void) => {
     api.post("/users", { values }).then((res) => {
       if (res.data.result) {
         hasSignUp(true);
-        console.log("adicionado");
         notify();
       }
     });

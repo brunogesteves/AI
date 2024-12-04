@@ -1,5 +1,9 @@
 "use client";
 import { api } from "@/utils/api";
+import { useRouter } from "next/navigation";
+
+// import { jwtDecode } from "jwt-decode";
+
 import { IChatBoxArea, IConversation } from "@/utils/types";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -11,6 +15,8 @@ const DefaultChatBox = createContext<IChatBoxArea>({
   question: "",
   setQuestion: () => {},
   askAI: () => {},
+  isLogged: false,
+  setIsLogged: () => {},
 });
 
 export const ChatBoxProvider = ({
@@ -18,6 +24,9 @@ export const ChatBoxProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const router = useRouter();
+
+  const [isLogged, setIsLogged] = useState<boolean>(false);
   const [question, setQuestion] = useState<string>("");
   const [messageAi, setMessageAi] = useState<string>("");
   const [contentConversation, setContentConversation] = useState<
@@ -44,16 +53,13 @@ export const ChatBoxProvider = ({
   const [hasNewQuestion, setHasNewQuestion] = useState<boolean>(false);
 
   useEffect(() => {
-    if (hasNewQuestion) {
-      const recentConversation = contentConversation;
-      recentConversation.push({ ai: "", user: question });
-      setContentConversation(recentConversation);
+    if (localStorage.getItem("token")) {
+      router.push("/panel");
+    } else {
+      setIsLogged(false);
     }
-    setHasNewQuestion(false);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasNewQuestion]);
-  console.log(contentConversation);
+  }, []);
+  // console.log(jwtDecode(localStorage.getItem("token") ?? ""));
 
   function askAI() {
     setHasNewQuestion(true);
@@ -71,6 +77,17 @@ export const ChatBoxProvider = ({
     });
   }
 
+  useEffect(() => {
+    if (hasNewQuestion) {
+      const recentConversation = contentConversation;
+      recentConversation.push({ ai: "", user: question });
+      setContentConversation(recentConversation);
+    }
+    setHasNewQuestion(false);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasNewQuestion]);
+
   const value = {
     messageAi,
     setMessageAi,
@@ -79,6 +96,8 @@ export const ChatBoxProvider = ({
     question,
     setQuestion,
     askAI,
+    isLogged,
+    setIsLogged,
   };
   return (
     <DefaultChatBox.Provider value={value}>{children}</DefaultChatBox.Provider>

@@ -19,9 +19,16 @@ export interface IChatBoxArea {
   question: string;
   setQuestion: (newState: string) => void;
   askAI: (question: string) => void;
+  isLogged: boolean;
+  setIsLogged: (newState: boolean) => void;
 }
 
 export interface ISignProps {
   isOpen: boolean;
   hasSignUp: (newState: boolean) => void;
+}
+
+export interface ISignInUser {
+  email: string;
+  password: string;
 }

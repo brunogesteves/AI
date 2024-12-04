@@ -1,8 +1,15 @@
 import prisma from "./prisma";
+const crypto = require("crypto");
 
 import { User } from "@prisma/client";
 
 const { user: db } = prisma;
+const DATA_ENCRYPTION = {
+  algorithm: "aes256",
+  codificacao: "utf8",
+  secret: "beans",
+  type: "hex",
+};
 
 interface LoginProps {
   email: string;
@@ -10,13 +17,6 @@ interface LoginProps {
 }
 export const createUser = async (values: User) => {
   console.log("rep: ", values);
-  const crypto = require("crypto");
-
-  const DATA_ENCRYPTION = {
-    algorithm: "aes256",
-    secret: "beans",
-    type: "hex",
-  };
 
   const cipher = crypto.createCipher(
     DATA_ENCRYPTION.algorithm,
@@ -36,13 +36,37 @@ export const createUser = async (values: User) => {
   });
 };
 
-// export const getAllUsers = async () => {
-//   return await db.findMany({
-//     where: {
-//       role: "editor",
-//     },
-//   });
-// };
+export const loginUser = async (email: string, password: string) => {
+  const crypto = require("crypto");
+  const DATA_ENCRYPTION = {
+    algorithm: "aes256",
+    codificacao: "utf8",
+    secret: "beans",
+    type: "hex",
+  };
+  const decipher = crypto.createDecipher(
+    DATA_ENCRYPTION.algorithm,
+    DATA_ENCRYPTION.secret
+  );
+
+  const data = await db.findFirst({
+    where: {
+      email,
+    },
+  });
+  if (data) {
+    decipher.update(data.password, DATA_ENCRYPTION.type);
+
+    const decryptdPassword = decipher.final();
+    if (decryptdPassword == password) {
+      return data;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+};
 
 // export const getByEmail = async (data: LoginProps) => {
 //   return await db.findFirstOrThrow({

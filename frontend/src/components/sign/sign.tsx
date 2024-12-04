@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import SignUp from "./signUp/signUp.view";
-import SignIn from "./signIn/signIn";
+import SignIn from "./signIn/signIn.view";
 
 export default function Sign() {
   const [isRegistered, setIsRegistered] = useState<boolean>(true);

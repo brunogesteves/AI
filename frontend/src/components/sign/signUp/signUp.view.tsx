@@ -1,3 +1,4 @@
+"use client";
 import { Field, Form, Formik } from "formik";
 import { SignUpLogic } from "./signUp.logic";
 import { SignUpSchema } from "@/utils/yup";

@@ -16,8 +16,6 @@ interface LoginProps {
   password: string;
 }
 export const createUser = async (values: User) => {
-  console.log("rep: ", values);
-
   const cipher = crypto.createCipher(
     DATA_ENCRYPTION.algorithm,
     DATA_ENCRYPTION.secret
@@ -57,8 +55,9 @@ export const loginUser = async (email: string, password: string) => {
   if (data) {
     decipher.update(data.password, DATA_ENCRYPTION.type);
 
-    const decryptdPassword = decipher.final();
-    if (decryptdPassword == password) {
+    const decryptedPassword = decipher.final();
+    if (decryptedPassword == password) {
+      data.password = password;
       return data;
     } else {
       return false;
@@ -68,16 +67,21 @@ export const loginUser = async (email: string, password: string) => {
   }
 };
 
-// export const getByEmail = async (data: LoginProps) => {
-//   return await db.findFirstOrThrow({
-//     where: {
-//       email: data.email,
-//     },
-//     select: {
-//       password: true,
-//     },
-//   });
-// };
+export const updateUser = async (data: User) => {
+  return await db.update({
+    where: {
+      id: data.id,
+    },
+    data: {
+      birthDate: data.birthDate,
+      email: data.email,
+      firstname: data.firstname,
+      generations: data.generations,
+      lastname: data.lastname,
+      password: data.password,
+    },
+  });
+};
 
 // export const updatePassword = async (data: LoginProps) => {
 //   const salt = await bcrypt.genSalt(10);

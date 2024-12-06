@@ -1,6 +1,11 @@
-import ChatBoxArea from "@/components/chatbox/chatBoxArea";
-import InputChatBox from "@/components/chatbox/InputChatBox";
+import PanelUser from "@/components/panel/panelUser.view";
 
-export default function PanelUser() {
-  return <div></div>;
+export default function Panel() {
+  return (
+    <div>
+      <div>
+        <PanelUser />
+      </div>
+    </div>
+  );
 }

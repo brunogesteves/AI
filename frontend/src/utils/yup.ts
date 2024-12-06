@@ -7,7 +7,17 @@ export const SignUpSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
 });
 
+export const UpdateSchema = Yup.object().shape({
+  firstname: Yup.string().required("Name is required"),
+  lastname: Yup.string().required("Name is required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
+});
+
 export const SignInSchema = Yup.object().shape({
   password: Yup.string().required("Password is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
+});
+
+export const CreateProkectSchema = Yup.object().shape({
+  projectname: Yup.string().required("Name is required"),
 });

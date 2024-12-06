@@ -23,14 +23,15 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const loginUserData = await UsersRepository.loginUser(email, password);
     if (loginUserData) {
-      const dataToken = {
-        firstname: loginUserData.firstname,
-        lastname: loginUserData.lastname,
-        email: loginUserData.email,
-        generations: loginUserData.generations,
-        birthDate: loginUserData.birthDate,
-      };
-      const token = createJWTUser(dataToken);
+      // const dataToken = {
+      //   firstname: loginUserData.firstname,
+      //   lastname: loginUserData.lastname,
+      //   email: loginUserData.email,
+      //   generations: loginUserData.generations,
+      //   birthDate: loginUserData.birthDate,
+      //   password: loginUserData.password,
+      // };
+      const token = createJWTUser(loginUserData);
       res.json({ status: true, token });
     } else {
       res.json({ status: false });
@@ -40,25 +41,21 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-// export const getByEmail = async (
-//   req: Request,
-//   res: Response
-// ): Promise<void> => {
-//   const userData = req.body;
+export const updateUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { values } = req.body;
 
-//   try {
-//     const data = await UsersServices.getByEmail(userData.values);
-//     if (data.password == userData.values.password) {
-//       res.json(true);
-//     } else {
-//       res.json(false);
-//     }
-//   } catch (e) {
-//     console.log("nao: ");
-//     console.log(e);
-//     res.status(500).send("Erro");
-//   }
-// };
+  try {
+    const data = await UsersRepository.updateUser(values);
+    if (data) {
+      res.json({ status: true });
+    }
+  } catch (e) {
+    res.status(500).send("Erro");
+  }
+};
 
 // export const resetPassword = async (
 //   req: Request,

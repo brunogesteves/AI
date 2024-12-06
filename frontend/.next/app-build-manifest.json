@@ -20,7 +20,23 @@
     "/panel/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
+      "static/css/app/panel/page.css",
       "static/chunks/app/panel/page.js"
+    ],
+    "/project/[slug]/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/project/[slug]/layout.js"
+    ],
+    "/project/[slug]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/project/[slug]/page.js"
+    ],
+    "/_not-found/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/_not-found/page.js"
     ]
   }
 }

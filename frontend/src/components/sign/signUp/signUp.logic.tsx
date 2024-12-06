@@ -1,3 +1,4 @@
+"use client";
 import { api } from "@/utils/api";
 import { IUserProps } from "@/utils/types";
 import { ErrorMessage } from "formik";
@@ -29,9 +30,9 @@ export const SignUpLogic = (hasSignUp: (newState: boolean) => void) => {
       if (res.data.result) {
         hasSignUp(true);
         notify();
+        actions.resetForm();
       }
     });
-    actions.resetForm();
   }
 
   return {

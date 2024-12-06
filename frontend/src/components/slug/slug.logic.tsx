@@ -13,25 +13,14 @@ export const SlugLogic = (slug: string) => {
     IConversation[]
   >([
     {
-      user: "pergunta1",
-      ai: "resposta1",
-    },
-    {
-      user: "pergunta2",
-      ai: "resposta2",
-    },
-    {
-      user: "pergunta3",
-      ai: "resposta3",
-    },
-    {
-      user: "pergunta4",
-      ai: "resposta4",
+      user: "",
+      ai: "",
     },
   ]);
 
   function askAI(question: string) {
     console.log("chamou ai");
+    setTypeText([]);
     setIsButtonDisabled(true);
 
     setContentConversation((contentConversation) => [
@@ -39,7 +28,7 @@ export const SlugLogic = (slug: string) => {
       { ai: "", user: question },
     ]);
 
-    api.post(`/askai`, { question }).then((res) => {
+    api.post(`/askai`, { question, slug }).then((res) => {
       if (res.data.status) {
         setMessageAi(res.data.answer);
         setIsButtonDisabled(false);
@@ -47,7 +36,6 @@ export const SlugLogic = (slug: string) => {
       }
     });
   }
-  // console.log(contentConversation);
 
   function toType() {
     if (i == 0) {
@@ -62,7 +50,7 @@ export const SlugLogic = (slug: string) => {
   }
 
   useEffect(() => {
-    const speed = 50;
+    const speed = 30;
     if (i < messageAi.length) {
       setI((i) => i + 1);
       setTimeout(toType, speed);
@@ -72,8 +60,9 @@ export const SlugLogic = (slug: string) => {
   }, [messageAi, typeText]);
 
   useEffect(() => {
-    api.get(`/projects/unique/${slug}`).then((res) => {
-      console.log(res.data.data);
+    api.get(`/askai/historyChat/${slug}`).then((res) => {
+      setContentConversation(res.data.chatHistory);
+      console.log(res.data.chatHistory);
     });
   }, [slug]);
 

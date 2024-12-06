@@ -1,5 +1,27 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "./prisma";
 
-const prisma = new PrismaClient();
+import { Chat } from "@prisma/client";
 
-export default prisma;
+const { chat: db } = prisma;
+
+export const saveChat = async (data: Omit<Chat, "id">) => {
+  return await db.create({
+    data: {
+      ai: data.ai,
+      user: data.user,
+      projectId: data.projectId,
+    },
+  });
+};
+
+export const getHistoryChat = async (slug: number) => {
+  return await db.findMany({
+    where: {
+      projectId: Number(slug),
+    },
+    select: {
+      ai: true,
+      user: true,
+    },
+  });
+};

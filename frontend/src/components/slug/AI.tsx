@@ -6,7 +6,7 @@ interface IContentAI {
 
 export default function Ai({ content }: IContentAI) {
   return (
-    <div className=" flex justify-end items-center my-5  gap-x-2 mb-1 w-full">
+    <div className=" flex justify-end items-start text-justify my-5  gap-x-2 mb-1 w-full">
       <Image src="/globe.svg" alt="user" width={30} height={30} />
       {content == "" ? loadingIcon() : content}
     </div>

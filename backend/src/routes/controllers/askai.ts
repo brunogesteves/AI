@@ -1,43 +1,75 @@
-import * as UsersRepository from "../repository/users";
+import * as AskAiRepository from "../repository/askai";
 import { Request, Response } from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.API_KEY ?? "");
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
+interface IChatHistoryProps {
+  role: string;
+  parts: [{ text: string }];
+}
+
 export const answerQuestion = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { question } = req.body;
+  const { question, slug } = req.body;
 
-  const result = await model.generateContent(question);
-  res.json({ status: true, answer: result.response.text() });
+  const history: IChatHistoryProps[] = [];
+
+  const historyChatData = await AskAiRepository.getHistoryChat(slug);
+  if (historyChatData) {
+    historyChatData.forEach((item) => {
+      history.push(
+        {
+          role: "user",
+          parts: [{ text: item.user }],
+        },
+        {
+          role: "model",
+          parts: [{ text: item.ai }],
+        }
+      );
+    });
+  }
+  console.log(history);
+
+  const chat = model.startChat({
+    history: history,
+  });
+  let resultsFromAi = await chat.sendMessage(question);
+
+  if (resultsFromAi) {
+    const results = {
+      ai: resultsFromAi.response.text(),
+      user: question,
+      projectId: Number(slug),
+    };
+    const data = await AskAiRepository.saveChat(results);
+
+    if (data) res.json({ status: true, answer: resultsFromAi.response.text() });
+  }
 };
 
-// export const loginUser = async (req: Request, res: Response): Promise<void> => {
-//   const { email, password } = req.params;
+export const getHistoryChat = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { slug } = req.params;
 
-//   try {
-//     const loginUserData = await UsersRepository.loginUser(email, password);
-//     if (loginUserData) {
-//       // const dataToken = {
-//       //   firstname: loginUserData.firstname,
-//       //   lastname: loginUserData.lastname,
-//       //   email: loginUserData.email,
-//       //   generations: loginUserData.generations,
-//       //   birthDate: loginUserData.birthDate,
-//       //   password: loginUserData.password,
-//       // };
-//       const token = createJWTUser(loginUserData);
-//       res.json({ status: true, token });
-//     } else {
-//       res.json({ status: false });
-//     }
-//   } catch (e) {
-//     res.status(500).send("Erro");
-//   }
-// };
+  try {
+    const data = await AskAiRepository.getHistoryChat(Number(slug));
+
+    if (data) {
+      res.json({ status: true, chatHistory: data });
+    } else {
+      res.json({ status: false });
+    }
+  } catch (e) {
+    res.status(500).send("Erro");
+  }
+};
 
 // export const updateUser = async (
 //   req: Request,

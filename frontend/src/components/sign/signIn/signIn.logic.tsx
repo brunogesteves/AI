@@ -1,4 +1,4 @@
-import { useInfo } from "@/contexts/context";
+import { useInfoIUserSettingsInfo } from "@/contexts/context";
 import { api } from "@/utils/api";
 import { ISignInUser } from "@/utils/types";
 import { ErrorMessage } from "formik";
@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 
 export const SignInLogic = () => {
-  const { setUserSettings } = useInfo();
+  const { setUserSettings } = useInfoIUserSettingsInfo();
   const router = useRouter();
   const [isPasswordHidden, setIsPasswordHidden] = useState<boolean>(true);
   const [errorWarning, setErrorWarning] = useState<boolean>(false);

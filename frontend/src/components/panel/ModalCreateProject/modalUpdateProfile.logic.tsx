@@ -1,5 +1,5 @@
 "use client";
-import { useInfo } from "@/contexts/context";
+import { useInfoIUserSettingsInfo } from "@/contexts/context";
 import { api } from "@/utils/api";
 import { IUserProps } from "@/utils/types";
 import { ErrorMessage } from "formik";
@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
 export const ModalUpdateProfileLogic = (isOpen: boolean) => {
-  const { userSettings } = useInfo();
+  const { userSettings } = useInfoIUserSettingsInfo();
   const modalRefUpdate = useRef<HTMLDialogElement>(null);
 
   const [openUpdateProfileModal, setOpenUpdateProfileModal] =

@@ -1,5 +1,5 @@
 "use client";
-import { useInfo } from "@/contexts/context";
+import { useInfoIUserSettingsInfo } from "@/contexts/context";
 import { api } from "@/utils/api";
 import { IProjectProps } from "@/utils/types";
 import { useEffect, useRef, useState } from "react";
@@ -11,7 +11,7 @@ interface ProjectDataProps {
 }
 
 export const PanelUserLogic = () => {
-  const { userSettings } = useInfo();
+  const { userSettings } = useInfoIUserSettingsInfo();
   const router = useRouter();
   const deleteModalRef = useRef<HTMLDialogElement>(null);
   const [openNewProjectModal, setOpenNewProjectModal] =

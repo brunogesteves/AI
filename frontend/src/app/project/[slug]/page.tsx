@@ -1,14 +1,14 @@
-import Slug from "@/components/slug/slug.view";
+import ChatBox from "@/components/slug/chatBox";
 
-export default async function ProjectPage({
-  params,
-}: {
+export default async function ProjectPage({}: // params,
+{
   params: Promise<{ slug: string }>;
 }) {
-  const slug = (await params).slug;
+  // const slug = (await params).slug;
+
   return (
-    <div>
-      <Slug slug={slug} />
-    </div>
+    <>
+      <ChatBox />
+    </>
   );
 }

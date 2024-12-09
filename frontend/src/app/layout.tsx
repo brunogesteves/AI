@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import "./icons.css";
-import { ChatBoxProvider } from "@/contexts/context";
+import { UserSettingsProvider } from "@/contexts/context";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ChatBoxProvider>
+    <UserSettingsProvider>
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -34,6 +34,6 @@ export default function RootLayout({
           {children}
         </body>
       </html>
-    </ChatBoxProvider>
+    </UserSettingsProvider>
   );
 }

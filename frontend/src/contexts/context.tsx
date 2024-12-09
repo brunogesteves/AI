@@ -1,19 +1,11 @@
 "use client";
-// import { api } from "@/utils/api";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 
-import { IChatBoxArea, IUserProps } from "@/utils/types";
+import { IUserProps, IUserSettingsProps } from "@/utils/types";
 import { createContext, useContext, useEffect, useState } from "react";
 
-const DefaultChatBox = createContext<IChatBoxArea>({
-  // messageAi: "",
-  // setMessageAi: () => {},
-  // contentConversation: [],
-  // setContentConversation: () => {},
-  // question: "",
-  // setQuestion: () => {},
-  // askAI: () => {},
+const DefaultUserSettings = createContext<IUserSettingsProps>({
   userSettings: {
     firstname: "",
     lastname: "",
@@ -24,7 +16,7 @@ const DefaultChatBox = createContext<IChatBoxArea>({
   setUserSettings: () => {},
 });
 
-export const ChatBoxProvider = ({
+export const UserSettingsProvider = ({
   children,
 }: {
   children: React.ReactNode;
@@ -49,22 +41,17 @@ export const ChatBoxProvider = ({
   }, []);
 
   const value = {
-    // messageAi,
-    // setMessageAi,
-    // contentConversation,
-    // setContentConversation,
-    // question,
-    // setQuestion,
-    // askAI,
     userSettings,
     setUserSettings,
   };
   return (
-    <DefaultChatBox.Provider value={value}>{children}</DefaultChatBox.Provider>
+    <DefaultUserSettings.Provider value={value}>
+      {children}
+    </DefaultUserSettings.Provider>
   );
 };
 
-export function useInfo() {
-  const useInfo = useContext(DefaultChatBox);
+export function useInfoIUserSettingsInfo() {
+  const useInfo = useContext(DefaultUserSettings);
   return useInfo;
 }

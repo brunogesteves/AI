@@ -1,5 +1,5 @@
 "use client";
-import { useInfo } from "@/contexts/context";
+import { useInfoIUserSettingsInfo } from "@/contexts/context";
 import { api } from "@/utils/api";
 import { IModalCreateUpdateProps } from "@/utils/types";
 import { ErrorMessage } from "formik";
@@ -10,7 +10,7 @@ export const ModalCreateProjectLogic = ({
   isOpen,
   closeModal,
 }: IModalCreateUpdateProps) => {
-  const { userSettings } = useInfo();
+  const { userSettings } = useInfoIUserSettingsInfo();
   const modalRefProject = useRef<HTMLDialogElement>(null);
 
   const [openNewProjectModal, setOpenNewProjectModal] = useState<boolean>(true);

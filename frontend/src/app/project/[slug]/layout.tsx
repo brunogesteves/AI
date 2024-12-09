@@ -1,22 +1,25 @@
 // import ChatBoxArea from "./ChatBoxArea";
 // import InputChatBox from "./InputChatBox";
-import Sidebar from "@/components/slug/sidebar";
+import { ChatAreaProvider } from "@/contexts/contextChat";
 import React from "react";
 
-export default function PanelLayout({
+export default async function PanelLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ slug: string }>;
 }>) {
+  const slug = (await params).slug;
+
   return (
-    <div className="bg-red-500 h-screen p-5 ">
-      <div className="bg-yellow-700 h-full flex justify-start rounded-lg">
-        <div className="w-1/5 rounded-l-lg p-2 bg-red-950">
-          <Sidebar />
+    <ChatAreaProvider params={slug}>
+      <div className="bg-red-500 h-screen p-5 ">
+        <div className="bg-yellow-700 h-full flex justify-start rounded-lg">
+          {children}
         </div>
-        <div className="pl-5 w-4/5 ">{children}</div>
       </div>
-    </div>
+    </ChatAreaProvider>
   );
 }
 

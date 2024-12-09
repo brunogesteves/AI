@@ -1,7 +1,7 @@
 // import ChatBoxArea from "./ChatBoxArea";
 // import InputChatBox from "./InputChatBox";
 import Sidebar from "@/components/panel/sidebar";
-import { ChatBoxProvider } from "@/contexts/context";
+import { UserSettingsProvider } from "@/contexts/context";
 import React from "react";
 
 export default function PanelLayout({
@@ -10,7 +10,7 @@ export default function PanelLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ChatBoxProvider>
+    <UserSettingsProvider>
       <div className="bg-red-500 h-screen p-5 ">
         <div className="bg-yellow-700 h-full  flex justify-start rounded-lg">
           <div className="w-1/5 h-auto rounded-l-lg p-2 bg-red-950">
@@ -19,7 +19,7 @@ export default function PanelLayout({
           <div className="pl-5 w-4/5 ">{children}</div>
         </div>
       </div>
-    </ChatBoxProvider>
+    </UserSettingsProvider>
   );
 }
 

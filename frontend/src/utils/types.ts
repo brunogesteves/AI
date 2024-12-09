@@ -1,6 +1,22 @@
-export interface IConversation {
-  ai: string;
+export interface IConversationProps {
   user: string;
+  ai: string;
+}
+
+export interface IChatSettingProps {
+  typeText: string[];
+  setTypeText: (newState: string[]) => void;
+  messageAi: string;
+  setMessageAi: (newState: string) => void;
+  question: string;
+  setQuestion: (newState: string) => void;
+  isButtonDisabled: boolean;
+  setIsButtonDisabled: (newState: boolean) => void;
+  contentConversation: IConversationProps[];
+  setContentConversation: (newState: IConversationProps[]) => void;
+  slug: string;
+  setSlug: (newState: string) => void;
+  askAI: (params: string) => void;
 }
 
 export interface IUserProps {
@@ -13,14 +29,7 @@ export interface IUserProps {
   generations?: number;
 }
 
-export interface IChatBoxArea {
-  // messageAi: string;
-  // setMessageAi: (newState: string) => void;
-  // contentConversation: IConversation[];
-  // setContentConversation: (newState: IConversation[]) => void;
-  // question: string;
-  // setQuestion: (newState: string) => void;
-  // askAI: (newState: string) => void;
+export interface IUserSettingsProps {
   userSettings: IUserProps;
   setUserSettings: (newState: IUserProps) => void;
 }

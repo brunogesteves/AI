@@ -1,5 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 
 import { IUserProps, IUserSettingsProps } from "@/utils/types";
@@ -22,6 +22,7 @@ export const UserSettingsProvider = ({
   children: React.ReactNode;
 }) => {
   const router = useRouter();
+  const recentUrl = usePathname();
 
   const [userSettings, setUserSettings] = useState<IUserProps>({
     firstname: "",
@@ -34,7 +35,7 @@ export const UserSettingsProvider = ({
   useEffect(() => {
     if (localStorage.getItem("token")) {
       setUserSettings(jwtDecode(localStorage.getItem("token") ?? ""));
-      router.push("/panel");
+      router.push(`${recentUrl}`);
     } else {
       router.push("/");
     }

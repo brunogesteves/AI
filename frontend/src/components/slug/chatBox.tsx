@@ -1,5 +1,5 @@
 import InputChat from "./inputChat";
-import Sidebar from "./sidebar";
+import Sidebar from "./sideBar/sidebar.view";
 import ChatArea from "./chatArea";
 
 export default function ChatBox() {

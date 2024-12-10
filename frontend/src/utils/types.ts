@@ -1,3 +1,5 @@
+import { RefObject } from "react";
+
 export interface IConversationProps {
   user: string;
   ai: string;
@@ -17,6 +19,11 @@ export interface IChatSettingProps {
   slug: string;
   setSlug: (newState: string) => void;
   askAI: (params: string) => void;
+  modalRef: RefObject<HTMLDialogElement> | null;
+  isModalopen: boolean;
+  setIsModalopen: (newState: boolean) => void;
+  fileName: string;
+  setfileName: (newState: string) => void;
 }
 
 export interface IUserProps {

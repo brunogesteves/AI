@@ -1,2 +1,4 @@
-.next
-frontend/.next
+.next/
+.frontend/.next/
+backend/src/files
+.backend/src/files

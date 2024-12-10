@@ -2,7 +2,7 @@
 
 import { api } from "@/utils/api";
 import { IChatSettingProps, IConversationProps } from "@/utils/types";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 
 const DefaultChatArea = createContext<IChatSettingProps>({
   typeText: [],
@@ -23,6 +23,11 @@ const DefaultChatArea = createContext<IChatSettingProps>({
   slug: "",
   setSlug: () => {},
   askAI: () => {},
+  modalRef: null,
+  isModalopen: false,
+  setIsModalopen: () => {},
+  fileName: "",
+  setfileName: () => {},
 });
 
 export const ChatAreaProvider = ({
@@ -32,6 +37,10 @@ export const ChatAreaProvider = ({
   children: React.ReactNode;
   params: string;
 }) => {
+  const modalRef = useRef<null | HTMLDialogElement>(null);
+  const [isModalopen, setIsModalopen] = useState<boolean>(false);
+  const [fileName, setfileName] = useState<string>("");
+
   const [typeText, setTypeText] = useState<string[]>([]);
   const [i, setI] = useState<number>(0);
   const [messageAi, setMessageAi] = useState<string>("");
@@ -100,6 +109,14 @@ export const ChatAreaProvider = ({
   }, [question]);
 
   useEffect(() => {
+    if (isModalopen) {
+      modalRef.current?.showModal();
+    } else {
+      modalRef.current?.close();
+    }
+  }, [isModalopen]);
+
+  useEffect(() => {
     setSlug(params);
   }, []);
 
@@ -117,6 +134,11 @@ export const ChatAreaProvider = ({
     askAI,
     slug,
     setSlug,
+    modalRef,
+    isModalopen,
+    setIsModalopen,
+    fileName,
+    setfileName,
   };
   return (
     <DefaultChatArea.Provider value={value}>

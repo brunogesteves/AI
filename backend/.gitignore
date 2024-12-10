@@ -1,3 +1,5 @@
 node_modules
 .env
 Dockerfile
+backend/src/files
+.backend/src/files

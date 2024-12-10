@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 import fs from "fs";
 
 export const saveFiles = async (req: Request, res: Response): Promise<void> => {
-  console.log("chamou api");
   const { userId } = req.body;
 
   try {
@@ -24,7 +23,6 @@ export const saveFiles = async (req: Request, res: Response): Promise<void> => {
       };
 
       const data = await FilesRepository.saveFiles(settingsFile);
-      console.log("ret rep: ", data);
       if (data) {
         res.json({ status: true, files: data });
       } else {
@@ -38,12 +36,10 @@ export const saveFiles = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const getFiles = async (req: Request, res: Response): Promise<void> => {
-  console.log("chamou api get");
   const { slug } = req.params;
 
   try {
     const data = await FilesRepository.getFiles(Number(slug));
-    console.log("ret rep get: ", data);
     if (data) {
       res.json({ status: true, files: data });
     } else {

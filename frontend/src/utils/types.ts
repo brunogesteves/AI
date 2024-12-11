@@ -24,6 +24,8 @@ export interface IChatSettingProps {
   setIsModalopen: (newState: boolean) => void;
   fileName: string;
   setfileName: (newState: string) => void;
+  choosedFiles: string[];
+  setChoosedFiles: (newState: string[]) => void;
 }
 
 export interface IUserProps {

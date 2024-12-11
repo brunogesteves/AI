@@ -23,6 +23,15 @@ export const getFiles = async (projectId: number) => {
     },
     select: {
       name: true,
+      id: true,
+    },
+  });
+};
+
+export const deleteFile = async (fileId: number) => {
+  return await db.delete({
+    where: {
+      id: fileId,
     },
   });
 };

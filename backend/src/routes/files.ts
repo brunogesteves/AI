@@ -6,5 +6,6 @@ const router = Router();
 
 router.post("/", upload.single("file"), FilesController.saveFiles);
 router.get("/:slug", FilesController.getFiles);
+router.delete("/:id", FilesController.deleteFile);
 
 export default router;

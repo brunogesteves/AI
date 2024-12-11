@@ -9,22 +9,18 @@ export default function ExcelFile() {
 
   const [data, setData] = useState<unknown[]>([]);
   useEffect(() => {
-    // Fetch Excel file.
-    fetch(`${process.env.NEXT_PUBLIC_FILE_SOURCE}/9/excel.xlsx`)
-      // Convert to ArrayBuffer.
+    fetch(`${process.env.NEXT_PUBLIC_FILE_SOURCE}/${slug}/${fileName}`)
       .then((res) => res.arrayBuffer())
       .then((data) => {
         const wb = XLSX.read(data, { type: "buffer" });
         const wsname = wb.SheetNames[0];
         const ws = wb.Sheets[wsname];
-        // Convert to JSON.
         const json = XLSX.utils.sheet_to_json(ws);
         setData(json);
       });
   }, []);
   // return data;
 
-  console.log(data);
   return (
     <div className="bg-white w-[calc(100vw_-_15vw)] h-[calc(100vh_-_14vh)] overflow-y-auto">
       {data.length > 0 && (
@@ -45,7 +41,7 @@ export default function ExcelFile() {
       )}
 
       <button
-        className="absolute top-3 left-3"
+        className="absolute top-3 right-3"
         onClick={() => setIsModalopen(false)}
       >
         <IoCloseCircleSharp color="red" />

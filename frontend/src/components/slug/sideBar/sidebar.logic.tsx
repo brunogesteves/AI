@@ -6,6 +6,7 @@ import { useDropzone } from "react-dropzone";
 
 interface IFileProps {
   name: string;
+  id: number;
 }
 
 export const SidebarLogic = () => {
@@ -14,7 +15,22 @@ export const SidebarLogic = () => {
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
     // noClick: true,
     // noKeyboard: true,
+    accept: {
+      "image/png": [".png"],
+      "image/jpg": [".jpg"],
+      "text/csv": [".xlsx"],
+      "text/pdf": [".pdf"],
+      "audio/mpeg3": [".mp3"],
+    },
   });
+
+  function deleteFile(id: number) {
+    api.delete(`/files/${id}`).then((res) => {
+      if (res.data.status) {
+        setFiles(files.filter((file) => file.id !== id));
+      }
+    });
+  }
 
   useEffect(() => {
     if (acceptedFiles.length > 0) {
@@ -30,7 +46,6 @@ export const SidebarLogic = () => {
           })
           .then((res) => {
             setFiles((files) => [...files, res.data.files]);
-            console.log(res.data.files);
           });
       } catch (error) {
         console.log(error);
@@ -48,6 +63,6 @@ export const SidebarLogic = () => {
 
   return {
     data: { files },
-    methods: { getRootProps, getInputProps },
+    methods: { getRootProps, getInputProps, deleteFile },
   };
 };

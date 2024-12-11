@@ -13,9 +13,8 @@ export default function PDFFile() {
           fileUrl={`${process.env.NEXT_PUBLIC_FILE_SOURCE}/${slug}/${fileName}`}
         />
       </Worker>
-      {/* <div></div> */}
       <button
-        className="absolute top-3 left-3"
+        className="absolute top-3 rright-3"
         onClick={() => setIsModalopen(false)}
       >
         <IoCloseCircleSharp color="red" />
@@ -23,5 +22,3 @@ export default function PDFFile() {
     </>
   );
 }
-
-// `${process.env.NEXT_PUBLIC_FILE_SOURCE}/${slug}/${fileName}`

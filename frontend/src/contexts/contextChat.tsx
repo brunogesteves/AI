@@ -28,6 +28,8 @@ const DefaultChatArea = createContext<IChatSettingProps>({
   setIsModalopen: () => {},
   fileName: "",
   setfileName: () => {},
+  choosedFiles: [],
+  setChoosedFiles: () => {},
 });
 
 export const ChatAreaProvider = ({
@@ -46,6 +48,7 @@ export const ChatAreaProvider = ({
   const [messageAi, setMessageAi] = useState<string>("");
   const [question, setQuestion] = useState<string>("");
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
+  const [choosedFiles, setChoosedFiles] = useState<string[]>([]);
   const [contentConversation, setContentConversation] = useState<
     IConversationProps[]
   >([
@@ -65,7 +68,7 @@ export const ChatAreaProvider = ({
       { ai: "", user: question },
     ]);
 
-    api.post(`/askai`, { question, slug }).then((res) => {
+    api.post(`/askai`, { question, slug, choosedFiles }).then((res) => {
       if (res.data.status) {
         setMessageAi(res.data.answer);
         setIsButtonDisabled(false);
@@ -119,6 +122,7 @@ export const ChatAreaProvider = ({
   useEffect(() => {
     setSlug(params);
   }, []);
+  console.log(choosedFiles);
 
   const value = {
     typeText,
@@ -139,6 +143,8 @@ export const ChatAreaProvider = ({
     setIsModalopen,
     fileName,
     setfileName,
+    choosedFiles,
+    setChoosedFiles,
   };
   return (
     <DefaultChatArea.Provider value={value}>

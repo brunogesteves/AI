@@ -49,3 +49,20 @@ export const getFiles = async (req: Request, res: Response): Promise<void> => {
     res.status(500).send("Erro");
   }
 };
+
+export const deleteFile = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
+  try {
+    const data = await FilesRepository.deleteFile(Number(id));
+    if (data) {
+      res.json({ status: true });
+    } else {
+      res.json({ status: false });
+    }
+  } catch (e) {
+    res.status(500).send("Erro");
+  }
+};

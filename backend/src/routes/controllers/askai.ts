@@ -1,4 +1,5 @@
 import * as AskAiRepository from "../repository/askai";
+import * as GenerativeAi from "../generativeAi";
 import { Request, Response } from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
@@ -14,45 +15,64 @@ export const answerQuestion = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { question, slug } = req.body;
+  const { question, slug, choosedFiles } = req.body;
 
-  const history: IChatHistoryProps[] = [];
+  if (choosedFiles) {
+    for (let index = 0; index < choosedFiles.length; index++) {
+      switch (choosedFiles[index].split(".").pop()) {
+        case "jpg":
+          GenerativeAi.askaiImage(question, slug, choosedFiles);
+          break;
+        case "png":
+          GenerativeAi.askaiImage(question, slug, choosedFiles);
+          break;
+        case "mp3":
+          GenerativeAi.askaiSong(question, slug, choosedFiles);
+          break;
 
-  const historyChatData = await AskAiRepository.getHistoryChat(slug);
-  if (historyChatData) {
-    historyChatData.forEach((item) => {
-      history.push(
-        {
-          role: "user",
-          parts: [{ text: item.user }],
-        },
-        {
-          role: "model",
-          parts: [{ text: item.ai }],
-        }
-      );
+        default:
+          break;
+      }
+    }
+  } else {
+    const history: IChatHistoryProps[] = [];
+
+    const historyChatData = await AskAiRepository.getHistoryChat(slug);
+    if (historyChatData) {
+      historyChatData.forEach((item) => {
+        history.push(
+          {
+            role: "user",
+            parts: [{ text: item.user }],
+          },
+          {
+            role: "model",
+            parts: [{ text: item.ai }],
+          }
+        );
+      });
+    }
+
+    const chat = model.startChat({
+      history: history,
     });
-  }
-  console.log(history);
+    let resultsFromAi = await chat.sendMessage(question);
 
-  const chat = model.startChat({
-    history: history,
-  });
-  let resultsFromAi = await chat.sendMessage(question);
+    if (resultsFromAi) {
+      const results = {
+        ai: resultsFromAi.response.text(),
+        user: question,
+        projectId: Number(slug),
+      };
+      const data = await AskAiRepository.saveChat(results);
 
-  if (resultsFromAi) {
-    const results = {
-      ai: resultsFromAi.response.text(),
-      user: question,
-      projectId: Number(slug),
-    };
-    const data = await AskAiRepository.saveChat(results);
-
-    if (data) res.json({ status: true, answer: resultsFromAi.response.text() });
+      if (data)
+        res.json({ status: true, answer: resultsFromAi.response.text() });
+    }
   }
 };
 
-export const getHistoryChat = async (
+export const reloadChat = async (
   req: Request,
   res: Response
 ): Promise<void> => {
@@ -70,72 +90,3 @@ export const getHistoryChat = async (
     res.status(500).send("Erro");
   }
 };
-
-// export const updateUser = async (
-//   req: Request,
-//   res: Response
-// ): Promise<void> => {
-//   const { values } = req.body;
-
-//   try {
-//     const data = await UsersRepository.updateUser(values);
-//     if (data) {
-//       res.json({ status: true });
-//     }
-//   } catch (e) {
-//     res.status(500).send("Erro");
-//   }
-// };
-
-// // export const resetPassword = async (
-// //   req: Request,
-// //   res: Response
-// // ): Promise<void> => {
-// //   const userData = req.body;
-
-// //   try {
-// //     const data = await UsersServices.findEmail(userData.values);
-// //     if (data) res.json({ status: data });
-// //   } catch (e) {
-// //     res.status(500).send("Erro");
-// //   }
-// // };
-
-// // export const addUpdateEditor = async (
-// //   req: Request,
-// //   res: Response
-// // ): Promise<void> => {
-// //   const userData: User = req.body;
-// //   userData.image = "";
-
-// //   try {
-// //     const data = await UsersServices.addUpdateEditor(userData);
-// //     if (data) {
-// //       console.log("ret:", data);
-
-// //       const updateNameImage = await UsersServices.updateNameImage(
-// //         `${data.name}_${data.id}.jpg`,
-// //         data.id
-// //       );
-// //       if (updateNameImage) {
-// //         fs.rename(
-// //           "src/files/users/tempuser.jpg",
-// //           `src/files/users/${data.name}_${data.id}.jpg`,
-// //           () => {
-// //             res.json({ status: true, message: "Updated" });
-// //           }
-// //         );
-// //       } else {
-// //         fs.unlink("src/files/users/tempuser.jpg", () =>
-// //           res.json({ message: "Try again" })
-// //         );
-// //       }
-// //     } else {
-// //       fs.unlink("src/files/users/tempuser.jpg", () =>
-// //         res.json({ message: "Try again" })
-// //       );
-// //     }
-// //   } catch (e) {
-// //     res.status(500).send("Erro");
-// //   }
-// // };

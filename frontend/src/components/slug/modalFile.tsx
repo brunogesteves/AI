@@ -2,12 +2,14 @@ import { useChatInfo } from "@/contexts/contextChat";
 import PDFFile from "../files/pdf";
 import ExcelFile from "../files/excel";
 import ImageFile from "../files/image";
+import AudioFile from "../files/audio";
 
 export default function ModalFile() {
   const { modalRef, fileName } = useChatInfo();
+  console.log(fileName);
 
   function typeOfFile(fileName: string) {
-    const extension = fileName?.split(".").pop();
+    const extension = fileName?.toLowerCase().split(".").pop();
     switch (extension) {
       case "pdf":
         return <PDFFile />;
@@ -17,6 +19,9 @@ export default function ModalFile() {
         break;
       case "jpg":
         return <ImageFile />;
+        break;
+      case "mp3":
+        return <AudioFile />;
         break;
 
       default:

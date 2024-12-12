@@ -19,7 +19,7 @@ export const answerQuestion = async (
 
   if (choosedFiles) {
     for (let index = 0; index < choosedFiles.length; index++) {
-      switch (choosedFiles[index].split(".").pop()) {
+      switch (choosedFiles[index].toLowerCase().split(".").pop()) {
         case "jpg":
           GenerativeAi.askaiImage(question, slug, choosedFiles);
           break;

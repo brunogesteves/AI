@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { GoogleAIFileManager, FileState } from "@google/generative-ai/server";
+import fs from "fs";
+import path from "path";
 
 const genAI = new GoogleGenerativeAI(process.env.API_KEY ?? "");
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
@@ -27,46 +28,43 @@ export const askaiImage = async (
 export const askaiSong = async (
   question: string,
   slug: string,
-  choosedFiles: string
+  file: string
 ): Promise<void> => {
   console.log("chamou askai song");
+  const filePath = `../files/${slug}/${file}`;
+  const base64Buffer = fs.readFileSync(path.join(__dirname, filePath));
 
-  const fileManager = new GoogleAIFileManager(process.env.API_KEY ?? "");
+  const base64AudioFile = base64Buffer.toString("base64");
 
-  const uploadResult = await fileManager.uploadFile(
-    `http://localhost:3001/src/files/9/3136.mp3`,
-    {
-      mimeType: "audio/mp3",
-      displayName: "Audio sample",
-    }
-  );
+  // Initialize a Gemini model appropriate for your use case.
+  const model = genAI.getGenerativeModel({
+    model: "gemini-1.5-flash",
+  });
 
-  let file = await fileManager.getFile(uploadResult.file.name);
-  while (file.state === FileState.PROCESSING) {
-    process.stdout.write(".");
-    // Sleep for 10 seconds
-    await new Promise((resolve) => setTimeout(resolve, 10_000));
-    // Fetch the file from the API again
-    file = await fileManager.getFile(uploadResult.file.name);
-  }
-
-  if (file.state === FileState.FAILED) {
-    throw new Error("Audio processing failed.");
-  }
-
-  // View the response.
-  console.log(
-    `Uploaded file ${uploadResult.file.displayName} as: ${uploadResult.file.uri}`
-  );
-
+  // Generate content using a prompt and the metadata of the uploaded file.
   const result = await model.generateContent([
-    "Tell me about this audio clip.",
     {
-      fileData: {
-        fileUri: uploadResult.file.uri,
-        mimeType: uploadResult.file.mimeType,
+      inlineData: {
+        mimeType: "audio/mp3",
+        data: base64AudioFile,
       },
     },
+    { text: "Please summarize the audio." },
   ]);
+
+  // Print the response.
   console.log(result.response.text());
 };
+
+// const reader = require xlsx
+
+// const file = reader.readFile("file")
+// const sheets = file.SheetNames
+// for(let i=0;sheets.lenght; i++){
+// const data = reader.utils.sheet_to_json(file.Sheets[file.SheetNames[i]]) )
+
+// data.forEacch((res)=>)={
+// console.log(res)
+// }
+
+// }

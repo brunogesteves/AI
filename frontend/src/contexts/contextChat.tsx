@@ -122,7 +122,6 @@ export const ChatAreaProvider = ({
   useEffect(() => {
     setSlug(params);
   }, []);
-  console.log(choosedFiles);
 
   const value = {
     typeText,

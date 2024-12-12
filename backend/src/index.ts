@@ -15,7 +15,7 @@ app.use(cors());
 app.use(express.json());
 app.use(routes);
 
-app.use("/src/files", express.static("src/files"));
+app.use("/src/files", express.static("src/files/"));
 
 // Create a MySQL connection
 // const db = mysql.createConnection({

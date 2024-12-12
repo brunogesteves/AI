@@ -7,6 +7,13 @@
   resolved "https://registry.yarnpkg.com/@alloc/quick-lru/-/quick-lru-5.2.0.tgz#7bf68b20c0a350f936915fcae06f58e32007ce30"
   integrity sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==
 
+"@babel/runtime@^7.10.2":
+  version "7.26.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.26.0.tgz#8600c2f595f277c60815256418b85356a65173c1"
+  integrity sha512-FDSOghenHTiToteC/QRlv2q3DhPZ/oOXTBoirfWNx1Cx3TMVcGWQtMMmQcSvb/JjpNeGzx8Pq/b4fKEJuWm1sw==
+  dependencies:
+    regenerator-runtime "^0.14.0"
+
 "@emnapi/runtime@^1.2.0":
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/@emnapi/runtime/-/runtime-1.3.1.tgz#0fcaa575afc31f455fd33534c19381cfce6c6f60"
@@ -100,6 +107,18 @@
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-2.0.3.tgz#4a2868d75d6d6963e423bcf90b7fd1be343409d3"
   integrity sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==
+
+"@iconify/react@^4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@iconify/react/-/react-4.1.1.tgz#da1bf03cdca9427f07cf22cf5b63fa8f02db4722"
+  integrity sha512-jed14EjvKjee8mc0eoscGxlg7mSQRkwQG3iX3cPBCO7UlOjz0DtlvTqxqEcHUJGh+z1VJ31Yhu5B9PxfO0zbdg==
+  dependencies:
+    "@iconify/types" "^2.0.0"
+
+"@iconify/types@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@iconify/types/-/types-2.0.0.tgz#ab0e9ea681d6c8a1214f30cd741fe3a20cc57f57"
+  integrity sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==
 
 "@img/sharp-darwin-arm64@0.33.5":
   version "0.33.5"
@@ -2656,6 +2675,14 @@ react-fast-compare@^2.0.1:
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
 
+react-h5-audio-player@^3.9.3:
+  version "3.9.3"
+  resolved "https://registry.yarnpkg.com/react-h5-audio-player/-/react-h5-audio-player-3.9.3.tgz#8214f5f0b775ddf79a2f6455f8ab2e16acb81b57"
+  integrity sha512-D92SbCk6AJAsXYQ2qJqxeAvEjRXBQHY2q6dIZLaLL74eZi7VfynC0/EspHHbFDqBXDq7o2xNFH1Vas+HyXeE/w==
+  dependencies:
+    "@babel/runtime" "^7.10.2"
+    "@iconify/react" "^4.1.1"
+
 react-icons@^5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-5.3.0.tgz#ccad07a30aebd40a89f8cfa7d82e466019203f1c"
@@ -2713,6 +2740,11 @@ reflect.getprototypeof@^1.0.4, reflect.getprototypeof@^1.0.6:
     get-intrinsic "^1.2.4"
     gopd "^1.0.1"
     which-builtin-type "^1.1.4"
+
+regenerator-runtime@^0.14.0:
+  version "0.14.1"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.14.1.tgz#356ade10263f685dda125100cd862c1db895327f"
+  integrity sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==
 
 regexp.prototype.flags@^1.5.2, regexp.prototype.flags@^1.5.3:
   version "1.5.3"

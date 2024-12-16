@@ -1,70 +1,188 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import * as askAiRepository from "../routes/repository/askai";
+import { ChatSession, GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleAIFileManager } from "@google/generative-ai/server";
+// const pdfParse = require("pdf-parse");
+
+import { Response } from "express";
+
 import fs from "fs";
 import path from "path";
 
 const genAI = new GoogleGenerativeAI(process.env.API_KEY ?? "");
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+// const fileManager = new GoogleAIFileManager(process.env.API_KEY ?? "");
+
 export const askaiImage = async (
-  question: string,
-  slug: string,
-  choosedFiles: string[]
-): Promise<void> => {
-  const imageResp = await fetch(
-    `http://localhost:3001/src/files/${slug}/${choosedFiles}`
-  ).then((response) => response.arrayBuffer());
-
-  const result = await model.generateContent([
-    {
-      inlineData: {
-        data: Buffer.from(imageResp).toString("base64"),
-        mimeType: "image/jpeg",
-      },
-    },
-    "Caption this image.",
-  ]);
-  console.log(result.response.text());
-};
-
-export const askaiSong = async (
+  res: Response,
   question: string,
   slug: string,
   file: string
 ): Promise<void> => {
-  console.log("chamou askai song");
-  const filePath = `../files/${slug}/${file}`;
-  const base64Buffer = fs.readFileSync(path.join(__dirname, filePath));
+  try {
+    const fileContent = await fetch(
+      `http://localhost:3001/src/files/${slug}/${file}`
+    ).then((response) => response.arrayBuffer());
 
-  const base64AudioFile = base64Buffer.toString("base64");
-
-  // Initialize a Gemini model appropriate for your use case.
-  const model = genAI.getGenerativeModel({
-    model: "gemini-1.5-flash",
-  });
-
-  // Generate content using a prompt and the metadata of the uploaded file.
-  const result = await model.generateContent([
-    {
-      inlineData: {
-        mimeType: "audio/mp3",
-        data: base64AudioFile,
+    const resultsFromAi = await model.generateContent([
+      {
+        inlineData: {
+          data: Buffer.from(fileContent).toString("base64"),
+          mimeType: "image/jpeg",
+        },
       },
-    },
-    { text: "Please summarize the audio." },
-  ]);
-
-  // Print the response.
-  console.log(result.response.text());
+      question,
+    ]);
+    if (resultsFromAi) {
+      const results = {
+        ai: resultsFromAi.response.text(),
+        user: question,
+        projectId: Number(slug),
+      };
+      const data = askAiRepository.saveChat(results);
+      if (!data) {
+        res.json({ status: false });
+      } else {
+        res.json({ status: true, answer: resultsFromAi.response.text() });
+      }
+    }
+  } catch (error) {}
 };
 
-// const reader = require xlsx
+export const askaiSong = async (
+  res: Response,
+  question: string,
+  slug: string,
+  file: string
+): Promise<void> => {
+  try {
+    const filePath = `../files/${slug}/${file}`;
+    const base64Buffer = fs.readFileSync(path.join(__dirname, filePath));
 
-// const file = reader.readFile("file")
-// const sheets = file.SheetNames
-// for(let i=0;sheets.lenght; i++){
-// const data = reader.utils.sheet_to_json(file.Sheets[file.SheetNames[i]]) )
+    const base64AudioFile = base64Buffer.toString("base64");
 
-// data.forEacch((res)=>)={
-// console.log(res)
-// }
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash",
+    });
 
-// }
+    const resultsFromAi = await model.generateContent([
+      {
+        inlineData: {
+          mimeType: "audio/mp3",
+          data: base64AudioFile,
+        },
+      },
+      { text: question },
+    ]);
+
+    if (resultsFromAi) {
+      const results = {
+        ai: resultsFromAi.response.text(),
+        user: question,
+        projectId: Number(slug),
+      };
+      const data = askAiRepository.saveChat(results);
+      if (!data) {
+        res.json({ status: false });
+      } else {
+        res.json({ status: true, answer: resultsFromAi.response.text() });
+      }
+    }
+  } catch (error) {}
+};
+
+export const askaiPDF = async (
+  res: Response,
+  question: string,
+  slug: string,
+  file: string
+): Promise<void> => {
+  try {
+    const fileContent = await fetch(
+      `http://localhost:3001/src/files/${slug}/${file}`
+    ).then((response) => response.arrayBuffer());
+
+    const resultsFromAi = await model.generateContent([
+      {
+        inlineData: {
+          data: Buffer.from(fileContent).toString("base64"),
+          mimeType: "application/pdf",
+        },
+      },
+      "O documento fala sobre criminalidade?",
+    ]);
+    if (resultsFromAi) {
+      const results = {
+        ai: resultsFromAi.response.text(),
+        user: question,
+        projectId: Number(slug),
+      };
+      const data = askAiRepository.saveChat(results);
+      if (!data) {
+        res.json({ status: false });
+      } else {
+        res.json({ status: true, answer: resultsFromAi.response.text() });
+      }
+    }
+  } catch (error) {}
+};
+
+export const askaiExcel = async (
+  res: Response,
+  question: string,
+  slug: string,
+  file: string
+): Promise<void> => {
+  try {
+    const fileContent = await fetch(
+      `http://localhost:3001/src/files/${slug}/${file}`
+    ).then((response) => response.arrayBuffer());
+
+    const resultsFromAi = await model.generateContent([
+      {
+        inlineData: {
+          data: Buffer.from(fileContent).toString("base64"),
+          mimeType: "text/csv",
+        },
+      },
+      question,
+    ]);
+    if (resultsFromAi) {
+      const results = {
+        ai: resultsFromAi.response.text(),
+        user: question,
+        projectId: Number(slug),
+      };
+      const data = askAiRepository.saveChat(results);
+      if (!data) {
+        res.json({ status: false });
+      } else {
+        res.json({ status: true, answer: resultsFromAi.response.text() });
+      }
+    }
+  } catch (error) {}
+};
+
+export const askchat = async (
+  res: Response,
+  question: string,
+  chat: ChatSession,
+  slug: number
+): Promise<void> => {
+  try {
+    let resultsFromAi = await chat.sendMessage(question);
+
+    if (resultsFromAi) {
+      const results = {
+        ai: resultsFromAi.response.text(),
+        user: question,
+        projectId: Number(slug),
+      };
+      const data = askAiRepository.saveChat(results);
+      if (!data) {
+        res.json({ status: false });
+      } else {
+        res.json({ status: true, answer: resultsFromAi.response.text() });
+      }
+    }
+  } catch (error) {}
+};

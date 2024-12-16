@@ -1,3 +1,4 @@
-next/
+.next/
 frontend/.next/
+backend/.next/
 backend/src/files/

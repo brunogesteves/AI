@@ -9,7 +9,7 @@ export default function ChatArea() {
   const { contentConversation } = useChatInfo();
 
   return (
-    <div className="bg-gray-300 w-full   h-[calc(100vh_-_13vh)] p-4 rounded-lg flex flex-col-reverse text-black  overflow-y-auto ">
+    <div className="bg-gray-300 w-full   h-[calc(100vh_-_120px)] p-4 rounded-lg flex flex-col-reverse text-black  overflow-y-auto ">
       {contentConversation?.toReversed().map((content, i: number) => {
         return (
           <div key={i}>

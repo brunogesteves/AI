@@ -28,8 +28,8 @@ const DefaultChatArea = createContext<IChatSettingProps>({
   setIsModalopen: () => {},
   fileName: "",
   setfileName: () => {},
-  choosedFiles: [],
-  setChoosedFiles: () => {},
+  choosedFile: "",
+  setChoosedFile: () => {},
 });
 
 export const ChatAreaProvider = ({
@@ -42,13 +42,12 @@ export const ChatAreaProvider = ({
   const modalRef = useRef<null | HTMLDialogElement>(null);
   const [isModalopen, setIsModalopen] = useState<boolean>(false);
   const [fileName, setfileName] = useState<string>("");
-
   const [typeText, setTypeText] = useState<string[]>([]);
   const [i, setI] = useState<number>(0);
   const [messageAi, setMessageAi] = useState<string>("");
   const [question, setQuestion] = useState<string>("");
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
-  const [choosedFiles, setChoosedFiles] = useState<string[]>([]);
+  const [choosedFile, setChoosedFile] = useState<string>("");
   const [contentConversation, setContentConversation] = useState<
     IConversationProps[]
   >([
@@ -68,7 +67,7 @@ export const ChatAreaProvider = ({
       { ai: "", user: question },
     ]);
 
-    api.post(`/askai`, { question, slug, choosedFiles }).then((res) => {
+    api.post(`/askai`, { question, slug, choosedFile }).then((res) => {
       if (res.data.status) {
         setMessageAi(res.data.answer);
         setIsButtonDisabled(false);
@@ -142,8 +141,8 @@ export const ChatAreaProvider = ({
     setIsModalopen,
     fileName,
     setfileName,
-    choosedFiles,
-    setChoosedFiles,
+    choosedFile,
+    setChoosedFile,
   };
   return (
     <DefaultChatArea.Provider value={value}>

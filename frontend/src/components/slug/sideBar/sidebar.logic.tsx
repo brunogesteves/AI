@@ -18,8 +18,8 @@ export const SidebarLogic = () => {
     accept: {
       "image/png": [".png"],
       "image/jpg": [".jpg"],
-      "text/csv": [".xlsx"],
       "text/pdf": [".pdf"],
+      "text/csv": [".csv"],
       "audio/mpeg3": [".mp3"],
     },
   });

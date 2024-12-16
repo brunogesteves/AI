@@ -6,26 +6,25 @@ import AudioFile from "../files/audio";
 
 export default function ModalFile() {
   const { modalRef, fileName } = useChatInfo();
-  console.log(fileName);
+  // console.log(fileName);
 
   function typeOfFile(fileName: string) {
     const extension = fileName?.toLowerCase().split(".").pop();
     switch (extension) {
       case "pdf":
         return <PDFFile />;
-        break;
       case "png":
         return <ImageFile />;
-        break;
       case "jpg":
         return <ImageFile />;
-        break;
       case "mp3":
         return <AudioFile />;
-        break;
-
-      default:
+      case "xlsx":
         return <ExcelFile />;
+      case "csv":
+        return <ExcelFile />;
+      default:
+        break;
     }
   }
 

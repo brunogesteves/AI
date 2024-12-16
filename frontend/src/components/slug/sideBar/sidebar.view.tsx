@@ -7,7 +7,7 @@ import { RiDeleteBin3Fill } from "react-icons/ri";
 import ModalFile from "../modalFile";
 
 export default function SidebarView() {
-  const { setIsModalopen, setfileName, setChoosedFiles, choosedFiles } =
+  const { setIsModalopen, setfileName, setChoosedFile, choosedFile } =
     useChatInfo();
   const { data, methods } = SidebarLogic();
 
@@ -28,13 +28,12 @@ export default function SidebarView() {
           return (
             <div key={i} className="flex justify-center items-center gap-x-3">
               <input
+                checked={choosedFile == file.name ? true : false}
+                readOnly
                 type="checkbox"
                 onClick={(e) => {
-                  const isChecked = (e.target as HTMLInputElement).checked;
-                  setChoosedFiles(
-                    isChecked
-                      ? [...choosedFiles, file.name]
-                      : choosedFiles.filter((file) => file !== file)
+                  setChoosedFile(
+                    (e.target as HTMLInputElement).checked ? file.name : ""
                   );
                 }}
               />

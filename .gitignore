@@ -1,0 +1,10 @@
+frontend/.next/
+frontend/node_modules/
+mobile/node_modules/
+mobile/.expo/
+outro/
+backend/node_modules/
+frontend/.env
+backend/.env
+backend/src/files/
+

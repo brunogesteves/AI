@@ -17,8 +17,6 @@ const DefaultUserSettings = createContext<IUserSettingsProps>({
     generations: 0,
   },
   setUserSettings: () => {},
-  isRegistered: false,
-  setIsRegistered: () => {},
 });
 
 const UserSettingsProvider = ({ children }: PropsWithChildren) => {
@@ -31,23 +29,20 @@ const UserSettingsProvider = ({ children }: PropsWithChildren) => {
     email: "",
     generations: 0,
   });
-  const [isRegistered, setIsRegistered] = useState<boolean>(false);
 
   useEffect(() => {
     console.log(userSettings);
     if (userSettings.firstname !== "") {
       router.push("/panel" as never);
     } else {
-      setIsRegistered(false);
     }
   }, [userSettings]);
 
   const value = {
     userSettings,
     setUserSettings,
-    isRegistered,
-    setIsRegistered,
   };
+
   return (
     <DefaultUserSettings.Provider value={value}>
       {children}

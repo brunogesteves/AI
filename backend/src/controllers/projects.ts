@@ -14,7 +14,7 @@ export const createProject = async (
   try {
     const data = await ProjectsRepository.createProject(projectname, id);
     if (data) {
-      res.json({ status: true });
+      res.json({ status: true, projectData: data });
     }
   } catch (error) {}
 };
@@ -73,8 +73,7 @@ export const getuniqueProject = async (
 };
 export const getFiles = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
-  console.log("api");
-  console.log(id);
+  console.log("api geet files; ", id);
 
   try {
     const data = await ProjectsRepository.getFiles(Number(id));

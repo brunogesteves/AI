@@ -3,13 +3,14 @@ import { api } from "@/utils/api";
 import { IUserProps } from "@/utils/types";
 import { useRouter } from "expo-router";
 import { ErrorMessage } from "formik";
+import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
 import { Text, View } from "react-native";
 
 export const SignUpLogic = () => {
   const router = useRouter();
 
-  const { setIsRegistered } = useInfoIUserSettingsInfo();
+  const { setUserSettings } = useInfoIUserSettingsInfo();
   const [isPasswordHidden, setIsPasswordHidden] = useState<boolean>(true);
   const initialValues = {
     firstname: "",
@@ -39,7 +40,18 @@ export const SignUpLogic = () => {
     try {
       console.log("create iser api", values);
       await api.post("/users", { values }).then((res) => {
-        if (res.data.result) {
+        if (res.data.status) {
+          console.log("retorno create");
+          const tokenSettings: IUserProps = jwtDecode(res.data.token);
+          setUserSettings({
+            id: tokenSettings.id,
+            firstname: tokenSettings.firstname,
+            lastname: tokenSettings.lastname,
+            birthDate: tokenSettings.birthDate,
+            email: tokenSettings.email,
+            generations: tokenSettings.generations,
+          });
+
           router.push("/panel" as never);
 
           actions.resetForm();
@@ -49,7 +61,9 @@ export const SignUpLogic = () => {
       console.log(error);
     }
   }
-
+  function changeToSignIn() {
+    router.push("/" as never);
+  }
   return {
     data: { initialValues, isPasswordHidden, date, openDatePicker },
     methods: {
@@ -58,7 +72,7 @@ export const SignUpLogic = () => {
       setIsPasswordHidden,
       setDate,
       setOpenDatePicker,
-      setIsRegistered,
+      changeToSignIn,
     },
   };
 };

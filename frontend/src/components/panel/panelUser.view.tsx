@@ -3,7 +3,7 @@ import ModalUpdateProfile from "./modalUpdateProfile/modalUpdateProfile.view";
 import ModalCreateProject from "./modalCreateProject/ModalCreateProject.view";
 import { PanelUserLogic } from "./panelUser.logic";
 import ModalDeleteProject from "./modalDeleteProject/modalDeleteProject.view";
-import { ButtonAction } from "./buttons";
+import { ButtonAction } from "../../utils/buttons";
 export default function PanelUser() {
   const { data, methods } = PanelUserLogic();
 

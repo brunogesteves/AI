@@ -25,8 +25,8 @@ const DefaultChatArea = createContext<IChatSettingProps>({
     },
   ],
   setContentConversation: () => {},
-  slug: "",
-  setSlug: () => {},
+  projectId: "",
+  setProjectId: () => {},
   askAI: () => {},
   isModalopen: false,
   setIsModalopen: () => {},
@@ -54,7 +54,7 @@ export const ChatAreaProvider = ({ children }: PropsWithChildren) => {
       ai: "",
     },
   ]);
-  const [slug, setSlug] = useState("");
+  const [projectId, setProjectId] = useState("");
 
   function askAI(question: string) {
     setTypeText([]);
@@ -65,7 +65,7 @@ export const ChatAreaProvider = ({ children }: PropsWithChildren) => {
       { ai: "", user: question },
     ]);
 
-    api.post(`/askai`, { question, slug, choosedFile }).then((res) => {
+    api.post(`/askai`, { question, projectId, choosedFile }).then((res) => {
       if (res.data.status) {
         setMessageAi(res.data.answer);
         setIsButtonDisabled(false);
@@ -97,12 +97,12 @@ export const ChatAreaProvider = ({ children }: PropsWithChildren) => {
   }, [messageAi, typeText]);
 
   useEffect(() => {
-    if (slug) {
-      api.get(`/askai/historyChat/${slug}`).then((res) => {
+    if (projectId) {
+      api.get(`/askai/historyChat/${projectId}`).then((res) => {
         setContentConversation(res.data.chatHistory);
       });
     }
-  }, [slug]);
+  }, [projectId]);
 
   useEffect(() => {
     setIsButtonDisabled(question == "" ? true : false);
@@ -128,8 +128,8 @@ export const ChatAreaProvider = ({ children }: PropsWithChildren) => {
     contentConversation,
     setContentConversation,
     askAI,
-    slug,
-    setSlug,
+    projectId,
+    setProjectId,
     modalRef,
     isModalopen,
     setIsModalopen,

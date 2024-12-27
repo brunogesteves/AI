@@ -1,17 +1,16 @@
 import React, { useEffect } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import { useLocalSearchParams, useGlobalSearchParams, Link } from "expo-router";
+import { View } from "react-native";
+import { useLocalSearchParams } from "expo-router";
 import { useChatInfo } from "@/contexts/contextChat";
 import InputChat from "@/components/project/inputChat";
 import ChatArea from "@/components/project/chatArea";
-import ModalFiles from "@/components/project/modalFiles";
+import ModalFiles from "@/components/project/modalfile/modalFiles.view";
 
 const Project = () => {
-  const { setIsModalopen } = useChatInfo();
   const project = useLocalSearchParams();
-  const { setSlug } = useChatInfo();
+  const { setProjectId } = useChatInfo();
   useEffect(() => {
-    setSlug(project?.id.toString());
+    setProjectId(project?.id.toString());
   }, []);
   return (
     <View className="flex-1 ">

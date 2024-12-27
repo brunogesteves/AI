@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { ErrorMessage } from "formik";
 import { Text, View } from "react-native";
+import { useRouter } from "expo-router";
 
 import { useInfoIUserSettingsInfo } from "@/contexts/contextUser";
 import { ISignInUser, IUserProps } from "@/utils/types";
 import { api } from "@/utils/api";
 
 export const SignInLogic = () => {
-  const { setUserSettings, setIsRegistered } = useInfoIUserSettingsInfo();
+  const router = useRouter();
+
+  const { setUserSettings } = useInfoIUserSettingsInfo();
   const [isPasswordHidden, setIsPasswordHidden] = useState<boolean>(false);
   const [errorWarning, setErrorWarning] = useState<boolean>(false);
   const initialValues = {
@@ -57,6 +60,10 @@ export const SignInLogic = () => {
     }
   }
 
+  function changeToSignUp() {
+    router.push("/signup" as never);
+  }
+
   return {
     data: {
       initialValues,
@@ -69,9 +76,9 @@ export const SignInLogic = () => {
       loginUser,
       setIsPasswordHidden,
       ErrorInput,
-      setIsRegistered,
       setOpenDatePicker,
       setDate,
+      changeToSignUp,
     },
   };
 };

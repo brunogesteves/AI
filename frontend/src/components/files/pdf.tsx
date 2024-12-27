@@ -5,12 +5,12 @@ import "@react-pdf-viewer/core/lib/styles/index.css";
 import { IoCloseCircleSharp } from "react-icons/io5";
 
 export default function PDFFile() {
-  const { slug, fileName, setIsModalopen } = useChatInfo();
+  const { projectId, fileName, setIsModalopen } = useChatInfo();
   return (
     <>
       <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
         <Viewer
-          fileUrl={`${process.env.NEXT_PUBLIC_FILE_SOURCE}/${slug}/${fileName}`}
+          fileUrl={`${process.env.NEXT_PUBLIC_FILE_SOURCE}/${projectId}/${fileName}`}
         />
       </Worker>
       <button

@@ -14,8 +14,8 @@ export interface IChatSettingProps {
   setIsButtonDisabled: (newState: boolean) => void;
   contentConversation: IConversationProps[];
   setContentConversation: (newState: IConversationProps[]) => void;
-  slug: string;
-  setSlug: (newState: string) => void;
+  projectId: string;
+  setProjectId: (newState: string) => void;
   askAI: (params: string) => void;
   isModalopen: boolean;
   setIsModalopen: (newState: boolean) => void;
@@ -37,8 +37,6 @@ export interface IUserProps {
 export interface IUserSettingsProps {
   userSettings: IUserProps;
   setUserSettings: (newState: IUserProps) => void;
-  isRegistered: boolean;
-  setIsRegistered: (newState: boolean) => void;
 }
 
 export interface ISignProps {

@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { ButtonAction } from "@/utils/buttons";
 
-const SignIn = () => {
+const SignInView = () => {
   const { data, methods } = SignInLogic();
   return (
     <>
@@ -76,14 +76,11 @@ const SignIn = () => {
       </Formik>
       <View className=" w-full flex-row justify-center items-center mt-5 h-10">
         <Text className="text-2xl">Not Registered Yet? </Text>
-        <Pressable
-          className="text-sm"
-          onPress={() => methods.setIsRegistered(false)}
-        >
+        <Pressable className="text-sm" onPress={() => methods.changeToSignUp()}>
           <Text className="text-2xl font-bold">Click here.</Text>
         </Pressable>
       </View>
     </>
   );
 };
-export default SignIn;
+export default SignInView;

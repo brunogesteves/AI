@@ -1,16 +1,17 @@
 import prisma from "./prisma";
-const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 
 import { User } from "@prisma/client";
 
 const { user: db } = prisma;
 
-export const createUser = async (values: User) => {
+export const createUser = async (
+  values: User
+): Promise<Omit<User, "password">> => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(values.password, salt);
 
-  return db.create({
+  return await db.create({
     data: {
       birthDate: values.birthDate,
       email: values.email,
@@ -19,26 +20,24 @@ export const createUser = async (values: User) => {
       password: hashedPassword,
       generations: 100,
     },
+    select: {
+      id: true,
+      lastname: true,
+      firstname: true,
+      email: true,
+      birthDate: true,
+      generations: true,
+    },
   });
 };
 
-export const loginUser = async (email: string, password: string) => {
-  const salt = await bcrypt.genSalt(10);
-
-  const data = await db.findFirst({
+export const loginUser = async (email: string): Promise<User> => {
+  console.log("rep login: ", email);
+  return await db.findFirstOrThrow({
     where: {
       email,
     },
   });
-  if (data) {
-    if (await bcrypt.compare(password, data.password)) {
-      return data;
-    } else {
-      return false;
-    }
-  } else {
-    return false;
-  }
 };
 
 export const updateUser = async (data: User) => {

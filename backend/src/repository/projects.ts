@@ -51,8 +51,7 @@ export const getFiles = async (projectId: number) => {
       id: projectId,
     },
     select: {
-      name: true,
-      id: true,
+      files: true,
     },
   });
 };

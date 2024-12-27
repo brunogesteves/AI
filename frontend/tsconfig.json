@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/slug/modalFile.tsx", "../mobile/app/_layout.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/project/modalFile.tsx", "../mobile/app/_layout.tsx"],
   "exclude": ["node_modules"]
 }

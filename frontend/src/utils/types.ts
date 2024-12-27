@@ -16,8 +16,8 @@ export interface IChatSettingProps {
   setIsButtonDisabled: (newState: boolean) => void;
   contentConversation: IConversationProps[];
   setContentConversation: (newState: IConversationProps[]) => void;
-  slug: string;
-  setSlug: (newState: string) => void;
+  projectId: string;
+  setProjectId: (newState: string) => void;
   askAI: (params: string) => void;
   modalRef: RefObject<HTMLDialogElement> | null;
   isModalopen: boolean;

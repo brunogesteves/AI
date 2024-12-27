@@ -15,7 +15,7 @@ import {
   View,
 } from "react-native";
 
-const SignUp = () => {
+const SignUpView = () => {
   const { data, methods } = SignUpLogic();
 
   return (
@@ -111,7 +111,7 @@ const SignUp = () => {
 
       <View className="h-14 w-full flex-row justify-center items-center ">
         <Text className="text-2xl">Already Registered? </Text>
-        <Pressable onPress={() => methods.setIsRegistered(true)}>
+        <Pressable onPress={() => methods.changeToSignIn()}>
           <Text className="text-2xl font-bold">Click here</Text>
         </Pressable>
       </View>
@@ -119,4 +119,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignUpView;

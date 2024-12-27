@@ -5,11 +5,11 @@ import { IoCloseCircleSharp } from "react-icons/io5";
 import { useEffect, useState } from "react";
 
 export default function ExcelFile() {
-  const { slug, fileName, setIsModalopen } = useChatInfo();
+  const { projectId, fileName, setIsModalopen } = useChatInfo();
 
   const [data, setData] = useState<unknown[]>([]);
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_FILE_SOURCE}/${slug}/${fileName}`)
+    fetch(`${process.env.NEXT_PUBLIC_FILE_SOURCE}/${projectId}/${fileName}`)
       .then((res) => res.arrayBuffer())
       .then((data) => {
         const wb = XLSX.read(data, { type: "buffer" });

@@ -1,8 +1,7 @@
-import Sign from "@/components/sign/sign";
-import { Text, View } from "react-native";
+import SignIn from "@/components/sign/signin";
 
 const Index = () => {
-  return <Sign />;
+  return <SignIn />;
 };
 
 export default Index;

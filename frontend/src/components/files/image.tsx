@@ -4,12 +4,12 @@ import Image from "next/image";
 import { IoCloseCircleSharp } from "react-icons/io5";
 
 export default function ImageFile() {
-  const { slug, fileName, setIsModalopen } = useChatInfo();
+  const { projectId, fileName, setIsModalopen } = useChatInfo();
 
   return (
     <div className="bg-white w-[calc(100vw_-_15vw)] h-[calc(100vh_-_14vh)] overflow-y-auto flex justify-center items-center">
       <Image
-        src={`${process.env.NEXT_PUBLIC_FILE_SOURCE}/${slug}/${fileName}`}
+        src={`${process.env.NEXT_PUBLIC_FILE_SOURCE}/${projectId}/${fileName}`}
         width={500}
         height={500}
         alt="Picture of the author"

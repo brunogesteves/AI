@@ -1,6 +1,8 @@
 import * as UsersRepository from "../repository/users";
 import { Request, Response } from "express";
 
+const bcrypt = require("bcrypt");
+
 import { createJWTUser } from "../utils/jwt";
 import { User } from "@prisma/client";
 
@@ -12,8 +14,14 @@ export const createUser = async (
   console.log("chamou api create");
 
   try {
-    const data = UsersRepository.createUser(values);
-    res.json({ result: data });
+    const isUserCreatedData = await UsersRepository.createUser(values);
+    if (isUserCreatedData) {
+      const token = createJWTUser(isUserCreatedData);
+      console.log(token);
+      res.json({ status: true, token: token });
+    } else {
+      res.json({ statu: false });
+    }
   } catch (error) {
     res.json({ result: false });
   }
@@ -23,25 +31,23 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.params;
   console.log("api login: ", req.params);
   try {
-    const loginUserData = await UsersRepository.loginUser(email, password);
+    const loginUserData = await UsersRepository.loginUser(email);
+    console.log("rep ret: ", loginUserData);
     if (loginUserData) {
-      const jwtOptions = {
-        id: loginUserData.id,
-        firstname: loginUserData.firstname,
-        lastname: loginUserData.lastname,
-        email: loginUserData.email,
-        birthDate: loginUserData.birthDate,
-        generations: loginUserData.generations,
-      };
-
-      const token = createJWTUser(jwtOptions);
-
-      res.json({ status: true, token });
-    } else {
-      res.json({ status: false });
+      const correctPassword = await bcrypt.compare(
+        password,
+        loginUserData.password
+      );
+      console.log("correto [pasS: ", correctPassword);
+      if (correctPassword) {
+        const token = createJWTUser(loginUserData);
+        res.json({ status: true, token });
+      } else {
+        res.json({ status: false });
+      }
     }
   } catch (e) {
-    res.status(500).send("Erro");
+    res.json({ status: false });
   }
 };
 

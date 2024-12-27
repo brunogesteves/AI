@@ -39,7 +39,7 @@ export const ModalCreateProjectLogic = () => {
       .then((res) => {
         if (res.data.status) {
           console.log("criou projeto");
-          router.push(`/slug/${values.projectname}` as never);
+          router.push(`../project/${res.data.projectData.id}` as never);
         }
       })
       .finally(() => {

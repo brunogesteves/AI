@@ -4,6 +4,8 @@ import fs from "fs";
 
 export const saveFiles = async (req: Request, res: Response): Promise<void> => {
   const { userId } = req.body;
+
+  console.log("api save files: ", userId);
   try {
     if (req.file) {
       const filename = req.file?.originalname;

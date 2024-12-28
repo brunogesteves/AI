@@ -12,14 +12,24 @@ export const saveFiles = async (data: Omit<File, "id">) => {
     },
     select: {
       name: true,
+      id: true,
     },
   });
 };
 
-export const deleteFile = async (fileId: number) => {
+export const deleteFile = async (id: number) => {
+  console.log("rep: deletefile: ", id);
   return await db.delete({
     where: {
-      id: fileId,
+      id,
+    },
+    select: {
+      name: true,
+      Project: {
+        select: {
+          userId: true,
+        },
+      },
     },
   });
 };

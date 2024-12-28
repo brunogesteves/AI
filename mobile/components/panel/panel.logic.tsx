@@ -48,6 +48,7 @@ export const PanelUserLogic = () => {
 
   function logoutAccount() {
     setUserSettings({
+      id: 0,
       firstname: "",
       lastname: "",
       birthDate: new Date(),

@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Modal,
-  Text,
-  Pressable,
-  View,
-  FlatList,
-  Button,
-  Image,
-} from "react-native";
+import { Modal, Text, Pressable, View, FlatList } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import Checkbox from "expo-checkbox";
 import * as ImagePicker from "expo-image-picker";
@@ -18,10 +10,10 @@ import { api } from "@/utils/api";
 import { useChatInfo } from "@/contexts/contextChat";
 import { ModalFilesLogic } from "./modalFiles.logic";
 
-interface FileProps {
-  name: string;
-  id: number;
-}
+// interface FileProps {
+//   name: string;
+//   id: number;
+// }
 
 export default function ModalFiles() {
   const { data, methods } = ModalFilesLogic();
@@ -38,39 +30,36 @@ export default function ModalFiles() {
             <View className="flex-1 w-full rounded-lg ">
               <Pressable
                 className="bg-green-300 flex justify-center h-20 mb-5 rounded-lg"
-                onPress={methods.getDocs}
+                onPress={methods.uploadDocs}
               >
                 <Text className="text-center text-2xl">Pick an document</Text>
               </Pressable>
-              {data.files.length > 1 ? (
-                <FlatList
-                  data={data?.files}
-                  keyExtractor={(item) => item.id.toString()}
-                  renderItem={({ item }) => (
-                    <View className="flex flex-row  justify-between px-3 mb-5 items-center ">
-                      <Checkbox
-                        className="m-0 bg-white"
 
-                        // value={isChecked}
-                        // onValueChange={setChecked}
-                      />
-                      <Pressable
-                        className="my-3 py-2  bg-green-500 text-sm rounded-lg w-2/3"
-                        onPress={() =>
-                          methods.setModalVisible(!data.modalVisible)
-                        }
-                      >
-                        <Text className="text-white text-center text-2xl">
-                          {item.name}
-                        </Text>
-                      </Pressable>
-                      <Ionicons name="trash-outline" size={30} color="white" />
-                    </View>
-                  )}
-                />
-              ) : (
-                ""
-              )}
+              <FlatList
+                data={data?.files}
+                keyExtractor={(item) => item?.id.toString()}
+                renderItem={({ item, index }) => (
+                  <View
+                    key={index}
+                    className="flex flex-row  justify-around px-3 mb-5 items-center "
+                  >
+                    <Pressable
+                      className="my-3 py-2  bg-green-500 text-sm rounded-lg w-2/3"
+                      // onPress={() => methods.openFile(item.name)}
+                    >
+                      <Text className="text-white text-center text-2xl">
+                        {item.name}
+                      </Text>
+                    </Pressable>
+                    <Ionicons
+                      name="trash-outline"
+                      size={30}
+                      color="white"
+                      onPress={() => methods.deleteFile(item.id, item.name)}
+                    />
+                  </View>
+                )}
+              />
             </View>
             <View className="w-full">
               <Pressable

@@ -15,6 +15,8 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@config-plugins/react-native-blob-util": "^9.0.0",
+    "@config-plugins/react-native-pdf": "^9.0.0",
     "@expo/vector-icons": "^14.0.2",
     "@react-native-community/datetimepicker": "8.2.0",
     "@react-navigation/bottom-tabs": "^7.0.0",
@@ -42,7 +44,9 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-native": "0.76.5",
+    "react-native-blob-util": "^0.21.2",
     "react-native-gesture-handler": "~2.20.2",
+    "react-native-pdf": "^6.7.6",
     "react-native-reanimated": "^3.16.6",
     "react-native-safe-area-context": "^5.0.0",
     "react-native-screens": "~4.1.0",

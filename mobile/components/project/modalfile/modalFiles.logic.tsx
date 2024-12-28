@@ -4,6 +4,10 @@ import * as DocumentPicker from "expo-document-picker";
 
 import { api } from "@/utils/api";
 import { useChatInfo } from "@/contexts/contextChat";
+import {
+  useInfoIUserSettingsInfo,
+  UserSettingsProvider,
+} from "@/contexts/contextUser";
 
 interface FileProps {
   id: number;
@@ -12,8 +16,9 @@ interface FileProps {
 
 export const ModalFilesLogic = () => {
   const { projectId } = useChatInfo();
+  const { userSettings } = useInfoIUserSettingsInfo();
   const [modalVisible, setModalVisible] = useState(false);
-  const [tempfiles, seTemptFiles] = useState<
+  const [uploadtFiles, seUploadtFiles] = useState<
     DocumentPicker.DocumentPickerAsset[]
   >([]);
   const [files, setFiles] = useState<FileProps[]>([]);
@@ -23,6 +28,7 @@ export const ModalFilesLogic = () => {
     console.log("chamou arquivos");
     try {
       await api.get(`/project/files/${projectId}`).then((res) => {
+        console.log("veio: ", res.data.files[0].files);
         setFiles(res.data.files[0].files);
       });
     } catch (error) {
@@ -30,7 +36,7 @@ export const ModalFilesLogic = () => {
     }
   }
 
-  async function getDocs() {
+  async function uploadDocs() {
     try {
       const docs = await DocumentPicker.getDocumentAsync({
         multiple: true,
@@ -41,7 +47,8 @@ export const ModalFilesLogic = () => {
       if (docs.assets) {
         for (let index = 0; index < docs?.assets.length; index++) {
           console.log("chegou arquivcos");
-          seTemptFiles([...tempfiles, docs.assets[index]]);
+          seUploadtFiles([...uploadtFiles, docs.assets[index]]);
+          getfiles();
         }
       }
     } catch (error) {
@@ -49,14 +56,28 @@ export const ModalFilesLogic = () => {
     }
   }
 
-  console.log(files);
+  async function deleteFile(id: number, filename: string) {
+    console.log("delete file:  ", id);
+    console.log("delete userid:  ", userSettings.id);
+    console.log("delete filename:  ", filename);
+    await api
+      .delete(`/files/${id}`, {
+        params: { userId: userSettings.id, filename: filename },
+      })
+      .then((res) => {
+        if (res.data.status) {
+          console.log("apagou");
+          setFiles(files.filter((file) => file.id !== id));
+        }
+      });
+  }
 
   useEffect(() => {
-    console.log("ver files", tempfiles);
-    console.log("ver files", tempfiles.length);
-    const formData = new FormData();
-    for (let index = 0; index < tempfiles.length; index++) {
-      const uniqueFile = tempfiles[index];
+    console.log("ver files", uploadtFiles);
+    console.log("ver files", uploadtFiles.length);
+    for (let index = 0; index < uploadtFiles.length; index++) {
+      const formData = new FormData();
+      const uniqueFile = uploadtFiles[index];
       const fileSettfings = {
         name: uniqueFile.name,
         uri: uniqueFile.uri,
@@ -64,28 +85,34 @@ export const ModalFilesLogic = () => {
         size: uniqueFile?.size,
       };
       formData.append("file", fileSettfings as any);
-      formData.append("userId", projectId);
+      formData.append("userId", userSettings.id as any);
+      formData.append("projectId", projectId as any);
+      try {
+        console.log("chamou upfiles");
+        api
+          .post("/files", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
+            setFiles((files) => [...files, res.data.files]);
+            seUploadtFiles([]);
+          });
+      } catch (error) {
+        console.log(error);
+      }
     }
-    try {
-      api
-        .post("/files", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((res) => {
-          setFiles((files) => [...files, res.data.files]);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  }, [tempfiles]);
+    getfiles();
+  }, [uploadtFiles]);
 
   useEffect(() => {
     if (modalVisible) {
       getfiles();
     }
   }, [modalVisible]);
+
+  console.log("meus files: ", files);
 
   return {
     data: { modalVisible, files, image },
@@ -94,7 +121,8 @@ export const ModalFilesLogic = () => {
       setFiles,
       setImage,
       getfiles,
-      getDocs,
+      uploadDocs,
+      deleteFile,
     },
   };
 };

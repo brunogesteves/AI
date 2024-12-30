@@ -11,8 +11,18 @@ An applicartion using Gemini AI. The user can ask for AI information about a doc
 Install my-project with yarn install
 
 ```bash
-  yarn install aiApp
-  cd aiApp
+    frontend:
+        cd frontend
+        yarn install
+        yarn start
+    backend:
+        cd backend
+        yarn install
+        yarn start
+    mobile:
+        cd mobile
+        yarn install
+        npx expo start
 ```
 
 ## Tech Stack
@@ -20,3 +30,5 @@ Install my-project with yarn install
 **Client:** React, Axios, TailwindCSS
 
 **Server:** Node, Express
+
+**Mobile:** React native, Axios

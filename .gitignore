@@ -1,5 +1,6 @@
 frontend/.next/
 frontend/node_modules/
+frontend/.gitgnore
 mobile/node_modules/
 mobile/.expo/
 outro/
@@ -7,4 +8,4 @@ backend/node_modules/
 frontend/.env
 backend/.env
 backend/src/files/
-
+.gitgnore

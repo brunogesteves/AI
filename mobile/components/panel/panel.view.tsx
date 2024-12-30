@@ -32,28 +32,33 @@ const PanelUser = () => {
       </View>
       <View className="mt-5">
         <Text className="text-3xl ">Projects</Text>
-        <FlatList
-          data={data.allProJects}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <View className="flex flex-row justify-start items-center gap-x-3 ">
-              <View className="w-1/2">
-                <Text className="text-3xl">{item.name}</Text>
-              </View>
-              <Pressable
-                onPress={() => methods.openProject(item.id)}
-                className="bg-red-500 w-24 rounded-lg py-1 px-5 text-sm border-[1px] border-black my-5"
-              >
-                <Text className="text-white"> Open</Text>
-              </Pressable>
 
-              <ModalDeleteProject
-                projectData={data.projectData}
-                deletedConfirmed={(e) => methods.setIsDeletedConfirmed(e)}
-              />
+        {data.allProJects?.map((project) => (
+          <View
+            key={project.id}
+            className="w-full flex flex-row justify-between items-center gap-x-3"
+          >
+            <View className="w-1/2 flex  ">
+              <Text className="text-3xl">{project.name}</Text>
             </View>
-          )}
-        />
+            <View className="w-1/2 flex flex-row justify-center items-center gap-x-3 ">
+              <View className="w-1/2">
+                <Pressable
+                  onPress={() => methods.openProject(project.id)}
+                  className="bg-red-500 rounded-lg py-1 px-5 border-[1px] border-black"
+                >
+                  <Text className="text-white text-sm"> Open</Text>
+                </Pressable>
+              </View>
+              <View className="w-1/2 flex-1 mt-1">
+                <ModalDeleteProject
+                  projectData={data.projectData}
+                  deletedConfirmed={(e) => methods.setIsDeletedConfirmed(e)}
+                />
+              </View>
+            </View>
+          </View>
+        ))}
       </View>
     </View>
   );

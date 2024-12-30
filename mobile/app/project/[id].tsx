@@ -5,6 +5,7 @@ import { useChatInfo } from "@/contexts/contextChat";
 import InputChat from "@/components/project/inputChat";
 import ChatArea from "@/components/project/chatArea";
 import ModalFiles from "@/components/project/modalfile/modalFiles.view";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const Project = () => {
   const project = useLocalSearchParams();
@@ -13,13 +14,15 @@ const Project = () => {
     setProjectId(project?.id.toString());
   }, []);
   return (
-    <View className="flex-1 ">
-      <View className="bg-blue-400 h-16 flex justify-center items-center ">
-        <ModalFiles />
+    <SafeAreaProvider>
+      <View className="flex-1 ">
+        <View className="bg-blue-400 h-32  flex justify-center items-center ">
+          <ModalFiles />
+        </View>
+        <ChatArea />
+        <InputChat />
       </View>
-      <ChatArea />
-      <InputChat />
-    </View>
+    </SafeAreaProvider>
   );
 };
 

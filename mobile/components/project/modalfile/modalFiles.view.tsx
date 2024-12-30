@@ -45,7 +45,10 @@ export default function ModalFiles() {
                   >
                     <Pressable
                       className="my-3 py-2  bg-green-500 text-sm rounded-lg w-2/3"
-                      // onPress={() => methods.openFile(item.name)}
+                      onPress={() => {
+                        methods.setChoosedFile(item.name);
+                        methods.setModalVisible(true);
+                      }}
                     >
                       <Text className="text-white text-center text-2xl">
                         {item.name}
@@ -71,12 +74,20 @@ export default function ModalFiles() {
             </View>
           </View>
         </Modal>
-        <Pressable
-          className="bg-yellow-300 w-4/5 text-red-500 rounded-lg"
-          onPress={() => methods.setModalVisible(true)}
-        >
-          <Text className="text-center text-3xl">Files</Text>
-        </Pressable>
+        <View className="w-full flex justify-center items-center ">
+          <Pressable
+            className="bg-yellow-300 w-96 text-red-500 rounded-lg h-14 px-14 flex justify-center "
+            onPress={() => methods.setModalVisible(true)}
+          >
+            <Text className="text-center text-3xl text-black ">Files</Text>
+          </Pressable>
+          <View className="h-12 flex justify-center items-center flex-row">
+            <Text className="text-white text-xl">File Choosed: </Text>
+            <Text className="text-white text-xl">
+              {data.choosedFile ? data.choosedFile : "None"}
+            </Text>
+          </View>
+        </View>
       </SafeAreaView>
     </SafeAreaProvider>
   );

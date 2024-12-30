@@ -1,4 +1,4 @@
-import { FlatList, View } from "react-native";
+import { FlatList, ScrollView, View } from "react-native";
 import Ai from "@/components/project/Ai";
 import User from "@/components/project/user";
 
@@ -15,9 +15,10 @@ export default function ChatArea() {
     },
   ];
   return (
-    <View className="bg-gray-300 w-full flex-1 p-2 rounded-lg flex items-end flex-row-reverse justify-center text-black  overflow-y-auto ">
+    <View className="bg-gray-300 w-full flex-1 p-2 rounded-lg flex items-end flex-row justify-center text-black  ">
       <FlatList
-        data={converse}
+        data={contentConversation.reverse()}
+        inverted
         renderItem={({
           item,
           index,

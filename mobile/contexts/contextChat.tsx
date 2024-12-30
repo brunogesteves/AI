@@ -68,8 +68,9 @@ export const ChatAreaProvider = ({ children }: PropsWithChildren) => {
     api.post(`/askai`, { question, projectId, choosedFile }).then((res) => {
       if (res.data.status) {
         setMessageAi(res.data.answer);
-        setIsButtonDisabled(false);
+        // setIsButtonDisabled(true);
         setQuestion("");
+        console.log("chegou resposta");
       }
     });
   }
@@ -107,14 +108,6 @@ export const ChatAreaProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     setIsButtonDisabled(question == "" ? true : false);
   }, [question]);
-
-  useEffect(() => {
-    if (isModalopen) {
-      modalRef.current?.showModal();
-    } else {
-      modalRef.current?.close();
-    }
-  }, [isModalopen]);
 
   const value = {
     typeText,

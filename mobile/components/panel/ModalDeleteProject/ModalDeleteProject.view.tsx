@@ -89,9 +89,9 @@ export default function ModalDeleteProject({
           onPress={() => {
             methods.setModalVisible(true);
           }}
-          className="bg-red-500 w-24 rounded-lg py-1 px-5 text-sm border-[1px] border-black my-5"
+          className="bg-red-500 py-1 rounded-lg  border-[1px] border-black"
         >
-          <Text className="text-white"> Delete</Text>
+          <Text className="text-white text-sm text-center"> Delete</Text>
         </Pressable>
       </SafeAreaView>
     </SafeAreaProvider>

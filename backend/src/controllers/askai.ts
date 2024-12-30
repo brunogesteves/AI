@@ -16,11 +16,14 @@ export const answerQuestion = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { question, slug, choosedFile } = req.body;
+  const { question, projectId, choosedFile } = req.body;
+  console.log("askAi question: ", question);
+  console.log("askAi projectId: ", projectId);
+  console.log("askAi choosedFile: ", choosedFile);
 
   const history: IChatHistoryProps[] = [];
 
-  const historyChatData = await AskAiRepository.getHistoryChat(slug);
+  const historyChatData = await AskAiRepository.getHistoryChat(projectId);
   if (historyChatData) {
     historyChatData.forEach((item) => {
       history.push(
@@ -42,17 +45,17 @@ export const answerQuestion = async (
 
   switch (choosedFile.toLowerCase().split(".").pop()) {
     case "jpg":
-      return GenerativeAi.askaiImage(res, question, slug, choosedFile);
+      return GenerativeAi.askaiImage(res, question, projectId, choosedFile);
     case "png":
-      return GenerativeAi.askaiImage(res, question, slug, choosedFile);
+      return GenerativeAi.askaiImage(res, question, projectId, choosedFile);
     case "mp3":
-      return GenerativeAi.askaiSong(res, question, slug, choosedFile);
+      return GenerativeAi.askaiSong(res, question, projectId, choosedFile);
     case "csv":
-      return GenerativeAi.askaiExcel(res, question, slug, choosedFile);
+      return GenerativeAi.askaiExcel(res, question, projectId, choosedFile);
     case "pdf":
-      return GenerativeAi.askaiPDF(res, question, slug, choosedFile);
+      return GenerativeAi.askaiPDF(res, question, projectId, choosedFile);
     default:
-      return GenerativeAi.askchat(res, question, chat, slug);
+      return GenerativeAi.askchat(res, question, chat, projectId);
   }
 };
 

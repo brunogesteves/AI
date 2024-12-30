@@ -15,7 +15,7 @@ interface FileProps {
 }
 
 export const ModalFilesLogic = () => {
-  const { projectId } = useChatInfo();
+  const { projectId, setChoosedFile, choosedFile } = useChatInfo();
   const { userSettings } = useInfoIUserSettingsInfo();
   const [modalVisible, setModalVisible] = useState(false);
   const [uploadtFiles, seUploadtFiles] = useState<
@@ -115,7 +115,7 @@ export const ModalFilesLogic = () => {
   console.log("meus files: ", files);
 
   return {
-    data: { modalVisible, files, image },
+    data: { modalVisible, files, image, choosedFile },
     methods: {
       setModalVisible,
       setFiles,
@@ -123,6 +123,7 @@ export const ModalFilesLogic = () => {
       getfiles,
       uploadDocs,
       deleteFile,
+      setChoosedFile,
     },
   };
 };

@@ -14,10 +14,10 @@ export const saveChat = async (data: Omit<Chat, "id">) => {
   });
 };
 
-export const getHistoryChat = async (slug: number) => {
+export const getHistoryChat = async (projectId: number) => {
   return await db.findMany({
     where: {
-      projectId: Number(slug),
+      projectId: Number(projectId),
     },
     select: {
       ai: true,

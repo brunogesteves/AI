@@ -8,7 +8,7 @@ An applicartion using Gemini AI. The user can ask for AI information about a doc
 
 ## Installation
 
-Install my-project with yarn install
+Install AiAPP with yarn install
 
 ```bash
     frontend:

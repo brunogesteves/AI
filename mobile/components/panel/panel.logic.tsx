@@ -21,7 +21,6 @@ export const PanelUserLogic = () => {
   });
 
   async function getProjects() {
-    console.log(11111, userSettings.id);
     try {
       if (userSettings.id) {
         await api
@@ -39,8 +38,6 @@ export const PanelUserLogic = () => {
     }
     setIsDeletedConfirmed(false);
   }, [isDeletedConfirmed]);
-
-  console.log(isDeletedConfirmed);
 
   function openProject(id: number) {
     router.push(`../project/${id}` as never);

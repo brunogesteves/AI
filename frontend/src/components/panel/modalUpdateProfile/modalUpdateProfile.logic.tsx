@@ -32,11 +32,8 @@ export const ModalUpdateProfileLogic = (isOpen: boolean) => {
   }
 
   function updateUser(values: IUserProps, actions: { resetForm: () => void }) {
-    console.log("chamou api front");
     api.put(`/users/${values.email}`, { values }).then((res) => {
       if (res.data.status) {
-        console.log(res.data.status);
-        console.log(res.data.userData);
         setUserSettings({
           ...userSettings,
           birthDate: res.data.userData?.birthDate,

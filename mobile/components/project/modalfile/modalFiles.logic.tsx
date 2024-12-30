@@ -25,10 +25,8 @@ export const ModalFilesLogic = () => {
   const [image, setImage] = useState<string | null>(null);
 
   async function getfiles() {
-    console.log("chamou arquivos");
     try {
       await api.get(`/project/files/${projectId}`).then((res) => {
-        console.log("veio: ", res.data.files[0].files);
         setFiles(res.data.files[0].files);
       });
     } catch (error) {
@@ -46,35 +44,28 @@ export const ModalFilesLogic = () => {
 
       if (docs.assets) {
         for (let index = 0; index < docs?.assets.length; index++) {
-          console.log("chegou arquivcos");
           seUploadtFiles([...uploadtFiles, docs.assets[index]]);
           getfiles();
         }
       }
     } catch (error) {
-      console.log("erro doc");
+      console.log("error doc");
     }
   }
 
   async function deleteFile(id: number, filename: string) {
-    console.log("delete file:  ", id);
-    console.log("delete userid:  ", userSettings.id);
-    console.log("delete filename:  ", filename);
     await api
       .delete(`/files/${id}`, {
         params: { userId: userSettings.id, filename: filename },
       })
       .then((res) => {
         if (res.data.status) {
-          console.log("apagou");
           setFiles(files.filter((file) => file.id !== id));
         }
       });
   }
 
   useEffect(() => {
-    console.log("ver files", uploadtFiles);
-    console.log("ver files", uploadtFiles.length);
     for (let index = 0; index < uploadtFiles.length; index++) {
       const formData = new FormData();
       const uniqueFile = uploadtFiles[index];
@@ -88,7 +79,6 @@ export const ModalFilesLogic = () => {
       formData.append("userId", userSettings.id as any);
       formData.append("projectId", projectId as any);
       try {
-        console.log("chamou upfiles");
         api
           .post("/files", formData, {
             headers: {
@@ -111,8 +101,6 @@ export const ModalFilesLogic = () => {
       getfiles();
     }
   }, [modalVisible]);
-
-  console.log("meus files: ", files);
 
   return {
     data: { modalVisible, files, image, choosedFile },

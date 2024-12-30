@@ -17,9 +17,6 @@ export const answerQuestion = async (
   res: Response
 ): Promise<void> => {
   const { question, projectId, choosedFile } = req.body;
-  console.log("askAi question: ", question);
-  console.log("askAi projectId: ", projectId);
-  console.log("askAi choosedFile: ", choosedFile);
 
   const history: IChatHistoryProps[] = [];
 

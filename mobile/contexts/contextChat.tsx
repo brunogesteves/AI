@@ -70,7 +70,6 @@ export const ChatAreaProvider = ({ children }: PropsWithChildren) => {
         setMessageAi(res.data.answer);
         // setIsButtonDisabled(true);
         setQuestion("");
-        console.log("chegou resposta");
       }
     });
   }

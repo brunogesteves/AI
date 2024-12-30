@@ -6,7 +6,6 @@ import AudioFile from "../files/audio";
 
 export default function ModalFile() {
   const { modalRef, fileName } = useChatInfo();
-  // console.log(fileName);
 
   function openFile(fileName: string) {
     const extension = fileName?.toLowerCase().split(".").pop();

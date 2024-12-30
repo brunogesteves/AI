@@ -31,14 +31,12 @@ export const ModalCreateProjectLogic = () => {
     values: { projectname: string },
     actions: { resetForm: () => void }
   ) {
-    console.log("chamou api create projeto: ", values.projectname);
     api
       .post(`/project/${values.projectname}`, {
         id: userSettings.id,
       })
       .then((res) => {
         if (res.data.status) {
-          console.log("criou projeto");
           router.push(`../project/${res.data.projectData.id}` as never);
         }
       })

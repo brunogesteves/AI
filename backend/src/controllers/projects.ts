@@ -10,7 +10,6 @@ export const createProject = async (
 ): Promise<void> => {
   const { projectname } = req.params;
   const { id } = req.body;
-  console.log("cria projeto: ", projectname);
   try {
     const data = await ProjectsRepository.createProject(projectname, id);
     if (data) {
@@ -24,11 +23,9 @@ export const getProjects = async (
   res: Response
 ): Promise<void> => {
   const { id } = req.params;
-  console.log("api get projects: ", id);
 
   try {
     const data = await ProjectsRepository.getProjects(Number(id));
-    console.log("rep ret get projects: ", data);
     if (data) {
       res.json({ status: true, projects: data });
     } else {
@@ -44,8 +41,6 @@ export const deleteProject = async (
   res: Response
 ): Promise<void> => {
   const { id } = req.params;
-
-  console.log("api delete project: ", id);
 
   try {
     const data = await ProjectsRepository.deleteProject(Number(id));
@@ -73,11 +68,9 @@ export const getuniqueProject = async (
 };
 export const getFiles = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
-  console.log("api geet files; ", id);
 
   try {
     const data = await ProjectsRepository.getFiles(Number(id));
-    console.log("ret rep: ", data);
     if (data) {
       res.json({ status: true, files: data });
     } else {

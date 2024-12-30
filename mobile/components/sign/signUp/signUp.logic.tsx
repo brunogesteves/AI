@@ -38,10 +38,8 @@ export const SignUpLogic = () => {
     actions: { resetForm: () => void }
   ) {
     try {
-      console.log("create iser api", values);
       await api.post("/users", { values }).then((res) => {
         if (res.data.status) {
-          console.log("retorno create");
           const tokenSettings: IUserProps = jwtDecode(res.data.token);
           setUserSettings({
             id: tokenSettings.id,

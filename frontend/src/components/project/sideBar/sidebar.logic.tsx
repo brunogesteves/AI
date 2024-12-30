@@ -55,8 +55,8 @@ export const SidebarLogic = () => {
 
   useEffect(() => {
     if (projectId) {
-      api.get(`/files/${projectId}`).then((res) => {
-        setFiles(res.data.files);
+      api.get(`/project/files/${projectId}`).then((res) => {
+        setFiles(res.data.files[0].files);
       });
     }
   }, [projectId]);

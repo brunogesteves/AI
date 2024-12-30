@@ -34,7 +34,6 @@ export const PanelUserLogic = () => {
   }, [userSettings]);
 
   useEffect(() => {
-    console.log("chaopu fileto");
     if (!openDeleteProjectModal) {
       setAllProJects(
         allProJects?.filter((project) => project.id !== projectDataToDelete.id)

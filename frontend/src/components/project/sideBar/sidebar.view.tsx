@@ -23,7 +23,7 @@ export default function SidebarView() {
         </button>
       </div>
       <aside className="my-4">
-        <h4 className="text-center">Files</h4>
+        <h4 className="text-center">Choose a file</h4>
         {data.files?.map((file, i) => {
           return (
             <div key={i} className="flex justify-center items-center gap-x-3">
@@ -48,7 +48,7 @@ export default function SidebarView() {
               </button>
               <RiDeleteBin3Fill
                 color="red"
-                size={30}
+                size={20}
                 onClick={() => methods.deleteFile(file.id)}
               />
             </div>

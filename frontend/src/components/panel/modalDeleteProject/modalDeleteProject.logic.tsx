@@ -23,7 +23,6 @@ export const ModalDeleteProjectLogic = ({
   }, [isOpen]);
 
   useEffect(() => {
-    console.log(confirmationDeleteProject);
     if (
       confirmationDeleteProject ==
       `I want to delete ${projectDataToDelete?.name}`
@@ -32,7 +31,6 @@ export const ModalDeleteProjectLogic = ({
     }
   }, [confirmationDeleteProject]);
 
-  console.log(isDeleteConfirmed);
   function deleteProject() {
     if (isDeleteConfirmed) {
       api.delete(`/project/${projectDataToDelete?.id}`).then((res) => {

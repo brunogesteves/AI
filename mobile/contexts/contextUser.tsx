@@ -31,7 +31,6 @@ const UserSettingsProvider = ({ children }: PropsWithChildren) => {
   });
 
   useEffect(() => {
-    console.log(userSettings);
     if (userSettings.firstname !== "") {
       router.push("/panel" as never);
     } else {

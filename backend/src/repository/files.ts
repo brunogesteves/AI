@@ -18,7 +18,6 @@ export const saveFiles = async (data: Omit<File, "id">) => {
 };
 
 export const deleteFile = async (id: number) => {
-  console.log("rep: deletefile: ", id);
   return await db.delete({
     where: {
       id,

@@ -39,7 +39,6 @@ export const ModalCreateProjectLogic = ({
     values: { projectname: string },
     actions: { resetForm: () => void }
   ) {
-    console.log("chamou api front");
     api
       .post(`/project/${values.projectname}`, {
         id: userSettings.id,

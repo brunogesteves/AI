@@ -36,10 +36,8 @@ export const ModalUpdateProfileLogic = () => {
 
   function updateUser(values: IUserProps) {
     const { email } = values;
-    console.log("chamou api updateUser: ", email);
     api.put(`/users/${email}`, { values }).then((res) => {
       if (res.data.status) {
-        console.log("updated");
         showToast();
       }
     });

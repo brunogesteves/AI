@@ -39,7 +39,6 @@ export const SignInLogic = () => {
     try {
       await api.post(`/users/n3586@hotmail.com/1234`).then((res) => {
         if (res.data.status) {
-          console.log(11111);
           const tokenSettings: IUserProps = jwtDecode(res.data.token);
           setUserSettings({
             id: tokenSettings.id,
@@ -49,7 +48,6 @@ export const SignInLogic = () => {
             email: tokenSettings.email,
             generations: tokenSettings.generations,
           });
-          console.log(22222, res.data.token);
         } else {
           setErrorWarning(true);
           actions.resetForm();

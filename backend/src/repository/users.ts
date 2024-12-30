@@ -32,7 +32,6 @@ export const createUser = async (
 };
 
 export const loginUser = async (email: string): Promise<User> => {
-  console.log("rep login: ", email);
   return await db.findFirstOrThrow({
     where: {
       email,
@@ -41,8 +40,6 @@ export const loginUser = async (email: string): Promise<User> => {
 };
 
 export const updateUser = async (data: User) => {
-  console.log("rep: ", data.password);
-
   if (data.password) {
     updatePassword(data.password, data.id);
   }

@@ -1,6 +1,7 @@
 "use client";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { Logic } from "./logic";
+import Link from "next/link";
 
 export default function Home() {
   const { data, methods } = Logic();
@@ -51,8 +52,12 @@ export default function Home() {
               )}
             </div>
           </div>
-          <input type="submit" />
+          <input type="submit" className="w-96 cursor-pointer" />
         </form>
+        <div className="w-96 text-center mt-2">
+          have account?
+          <Link href={"/signup"}> Click Here</Link>
+        </div>
       </section>
     </main>
   );

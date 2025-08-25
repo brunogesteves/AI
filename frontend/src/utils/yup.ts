@@ -5,6 +5,7 @@ export const signUpSchema = Yup.object().shape({
   lastname: Yup.string().required("Name is required"),
   password: Yup.string().required("Password is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
+  birthDate: Yup.date().required("Data de nascimento é obrigatória"),
 });
 
 export const updateSchema = Yup.object().shape({

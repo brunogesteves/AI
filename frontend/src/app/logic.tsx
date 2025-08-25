@@ -11,6 +11,7 @@ export const Logic = () => {
   const router = useRouter();
 
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+
   const {
     register,
     handleSubmit,

@@ -1,11 +1,15 @@
 import * as Yup from "yup";
 
 export const signUpSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Email is required"),
   firstname: Yup.string().required("Name is required"),
   lastname: Yup.string().required("Name is required"),
+
+  birthDate: Yup.date().required("BirthDate is required"),
   password: Yup.string().required("Password is required"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
-  birthDate: Yup.date().required("Data de nascimento é obrigatória"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password")], "The password must the same")
+    .required("Verify the password"),
 });
 
 export const updateSchema = Yup.object().shape({

@@ -2,6 +2,7 @@
 import { api } from "@/utils/api";
 
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
@@ -70,11 +71,23 @@ export const SignUpLogic = () => {
       api.post("/users", { data }).then((res) => {
         if (res.data.status) {
           console.table("ok");
+          // toast("You've Registered");
           router.push("/panel");
         }
       });
+      //   api
+      //     .post(`/users/${data.email}/${data.password}`, { data })
+      //     .then((res) => {
+      //       if (res.data.status) {
+      //         Cookies.set("token", res.data.token, { expires: 7 });
+      //         router.push("/panel");
+      //       } else {
+      //       }
+      //     });
     } catch (error) {
       console.warn(error);
+    } finally {
+      //   reset;
     }
   };
 

@@ -4,15 +4,14 @@ import { Request, Response } from "express";
 const bcrypt = require("bcrypt");
 
 import { createJWTUser } from "../utils/jwt";
-import { User } from "@prisma/client";
 
 export const createUser = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { values } = req.body;
+  const { data } = req.body;
   try {
-    const isUserCreatedData = await UsersRepository.createUser(values);
+    const isUserCreatedData = await UsersRepository.createUser(data);
     if (isUserCreatedData) {
       const token = createJWTUser(isUserCreatedData);
       res.json({ status: true, token: token });

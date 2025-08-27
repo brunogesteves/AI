@@ -1,22 +1,22 @@
 "use client";
 import { api } from "@/utils/api";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/navigation";
 
-import { signUpFormData, signUpSchema } from "@/utils/yup";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { jwtDecode } from "jwt-decode";
+import Cookies from "js-cookie";
 
-export const SignUpLogic = () => {
-  const router = useRouter();
+import { updateFormData, updateSchema } from "@/utils/yup";
 
+export const UpdateProfileLogic = () => {
   const [isPasswordHidden, setIsPasswordHidden] = useState<boolean>(true);
   const [dateSelected, setDateSelected] = useState<Date | null>(new Date());
 
-  function inputModel(fieldName: keyof signUpFormData) {
+  function inputModel(fieldName: keyof updateFormData) {
     return (
       <div>
         <input
@@ -31,7 +31,7 @@ export const SignUpLogic = () => {
     );
   }
 
-  function inputPasswordModel(fieldName: keyof signUpFormData) {
+  function inputPasswordModel(fieldName: keyof updateFormData) {
     return (
       <div className="w-96 relative">
         <input
@@ -63,33 +63,41 @@ export const SignUpLogic = () => {
     watch,
     formState: { errors },
     setValue,
+    reset,
   } = useForm({
-    resolver: yupResolver(signUpSchema),
+    resolver: yupResolver(updateSchema),
   });
-  const onSubmit: SubmitHandler<signUpFormData> = async (data) => {
+  const onSubmit: SubmitHandler<updateFormData> = async (data) => {
     try {
-      api.post("/users", { data }).then((res) => {
+      api.put("/users", { data }).then((res) => {
         if (res.data.status) {
           console.table("ok");
-          // toast("You've Registered");
-          router.push("/panel");
+          toast("You've Updated");
+        } else {
+          console.table("no ok");
+
+          toast("Type the original Password");
         }
       });
-      //   api
-      //     .post(`/users/${data.email}/${data.password}`, { data })
-      //     .then((res) => {
-      //       if (res.data.status) {
-      //         Cookies.set("token", res.data.token, { expires: 7 });
-      //         router.push("/panel");
-      //       } else {
-      //       }
-      //     });
     } catch (error) {
       console.warn(error);
     } finally {
       //   reset;
     }
   };
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (token) {
+      const infoProfile: updateFormData = jwtDecode(token);
+      reset({
+        birthDate: infoProfile?.birthDate,
+        firstname: infoProfile?.firstname,
+        lastname: infoProfile?.lastname,
+        id: infoProfile?.id,
+      });
+    }
+  }, []);
 
   return {
     data: { dateSelected },

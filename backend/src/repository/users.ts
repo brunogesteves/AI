@@ -6,6 +6,15 @@ import { User } from "@prisma/client";
 
 const { user: db } = prisma;
 
+interface UpdateProfile {
+  id: number;
+  firstname: string;
+  lastname: string;
+  birthDate: Date;
+  oldPassword: string;
+  newPassword: string;
+}
+
 export const createUser = async (
   values: User
 ): Promise<Omit<User, "password">> => {
@@ -40,31 +49,24 @@ export const loginUser = async (email: string): Promise<User> => {
   });
 };
 
-export const updateUser = async (
-  data: User,
-  newPassword: string,
-  oldPassword: string
-) => {
+export const updateUser = async (data: UpdateProfile) => {
   const hasNewPassword =
-    newPassword != ""
-      ? await updatePassword(newPassword, oldPassword, data.id)
+    data.newPassword != ""
+      ? await updatePassword(data.newPassword, data.oldPassword, data.id)
       : false;
 
   if (hasNewPassword == "Incorrect Password") {
     console.log("Incorrect Password");
     return false;
   } else {
-    console.log("chama update2: ");
     const hasUpdated = await db.update({
       where: {
         id: data.id,
       },
       data: {
         birthDate: data.birthDate,
-        email: data.email,
         firstname: data.firstname,
         lastname: data.lastname,
-        generations: data.generations,
       },
     });
     return hasUpdated;
@@ -90,6 +92,7 @@ export const updatePassword = async (
     oldPassword,
     String(recentPasswordHash?.password)
   );
+
   return isCorrect
     ? await db.update({
         where: {

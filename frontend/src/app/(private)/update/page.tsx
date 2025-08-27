@@ -1,27 +1,28 @@
 "use client";
 
 import DatePicker from "react-datepicker";
-// import { ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import Link from "next/link";
 
 import "react-toastify/dist/ReactToastify.css";
 import "react-datepicker/dist/react-datepicker.css";
-import { SignUpLogic } from "./logic";
+import { UpdateProfileLogic } from "./logic";
 
 export default function SignUp() {
-  const { data, methods } = SignUpLogic();
+  const { data, methods } = UpdateProfileLogic();
 
   return (
     <>
+      <h1 className="mb-5 text-center">Update Profile</h1>
       <form
         className="flex items-center justify-center-safe flex-col gap-y-5"
         onSubmit={methods.handleSubmit(methods.onSubmit)}
       >
-        {methods.inputModel("email")}
         {methods.inputModel("firstname")}
         {methods.inputModel("lastname")}
-        {methods.inputPasswordModel("password")}
-        {methods.inputPasswordModel("confirmPassword")}
+        {methods.inputPasswordModel("oldPassword")}
+        {methods.inputPasswordModel("newPassword")}
+        {methods.inputPasswordModel("confirmNewPassword")}
         <DatePicker
           selected={data.dateSelected}
           minDate={
@@ -38,13 +39,12 @@ export default function SignUp() {
       </form>
 
       <div className=" w-full text-center py-3 h-auto">
-        <span className="text-xl text-black">Already Registered? </span>
-        <Link href={"/"} type="button" className="text-xl">
-          Click here.
+        <Link href={"/panel"} type="button" className="text-xl">
+          go Back
         </Link>
       </div>
 
-      {/* <ToastContainer /> */}
+      <ToastContainer />
     </>
   );
 }

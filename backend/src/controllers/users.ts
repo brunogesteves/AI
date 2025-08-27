@@ -54,16 +54,12 @@ export const updateUser = async (
   const { data } = req.body;
 
   try {
-    const updateData = await UsersRepository.updateUser(
-      data,
-      data.newPassword,
-      data.oldPassword
-    );
+    const updateData = await UsersRepository.updateUser(data);
     if (updateData) {
       const token = createJWTUser(data);
       res.json({ status: true, token });
     } else {
-      res.json({ status: false });
+      res.json({ status: false, message: updateData });
     }
   } catch (e) {
     res.status(500).send("Erro");

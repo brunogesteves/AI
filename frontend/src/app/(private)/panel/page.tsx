@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-datepicker/dist/react-datepicker.css";
 
 import { ButtonAction } from "@/utils/buttons";
-import ModalUpdateProfile from "@/components/panel/modalUpdateProfile/modalUpdateProfile.view";
+
 import ModalCreateProject from "@/components/panel/modalCreateProject/ModalCreateProject.view";
 import ModalDeleteProject from "@/components/panel/modalDeleteProject/modalDeleteProject.view";
 import { PanelLogic } from "./logic";
@@ -29,7 +29,7 @@ export default function SignUp() {
               <div>
                 <ButtonAction
                   text="Update Profile"
-                  action={() => methods.setOpenUpdateProfileModal(true)}
+                  action={() => methods.updateProfile()}
                 />
                 <ButtonAction
                   text="Create Project"
@@ -72,15 +72,12 @@ export default function SignUp() {
             </div>
           </div>
         </div>
-        {/* <ModalUpdateProfile
-          isOpen={data.openUpdateProfileModal}
-          closeModal={(e: boolean) => methods.setOpenUpdateProfileModal(e)}
-        />
+
         <ModalCreateProject
           isOpen={data.openNewProjectModal}
           closeModal={(e: boolean) => methods.setOpenNewProjectModal(e)}
         />
-        <ModalDeleteProject
+        {/*<ModalDeleteProject
           projectDataToDelete={data.projectDataToDelete}
           isOpen={data.openDeleteProjectModal}
           closeModal={(e: boolean) => methods.setOpenDeleteProjectModal(e)}

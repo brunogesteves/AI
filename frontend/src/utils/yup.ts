@@ -13,9 +13,16 @@ export const signUpSchema = Yup.object().shape({
 });
 
 export const updateSchema = Yup.object().shape({
-  firstname: Yup.string().required("Name is required"),
-  lastname: Yup.string().required("Name is required"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
+  id: Yup.number(),
+  firstname: Yup.string().required("FirstName is required"),
+  lastname: Yup.string().required("LastName is required"),
+  birthDate: Yup.date().required("BirthDate is required"),
+  oldPassword: Yup.string(),
+  newPassword: Yup.string(),
+  confirmNewPassword: Yup.string().oneOf(
+    [Yup.ref("newPassword")],
+    "The password must the same"
+  ),
 });
 
 export const signInSchema = Yup.object().shape({
@@ -25,6 +32,7 @@ export const signInSchema = Yup.object().shape({
 
 export const createProjectSchema = Yup.object().shape({
   projectname: Yup.string().required("Name is required"),
+  id: Yup.number(),
 });
 
 export type signUpFormData = Yup.InferType<typeof signUpSchema>;

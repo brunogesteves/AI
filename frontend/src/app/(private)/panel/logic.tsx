@@ -31,11 +31,14 @@ export const PanelLogic = () => {
     router.push(`/project/${id}`);
   }
 
+  function updateProfile() {
+    router.push(`/update`);
+  }
+
   useEffect(() => {
     const token = Cookies.get("token");
     if (token) {
       setUserSettings(jwtDecode(token));
-      console.log("token: ", jwtDecode(token));
     }
   }, []);
 
@@ -61,6 +64,7 @@ export const PanelLogic = () => {
       openProject,
       setProjectDataToDelete,
       setOpenDeleteProjectModal,
+      updateProfile,
     },
   };
 };

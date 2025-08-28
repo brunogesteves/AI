@@ -10,6 +10,7 @@ export const createProject = async (
 ): Promise<void> => {
   const { projectname } = req.params;
   const { id } = req.body;
+
   try {
     const data = await ProjectsRepository.createProject(projectname, id);
     if (data) {

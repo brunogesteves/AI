@@ -52,10 +52,16 @@ export interface ISignInUser {
   password: string;
 }
 
-export interface IModalProps {
-  projectDataToDelete?: ProjectDataToDeleteProps;
-  isOpen: boolean;
+export interface ICreateProjectProps {
   closeModal: (newState: boolean) => void;
+  projectHasBeenCreated: (newState: boolean) => void;
+  userId: number;
+}
+
+export interface IDeleteProjectProps {
+  closeModal: (newState: boolean) => void;
+  projectSettings: IProjectProps | undefined;
+  isDeleteConfirmed: (newState: boolean) => void;
 }
 
 export interface IProjectProps {
@@ -63,7 +69,7 @@ export interface IProjectProps {
   name: string;
 }
 
-export interface ProjectDataToDeleteProps {
-  id: number;
-  name: string;
+export interface ProjectData {
+  id?: number;
+  name?: string;
 }

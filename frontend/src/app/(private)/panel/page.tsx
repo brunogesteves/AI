@@ -1,13 +1,11 @@
 "use client";
 
-// import { ToastContainer } from "react-toastify";
 import Link from "next/link";
 
 import "react-toastify/dist/ReactToastify.css";
 import "react-datepicker/dist/react-datepicker.css";
 
 import { ButtonAction } from "@/utils/buttons";
-
 import ModalCreateProject from "@/components/panel/modalCreateProject/ModalCreateProject.view";
 import ModalDeleteProject from "@/components/panel/modalDeleteProject/modalDeleteProject.view";
 import { PanelLogic } from "./logic";
@@ -17,7 +15,7 @@ export default function SignUp() {
 
   return (
     <>
-      <div className="bg-red-500 h-screen p-5 ">
+      <div className="bg-red-500 min-w-screen min-h-screen p-5 ">
         <div className="bg-yellow-700 h-full  flex justify-start rounded-lg">
           <div className="w-1/5 h-auto rounded-l-lg p-2 bg-red-950">
             <div>Warnnigs:</div>;
@@ -36,10 +34,7 @@ export default function SignUp() {
                   action={() => methods.setOpenNewProjectModal(true)}
                 />
 
-                <ButtonAction
-                  text="Logout"
-                  action={() => methods.setOpenUpdateProfileModal(true)}
-                />
+                <ButtonAction text="Logout" action={() => methods.logOut()} />
               </div>
             </div>
             <div className="h-[calc(100vh_-_158px)]  overflow-y-auto">
@@ -55,14 +50,14 @@ export default function SignUp() {
                     </button>
                     <button
                       onClick={() => {
-                        methods.setProjectDataToDelete({
+                        methods.setProjectSettings({
                           id: project.id,
                           name: project.name,
                         });
 
                         methods.setOpenDeleteProjectModal(true);
                       }}
-                      className="bg-red-500 w-auto rounded-lg py-1 px-5 text-sm border-[1px] border-black my-5"
+                      className="bg-red-500 w-auto rounded-lg py-1 px-5 text-sm border-[1px] border-black my-5 cursor-pointer"
                     >
                       Delete
                     </button>
@@ -72,17 +67,23 @@ export default function SignUp() {
             </div>
           </div>
         </div>
-
-        <ModalCreateProject
-          isOpen={data.openNewProjectModal}
-          closeModal={(e: boolean) => methods.setOpenNewProjectModal(e)}
-        />
-        {/*<ModalDeleteProject
-          projectDataToDelete={data.projectDataToDelete}
-          isOpen={data.openDeleteProjectModal}
-          closeModal={(e: boolean) => methods.setOpenDeleteProjectModal(e)}
-        /> */}
       </div>
+
+      {data.openNewProjectModal && (
+        <ModalCreateProject
+          projectHasBeenCreated={(e: boolean) =>
+            methods.setProjectHasBeenCreated(e)
+          }
+          closeModal={(e: boolean) => methods.setOpenNewProjectModal(e)}
+          userId={data.userSettings?.id ?? 0}
+        />
+      )}
+      {data.openDeleteProjectModal && (
+        <ModalDeleteProject
+          projectSettings={data.projectSettings}
+          closeModal={(e: boolean) => methods.setOpenDeleteProjectModal(e)}
+        />
+      )}
     </>
   );
 }

@@ -1,39 +1,28 @@
 import { api } from "@/utils/api";
-import { IModalProps } from "@/utils/types";
-import { useEffect, useRef, useState } from "react";
+import { IDeleteProjectProps } from "@/utils/types";
+import { useEffect, useState } from "react";
 
 export const ModalDeleteProjectLogic = ({
-  projectDataToDelete,
-  isOpen,
+  projectSettings,
   closeModal,
-}: IModalProps) => {
-  const deleteModalRef = useRef<HTMLDialogElement>(null);
-
+}: IDeleteProjectProps) => {
   const [confirmationDeleteProject, setConfirmationDeleteProject] =
     useState<string>("");
 
-  const [isDeleteConfirmed, setIsDeleteConfirmed] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (isOpen) {
-      deleteModalRef.current?.showModal();
-    } else {
-      deleteModalRef.current?.close();
-    }
-  }, [isOpen]);
+  const [isDeleteBeenConfirmed, setIsDeleteConfirmed] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (
-      confirmationDeleteProject ==
-      `I want to delete ${projectDataToDelete?.name}`
+      confirmationDeleteProject == `I want to delete ${projectSettings?.name}`
     ) {
-      setIsDeleteConfirmed(true);
+      isDeleteBeenConfirmed(true);
     }
   }, [confirmationDeleteProject]);
 
   function deleteProject() {
     if (isDeleteConfirmed) {
-      api.delete(`/project/${projectDataToDelete?.id}`).then((res) => {
+      api.delete(`/project/${projectSettings?.id}`).then((res) => {
         if (res.data.status) {
           closeModal(false);
           setConfirmationDeleteProject("");
@@ -44,8 +33,7 @@ export const ModalDeleteProjectLogic = ({
   return {
     data: {
       confirmationDeleteProject,
-      deleteModalRef,
-      projectDataToDelete,
+      projectSettings,
       isDeleteConfirmed,
     },
     methods: { deleteProject, setConfirmationDeleteProject },

@@ -1,41 +1,48 @@
 "use client";
 
 import { ToastContainer } from "react-toastify";
-
 import "react-toastify/dist/ReactToastify.css";
 
-import { IModalProps } from "@/utils/types";
 import { ModalCreateProjectLogic } from "./modalCreateProject.logic";
+import { ICreateProjectProps } from "@/utils/types";
 
 export default function ModalCreateProject({
-  isOpen,
+  projectHasBeenCreated,
   closeModal,
-}: IModalProps) {
-  const { data, methods } = ModalCreateProjectLogic({ isOpen, closeModal });
+  id,
+}: ICreateProjectProps) {
+  const { data, methods } = ModalCreateProjectLogic({
+    closeModal,
+    projectHasBeenCreated,
+    id,
+  });
 
   return (
-    <dialog
-      ref={data.modalRefProject}
-      className="w-full h-full bg-transparent "
-    >
-      <div className="bg-black opacity-60 w-full h-full relative"></div>
-
+    <dialog className="min-w-screen min-h-screen flex items-center justify-center bg-black/40 ">
       <form
-        className="flex flex-col gap-y-5"
+        className="flex flex-col p-5 gap-y-5 bg-yellow-500 rounded-2xl w-96"
         onSubmit={methods.handleSubmit(methods.onSubmit)}
       >
         <div>
           <input
-            placeholder="email"
-            className=" w-96 rounded-lg pl-2 placeholder:text-black border-[1px] border-black"
+            placeholder="Type the name of the project"
+            className="w-full rounded-lg pl-2 placeholder:text-black/40 border-[1px] border-black"
             {...methods.register("projectname")}
           />
           <p className="text-red-500 text-md">
             {data.errors.projectname?.message}
           </p>
         </div>
-
-        <input type="submit" className="w-96 cursor-pointer" />
+        <div className="w-full flex justify-around">
+          <input type="submit" className=" cursor-pointer" />
+          <button
+            type="button"
+            className=" cursor-pointer"
+            onClick={() => closeModal(false)}
+          >
+            Close
+          </button>
+        </div>
       </form>
       <ToastContainer />
     </dialog>

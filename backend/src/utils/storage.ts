@@ -1,13 +1,21 @@
 import multer from "multer";
 
-import fs from "fs";
+import { remove } from "remove-accents";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./src/files/temp");
   },
   filename: (req, file, cb) => {
-    cb(null, file.originalname.replace(" ", "_"));
+    cb(
+      null,
+      remove(
+        file.originalname
+          .replace(/A©/g, "é")
+          .replace(/Ã©/g, "é")
+          .replace(/ /g, "_")
+      )
+    );
   },
 });
 

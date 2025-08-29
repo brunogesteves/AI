@@ -27,6 +27,7 @@ export const PanelLogic = () => {
     useState<boolean>(false);
   const [projectHasBeenCreated, setProjectHasBeenCreated] = useState(false);
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState<boolean>(false);
+
   function openProject(id: number) {
     router.push(`/project/${id}`);
   }

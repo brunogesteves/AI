@@ -56,7 +56,6 @@ export const updateUser = async (data: UpdateProfile) => {
       : false;
 
   if (hasNewPassword == "Incorrect Password") {
-    console.log("Incorrect Password");
     return false;
   } else {
     const hasUpdated = await db.update({

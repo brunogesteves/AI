@@ -44,7 +44,7 @@ export default function SignUp() {
                     <span className="mr-5 w-14">{project.name}</span>
                     <button
                       onClick={() => methods.openProject(project.id)}
-                      className="bg-red-500 w-auto rounded-lg py-1 px-5 text-sm border-[1px] border-black my-5"
+                      className="bg-red-500 w-auto rounded-lg py-1 px-5 text-sm border-[1px] border-black my-5 cursor-pointer"
                     >
                       Open
                     </button>
@@ -82,6 +82,7 @@ export default function SignUp() {
         <ModalDeleteProject
           projectSettings={data.projectSettings}
           closeModal={(e: boolean) => methods.setOpenDeleteProjectModal(e)}
+          isDeleteConfirmed={(e: boolean) => methods.setIsDeleteConfirmed(e)}
         />
       )}
     </>

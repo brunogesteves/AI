@@ -31,11 +31,11 @@ export default function ModalDeleteProject({
             methods.deleteProject();
           }}
           className={`w-auto rounded-lg py-1 px-5 text-sm border-[1px] border-black ml-5 ${
-            data.isDeleteConfirmed
+            data.isDeleteBeenConfirmed
               ? "bg-red-500 text-black cursor-pointer"
               : "bg-black text-white cursor-pointer"
           }`}
-          disabled={data.isDeleteConfirmed ?? false}
+          disabled={!data.isDeleteBeenConfirmed ? true : false}
         >
           Delete
         </button>

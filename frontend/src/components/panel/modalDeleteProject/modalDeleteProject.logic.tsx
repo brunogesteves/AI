@@ -5,36 +5,37 @@ import { useEffect, useState } from "react";
 export const ModalDeleteProjectLogic = ({
   projectSettings,
   closeModal,
+  isDeleteConfirmed,
 }: IDeleteProjectProps) => {
   const [confirmationDeleteProject, setConfirmationDeleteProject] =
     useState<string>("");
 
-  const [isDeleteBeenConfirmed, setIsDeleteConfirmed] =
+  const [isDeleteBeenConfirmed, setIsDeleteBeenConfirmed] =
     useState<boolean>(false);
 
   useEffect(() => {
     if (
       confirmationDeleteProject == `I want to delete ${projectSettings?.name}`
     ) {
-      isDeleteBeenConfirmed(true);
+      setIsDeleteBeenConfirmed(true);
     }
   }, [confirmationDeleteProject]);
 
   function deleteProject() {
-    if (isDeleteConfirmed) {
-      api.delete(`/project/${projectSettings?.id}`).then((res) => {
-        if (res.data.status) {
-          closeModal(false);
-          setConfirmationDeleteProject("");
-        }
-      });
-    }
+    console.log("delete");
+    api.delete(`/project/${projectSettings?.id}`).then((res) => {
+      if (res.data.status) {
+        closeModal(false);
+        setConfirmationDeleteProject("");
+        isDeleteConfirmed(true);
+      }
+    });
   }
   return {
     data: {
       confirmationDeleteProject,
       projectSettings,
-      isDeleteConfirmed,
+      isDeleteBeenConfirmed,
     },
     methods: { deleteProject, setConfirmationDeleteProject },
   };

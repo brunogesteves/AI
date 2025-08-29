@@ -9,12 +9,12 @@ import { ICreateProjectProps } from "@/utils/types";
 export default function ModalCreateProject({
   projectHasBeenCreated,
   closeModal,
-  id,
+  userId,
 }: ICreateProjectProps) {
   const { data, methods } = ModalCreateProjectLogic({
     closeModal,
     projectHasBeenCreated,
-    id,
+    userId,
   });
 
   return (

@@ -64,6 +64,10 @@ export interface IDeleteProjectProps {
   isDeleteConfirmed: (newState: boolean) => void;
 }
 
+export interface IParamsId {
+  params: Promise<{ id: string }>;
+}
+
 export interface IProjectProps {
   id: number;
   name: string;
@@ -72,4 +76,9 @@ export interface IProjectProps {
 export interface ProjectData {
   id?: number;
   name?: string;
+}
+
+export interface IFileProps {
+  name: string;
+  id: number;
 }

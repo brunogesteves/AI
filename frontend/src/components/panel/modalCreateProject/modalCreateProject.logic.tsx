@@ -9,7 +9,7 @@ import { ICreateProjectProps } from "@/utils/types";
 export const ModalCreateProjectLogic = ({
   closeModal,
   projectHasBeenCreated,
-  id,
+  userId,
 }: ICreateProjectProps) => {
   const [openNewProjectModal, setOpenNewProjectModal] =
     useState<boolean>(false);
@@ -28,7 +28,7 @@ export const ModalCreateProjectLogic = ({
     try {
       api
         .post(`/project/${data.projectname}`, {
-          id: id,
+          id: userId,
         })
         .then((res) => {
           if (res.data.status) {

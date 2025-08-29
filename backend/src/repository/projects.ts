@@ -45,17 +45,18 @@ export const getProject = async (slug: number) => {
   });
 };
 
-export const getFiles = async (projectId: number) => {
+export const getFiles = async (id: number) => {
   return await db.findMany({
     where: {
-      id: projectId,
+      id,
     },
     select: {
       files: {
         select: {
-          name: true,
           id: true,
+          name: true,
         },
+        orderBy: { name: "asc" },
       },
     },
   });

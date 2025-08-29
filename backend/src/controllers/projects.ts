@@ -72,6 +72,7 @@ export const getFiles = async (req: Request, res: Response): Promise<void> => {
 
   try {
     const data = await ProjectsRepository.getFiles(Number(id));
+
     if (data) {
       res.json({ status: true, files: data });
     } else {

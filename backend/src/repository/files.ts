@@ -27,6 +27,7 @@ export const deleteFile = async (id: number) => {
       Project: {
         select: {
           userId: true,
+          id: true,
         },
       },
     },

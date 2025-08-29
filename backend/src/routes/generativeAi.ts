@@ -168,7 +168,6 @@ export const askchat = async (
   chat: ChatSession,
   projectId: number
 ): Promise<void> => {
-  console.log("chamou api");
   try {
     let resultsFromAi = await chat.sendMessage(question);
     if (resultsFromAi) {

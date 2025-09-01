@@ -1,9 +1,7 @@
 "use client";
 
 import { RiDeleteBin3Fill } from "react-icons/ri";
-
-// import { ToastContainer } from "react-toastify";
-// import Link from "next/link";
+import { IoCloseSharp } from "react-icons/io5";
 
 import { IParamsId } from "@/utils/types";
 import { ProjectIdLogic } from "./logic";
@@ -14,7 +12,7 @@ export default function ProjectIdPage({ params }: IParamsId) {
   const { data, methods } = ProjectIdLogic({ params });
   return (
     <>
-      <div className="w-1/5 rounded-l-lg p-2 bg-red-950 ">
+      <aside className="min-h-full w-1/5 rounded-l-lg p-2 bg-red-950 ">
         <div {...methods.getRootProps({ className: "dropzone" })}>
           <input {...methods.getInputProps()} />
           <button
@@ -24,14 +22,11 @@ export default function ProjectIdPage({ params }: IParamsId) {
             Upload File
           </button>
         </div>
-        <aside className="mt-4  h-screen overflow-y-auto">
+        <div className="mt-4 overflow-y-auto">
           <h4 className="text-center">Choose a file</h4>
           {data.files?.map((file, i) => {
             return (
-              <div
-                key={i}
-                className="flex justify-center items-center gap-2 bg-yellow-50"
-              >
+              <div key={i} className="flex justify-center items-center gap-2">
                 <input
                   type="checkbox"
                   checked={data.choosedFile == file.name ? true : false}
@@ -59,21 +54,8 @@ export default function ProjectIdPage({ params }: IParamsId) {
               </div>
             );
           })}
-        </aside>
-        <dialog
-          open={data.isModalopen}
-          className="w-full h-full bg-transparent "
-        >
-          <div className="bg-black opacity-60 w-full h-full relative"></div>
-          <div
-            className=" flex flex-col justify-center bg-red-500 w-[calc(100vw_-_14vw)] h-[calc(100vh_-_14vh)] absolute
-          top-1/2 transform -translate-x-1/2 -translate-y-1/2 left-1/2 p-2
-          rounded-md gap-10 text-3xl"
-          >
-            {data.fileName != "" && methods.openFile(data.fileName)}
-          </div>
-        </dialog>
-      </div>
+        </div>
+      </aside>
       <div className="pl-5 w-4/5 ">
         <div className="bg-gray-300 w-full   h-[calc(100vh_-_115px)] p-4 rounded-lg flex flex-col-reverse text-black  overflow-y-auto ">
           {data.contentConversation?.map((content, i: number) => {
@@ -110,6 +92,17 @@ export default function ProjectIdPage({ params }: IParamsId) {
           </button>
         </div>{" "}
       </div>
+      {data.isModalopen && (
+        <dialog className="min-w-full min-h-full -mt-5  flex items-start justify-center bg-black/40 ">
+          {data.fileName != "" && methods.openFile(data.fileName)}
+          <IoCloseSharp
+            color="white"
+            size={20}
+            className="m-3 cursor-pointer"
+            onClick={() => methods.setIsModalopen(false)}
+          />
+        </dialog>
+      )}
     </>
   );
 }

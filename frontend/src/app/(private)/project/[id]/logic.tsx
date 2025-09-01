@@ -5,6 +5,10 @@ import Cookies from "js-cookie";
 
 import { IFileProps, IParamsId, IUserProps } from "@/utils/types";
 import { api } from "@/utils/api";
+import PDFFile from "@/components/project/files/pdf";
+import ImageFile from "@/components/project/files/image";
+import AudioFile from "@/components/project/files/audio";
+import ExcelFile from "@/components/project/files/excel";
 
 export const ProjectIdLogic = (props: IParamsId) => {
   const [projectId, setProjectId] = useState<number>(0);
@@ -14,7 +18,7 @@ export const ProjectIdLogic = (props: IParamsId) => {
   const [fileName, setFileName] = useState<string>("");
   const [contentConversation, setContentConversation] = useState<[]>([]);
   const [question, setQuestion] = useState<string>("");
-  const [isButtonDisabled, setIsButtonDisabled] = useState();
+  const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
 
   async function getProJectId() {
     const { id } = await props.params;
@@ -84,19 +88,52 @@ export const ProjectIdLogic = (props: IParamsId) => {
 
   function openFile(fileName: string) {
     const extension = fileName?.toLowerCase().split(".").pop();
+
     switch (extension) {
       case "pdf":
-        return <PDFFile />;
+        return (
+          <PDFFile fileName={fileName} projectId={projectId} userId={userId} />
+        );
       case "png":
-        return <ImageFile />;
+        return (
+          <ImageFile
+            fileName={fileName}
+            projectId={projectId}
+            userId={userId}
+          />
+        );
       case "jpg":
-        return <ImageFile />;
+        return (
+          <ImageFile
+            fileName={fileName}
+            projectId={projectId}
+            userId={userId}
+          />
+        );
       case "mp3":
-        return <AudioFile />;
+        return (
+          <AudioFile
+            fileName={fileName}
+            projectId={projectId}
+            userId={userId}
+          />
+        );
       case "xlsx":
-        return <ExcelFile />;
+        return (
+          <ExcelFile
+            fileName={fileName}
+            projectId={projectId}
+            userId={userId}
+          />
+        );
       case "csv":
-        return <ExcelFile />;
+        return (
+          <ExcelFile
+            fileName={fileName}
+            projectId={projectId}
+            userId={userId}
+          />
+        );
       default:
         break;
     }

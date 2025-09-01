@@ -82,3 +82,9 @@ export interface IFileProps {
   name: string;
   id: number;
 }
+
+export interface IOpenFileProps {
+  fileName: string;
+  projectId: number;
+  userId: number;
+}

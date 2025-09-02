@@ -12,7 +12,7 @@ export default function ProjectIdPage({ params }: IParamsId) {
   const { data, methods } = ProjectIdLogic({ params });
   return (
     <>
-      <aside className="min-h-full w-1/5 rounded-l-lg p-2 bg-red-950 ">
+      <aside className="h-[calc(100vh_-_40px)] w-1/5 rounded-l-lg p-2 bg-red-950">
         <div {...methods.getRootProps({ className: "dropzone" })}>
           <input {...methods.getInputProps()} />
           <button
@@ -22,7 +22,7 @@ export default function ProjectIdPage({ params }: IParamsId) {
             Upload File
           </button>
         </div>
-        <div className="mt-4 overflow-y-auto">
+        <div className="mt-4 h-[calc(100vh_-_110px)] overflow-y-auto">
           <h4 className="text-center">Choose a file</h4>
           {data.files?.map((file, i) => {
             return (
@@ -57,15 +57,23 @@ export default function ProjectIdPage({ params }: IParamsId) {
         </div>
       </aside>
       <div className="pl-5 w-4/5 ">
-        <div className="bg-gray-300 w-full   h-[calc(100vh_-_115px)] p-4 rounded-lg flex flex-col-reverse text-black  overflow-y-auto ">
-          {data.contentConversation?.map((content, i: number) => {
-            return (
-              <div key={i}>
-                <User content={content?.user} />
-                <Ai content={content?.ai} />
-              </div>
-            );
-          })}
+        <div className="bg-gray-300 w-full h-[calc(100vh_-_115px)] p-4 rounded-lg flex flex-col-reverse text-black  overflow-y-auto ">
+          {data.conversation
+            ?.slice()
+            .reverse()
+            .map((item, index: number) => {
+              return (
+                <div key={index}>
+                  <User content={item?.user} />
+                  <Ai
+                    content={item?.ai}
+                    index={index}
+                    historicHasBeenReloaded={data.historicHasBeenReloaded}
+                    loading={data.loading}
+                  />
+                </div>
+              );
+            })}
         </div>
         <div className="flex items-center mt-4  gap-x-5">
           <input
@@ -85,7 +93,7 @@ export default function ProjectIdPage({ params }: IParamsId) {
                 ? "hover:cursor-auto  bg-yellow-500 text-white"
                 : "hover:cursor-pointer bg-gray-300  hover:bg-black hover:text-white"
             }`}
-            disabled={data.isButtonDisabled}
+            disabled={data.question == "" ? true : false}
             onClick={() => methods.askAI(data.question)}
           >
             <span className="text-sm"> Make a Question</span>

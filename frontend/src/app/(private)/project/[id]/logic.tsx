@@ -3,7 +3,12 @@ import { useDropzone } from "react-dropzone";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 
-import { IFileProps, IParamsId, IUserProps } from "@/utils/types";
+import {
+  IConversationProps,
+  IFileProps,
+  IParamsId,
+  IUserProps,
+} from "@/utils/types";
 import { api } from "@/utils/api";
 import PDFFile from "@/components/project/files/pdf";
 import ImageFile from "@/components/project/files/image";
@@ -16,23 +21,18 @@ export const ProjectIdLogic = (props: IParamsId) => {
   const [choosedFile, setChoosedFile] = useState<string>("");
   const [isModalopen, setIsModalopen] = useState<boolean>(false);
   const [fileName, setFileName] = useState<string>("");
-  const [contentConversation, setContentConversation] = useState<[]>([]);
+  const [conversation, setConversation] = useState<IConversationProps[]>([]);
   const [question, setQuestion] = useState<string>("");
-  const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
+  const [historicHasBeenReloaded, setHistoricHasBeenReloaded] =
+    useState<boolean>(false);
+  const [files, setFiles] = useState<IFileProps[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   async function getProJectId() {
     const { id } = await props.params;
     setProjectId(Number(id));
   }
 
-  //sidebar
-
-  const [files, setFiles] = useState<IFileProps[]>([
-    {
-      name: "",
-      id: 0,
-    },
-  ]);
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
     // noClick: true,
     // noKeyboard: true,
@@ -139,8 +139,35 @@ export const ProjectIdLogic = (props: IParamsId) => {
     }
   }
 
-  function askAI(question: string) {
-    console.log(question);
+  async function askAI(question: string) {
+    try {
+      setLoading(true);
+      setHistoricHasBeenReloaded(true);
+      setConversation((conversation) => [
+        ...conversation,
+        {
+          user: question,
+          ai: "",
+        },
+      ]);
+
+      console.table(conversation);
+      console.table(conversation.length);
+      // conversation[conversation.length - 1].ai = "nova resposta";
+      api.post(`/askai`, { question }).then((res) => {
+        if (res.data.status) {
+          setLoading(false);
+          console.log(res.data.answer);
+          setConversation((prev) => {
+            const updated = [...prev];
+            updated[updated.length - 1].ai = res.data.answer;
+            return updated;
+          });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   useEffect(() => {
@@ -149,6 +176,9 @@ export const ProjectIdLogic = (props: IParamsId) => {
     if (token) {
       const infoToken: IUserProps = jwtDecode(token);
       setUserId(infoToken.id ?? 0);
+      api.get(`/askai/historyChat/:${infoToken.id}`).then((res) => {
+        if (res.data.status) setConversation(res.data.chatHistory);
+      });
     }
   }, []);
 
@@ -159,9 +189,11 @@ export const ProjectIdLogic = (props: IParamsId) => {
       choosedFile,
       isModalopen,
       fileName,
-      contentConversation,
+      conversation,
       question,
-      isButtonDisabled,
+      // isButtonDisabled,
+      historicHasBeenReloaded,
+      loading,
     },
     methods: {
       getRootProps,
@@ -171,10 +203,10 @@ export const ProjectIdLogic = (props: IParamsId) => {
       setIsModalopen,
       setFileName,
       openFile,
-      setContentConversation,
+      setHistoricHasBeenReloaded,
       setQuestion,
       askAI,
-      setIsButtonDisabled,
+      // setIsButtonDisabled,
     },
   };
 };

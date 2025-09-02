@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@types/papaparse": "^5.3.16",
-    "jwt-decode": "^4.0.0"
-  }
-}

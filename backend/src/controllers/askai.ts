@@ -17,31 +17,35 @@ export const answerQuestion = async (
   res: Response
 ): Promise<void> => {
   const { question, projectId, choosedFile } = req.body;
-
+  await new Promise((resolve) => setTimeout(resolve, 2000));
   console.log(question);
 
-  const history: IChatHistoryProps[] = [];
+  const answer = "alguma resposta longa";
 
-  const historyChatData = await AskAiRepository.getHistoryChat(projectId);
+  res.json({ status: true, answer });
 
-  if (historyChatData) {
-    historyChatData.forEach((item) => {
-      history.push(
-        {
-          role: "user",
-          parts: [{ text: item.user }],
-        },
-        {
-          role: "model",
-          parts: [{ text: item.ai }],
-        }
-      );
-    });
-  }
+  // const history: IChatHistoryProps[] = [];
 
-  const chat = model.startChat({
-    history: history,
-  });
+  // const historyChatData = await AskAiRepository.getHistoryChat(projectId);
+
+  // if (historyChatData) {
+  //   historyChatData.forEach((item) => {
+  //     history.push(
+  //       {
+  //         role: "user",
+  //         parts: [{ text: item.user }],
+  //       },
+  //       {
+  //         role: "model",
+  //         parts: [{ text: item.ai }],
+  //       }
+  //     );
+  //   });
+  // }
+
+  // const chat = model.startChat({
+  //   history: history,
+  // });
 
   // switch (choosedFile.toLowerCase().split(".").pop()) {
   //   case "jpg":
@@ -60,7 +64,7 @@ export const answerQuestion = async (
   //   "retorno from ai: ",
   //   await GenerativeAi.askchat(res, question, chat, projectId)
   // );
-  return await GenerativeAi.askchat(res, question, chat, projectId);
+  // return await GenerativeAi.askchat(res, question, chat, projectId);
   // }
 };
 
@@ -68,17 +72,27 @@ export const reloadChat = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { slug } = req.params;
+  const history = [
+    {
+      user: "Pergunta 1",
+      ai: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    },
+    {
+      user: "Pergunta 2",
+      ai: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    },
+  ];
+  // const { slug } = req.params;
 
-  try {
-    const data = await AskAiRepository.getHistoryChat(Number(slug));
+  // try {
+  //   const data = await AskAiRepository.getHistoryChat(Number(slug));
 
-    if (data) {
-      res.json({ status: true, chatHistory: data });
-    } else {
-      res.json({ status: false });
-    }
-  } catch (e) {
-    res.status(500).send("Erro");
-  }
+  //   if (data) {
+  res.json({ status: true, chatHistory: history });
+  //   } else {
+  //     res.json({ status: false });
+  //   }
+  // } catch (e) {
+  //   res.status(500).send("Erro");
+  // }
 };

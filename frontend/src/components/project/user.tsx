@@ -5,7 +5,7 @@ interface IContentUser {
 
 export default function User({ content }: IContentUser) {
   return (
-    <div className="flex justify-start items-items-start gap-x-2 mb-1 w-full">
+    <div className="flex justify-start items-items-start gap-x-2 mb-1 w-full pl-1 pt-2">
       <RiUserFill size={25} />
 
       {content}

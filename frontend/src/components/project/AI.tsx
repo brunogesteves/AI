@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+import { orbitron } from "@/utils/fonts";
+
 import TypewriterText from "../typewriterText";
 interface IContentAI {
   content: string;
@@ -14,18 +16,22 @@ export default function Ai({
   historicHasBeenReloaded,
   loading,
 }: IContentAI) {
-  // console.log(index === 0 && historicHasBeenReloaded);
-
   return (
-    <div className=" flex justify-start items-start text-justify my-5  gap-x-2 mb-1 w-full">
-      {index === 0 && historicHasBeenReloaded ? (
-        <TypewriterText text={content} index={index} loading={loading} />
-      ) : (
-        <>
-          <Image src="/globe.svg" alt="user" width={30} height={30} />
-          {<p>{content}</p>}
-        </>
-      )}
+    <div className="flex justify-between items-start gap-x-5 p-2 ">
+      <Image src="/globe.svg" alt="user" width={25} height={30} />
+
+      <div
+        className={`${orbitron.className} 
+        neon-text text-sm flex justify-start items-start text-justify  text-white  w-full border-[1px] border-blue-500 rounded-xl p-6`}
+      >
+        {index === 0 && historicHasBeenReloaded ? (
+          <TypewriterText text={content} index={index} loading={loading} />
+        ) : (
+          <div className="flex">
+            <p>{content}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

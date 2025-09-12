@@ -16,9 +16,9 @@ export const answerQuestion = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { question, projectId, choosedFile } = req.body;
+  const { question, projectId, choosedFiles, userId } = req.body;
+  console.log(question, projectId, choosedFiles, userId);
   await new Promise((resolve) => setTimeout(resolve, 2000));
-  console.log(question);
 
   const answer = "alguma resposta longa";
 

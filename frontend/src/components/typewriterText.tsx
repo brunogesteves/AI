@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { IoReloadOutline } from "react-icons/io5";
 
@@ -14,7 +13,7 @@ interface TypewriterTextProps {
 export default function TypewriterText({
   text,
   speed = 30,
-  index,
+
   loading,
 }: TypewriterTextProps) {
   const [displayedText, setDisplayedText] = useState("");
@@ -33,15 +32,12 @@ export default function TypewriterText({
 
   return (
     <>
-      <Image src="/globe.svg" alt="user" width={30} height={30} />
       {loading ? (
         <div className=" ml-3 animate-spin">
           <IoReloadOutline size={30} />
         </div>
       ) : (
-        <span>
-          {index}-{displayedText}
-        </span>
+        <span>{displayedText}</span>
       )}
     </>
   );

@@ -17,4 +17,7 @@
   .bg {
     @apply bg-gradient-to-r  from-[#0C101C] from-30%  to-black to-75%;
   }
+  .borderChat {
+    @apply border-[1px] border-blue-500;
+  }
 }

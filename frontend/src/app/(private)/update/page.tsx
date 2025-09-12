@@ -13,7 +13,7 @@ export default function SignUp() {
 
   return (
     <>
-      <h1 className="mb-5 text-center">Update Profile</h1>
+      <h1 className="mb-10 text-center text-2xl neon-text">Update Profile</h1>
       <form
         className="flex items-center justify-center-safe flex-col gap-y-5"
         onSubmit={methods.handleSubmit(methods.onSubmit)}
@@ -32,14 +32,14 @@ export default function SignUp() {
             methods.setValue("birthDate", date ? date : new Date());
             methods.setDateSelected(date);
           }}
-          className="w-96 text-black"
+          className="inputField"
         />
 
-        <input type="submit" className="w-96 cursor-pointer" />
+        <input type="submit" className="buttonSubmit" />
       </form>
 
-      <div className=" w-full text-center py-3 h-auto">
-        <Link href={"/panel"} type="button" className="text-xl">
+      <div className="neon-text text-center">
+        <Link href={"/dashboard"} type="button" className="text-xl">
           go Back
         </Link>
       </div>

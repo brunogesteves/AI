@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 import {
   IConversationProps,
@@ -16,9 +17,11 @@ import AudioFile from "@/components/project/files/audio";
 import ExcelFile from "@/components/project/files/excel";
 
 export const ProjectIdLogic = (props: IParamsId) => {
+  const router = useRouter();
+
   const [projectId, setProjectId] = useState<number>(0);
   const [userId, setUserId] = useState<number>(0);
-  const [choosedFile, setChoosedFile] = useState<string>("");
+
   const [isModalopen, setIsModalopen] = useState<boolean>(false);
   const [fileName, setFileName] = useState<string>("");
   const [conversation, setConversation] = useState<IConversationProps[]>([]);
@@ -26,6 +29,7 @@ export const ProjectIdLogic = (props: IParamsId) => {
   const [historicHasBeenReloaded, setHistoricHasBeenReloaded] =
     useState<boolean>(false);
   const [files, setFiles] = useState<IFileProps[]>([]);
+  const [choosedFiles, setChoosedFiles] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   async function getProJectId() {
@@ -54,37 +58,9 @@ export const ProjectIdLogic = (props: IParamsId) => {
     });
   }
 
-  useEffect(() => {
-    if (acceptedFiles.length > 0) {
-      const formData = new FormData();
-      formData.append("file", acceptedFiles[0]);
-      formData.append("projectId", projectId.toString());
-      formData.append("userId", userId.toString());
-      try {
-        api
-          .post("/files", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((res) => {
-            setFiles((files) => [...files, res.data.files]);
-          });
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }, [acceptedFiles]);
-
-  useEffect(() => {
-    if (projectId > 0) {
-      api.get(`/project/files/${projectId}`).then((res) => {
-        setFiles(res.data.files[0].files);
-      });
-    }
-  }, [projectId]);
-
-  //modal
+  function addFile(name: string) {
+    setChoosedFiles((files) => [...files, name]);
+  }
 
   function openFile(fileName: string) {
     const extension = fileName?.toLowerCase().split(".").pop();
@@ -150,25 +126,53 @@ export const ProjectIdLogic = (props: IParamsId) => {
           ai: "",
         },
       ]);
-
-      console.table(conversation);
-      console.table(conversation.length);
-      // conversation[conversation.length - 1].ai = "nova resposta";
-      api.post(`/askai`, { question }).then((res) => {
-        if (res.data.status) {
-          setLoading(false);
-          console.log(res.data.answer);
-          setConversation((prev) => {
-            const updated = [...prev];
-            updated[updated.length - 1].ai = res.data.answer;
-            return updated;
-          });
-        }
-      });
+      api
+        .post(`/askai`, { question, choosedFiles, projectId, userId })
+        .then((res) => {
+          if (res.data.status) {
+            setLoading(false);
+            console.log(res.data.answer);
+            setConversation((prev) => {
+              const updated = [...prev];
+              updated[updated.length - 1].ai = res.data.answer;
+              return updated;
+            });
+          }
+        });
     } catch (error) {
       console.log(error);
     }
   }
+
+  useEffect(() => {
+    if (acceptedFiles.length > 0) {
+      const formData = new FormData();
+      formData.append("file", acceptedFiles[0]);
+      formData.append("projectId", projectId.toString());
+      formData.append("userId", userId.toString());
+      try {
+        api
+          .post("/files", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
+            setFiles((files) => [...files, res.data.files]);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [acceptedFiles]);
+
+  useEffect(() => {
+    if (projectId > 0) {
+      api.get(`/project/files/${projectId}`).then((res) => {
+        setFiles(res.data.files[0].files);
+      });
+    }
+  }, [projectId]);
 
   useEffect(() => {
     getProJectId();
@@ -186,27 +190,27 @@ export const ProjectIdLogic = (props: IParamsId) => {
     data: {
       projectId,
       files,
-      choosedFile,
+
       isModalopen,
       fileName,
       conversation,
       question,
-      // isButtonDisabled,
       historicHasBeenReloaded,
       loading,
+      router,
     },
     methods: {
       getRootProps,
       getInputProps,
       deleteFile,
-      setChoosedFile,
+
       setIsModalopen,
       setFileName,
       openFile,
       setHistoricHasBeenReloaded,
       setQuestion,
       askAI,
-      // setIsButtonDisabled,
+      addFile,
     },
   };
 };

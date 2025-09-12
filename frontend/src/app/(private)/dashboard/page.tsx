@@ -19,7 +19,7 @@ export default function SignUp() {
 
   return (
     <>
-      <main className="bg min-w-screen min-h-screen p-5 ">
+      <main className="min-w-screen min-h-screen p-5 ">
         <div>
           <span className="neon-text text-xl">
             Welcome {data?.userSettings?.firstname}{" "}

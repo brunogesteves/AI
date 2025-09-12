@@ -11,6 +11,7 @@ export const Logic = () => {
   const router = useRouter();
 
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+  const [incorrectMessage, setIncorrectMessage] = useState<boolean>(false);
 
   const {
     register,
@@ -31,8 +32,9 @@ export const Logic = () => {
         .then((res) => {
           if (res.data.status) {
             Cookies.set("token", res.data.token, { expires: 7 });
-            router.push("/panel");
+            router.push("/dashboard");
           } else {
+            setIncorrectMessage(true);
           }
         });
     } catch (error) {
@@ -41,7 +43,7 @@ export const Logic = () => {
   };
 
   return {
-    data: { errors, isPasswordHidden },
+    data: { errors, isPasswordHidden, incorrectMessage },
     methods: { register, handleSubmit, watch, onSubmit, setIsPasswordHidden },
   };
 };

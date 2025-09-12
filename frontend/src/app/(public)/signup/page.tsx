@@ -1,18 +1,27 @@
 "use client";
 
 import DatePicker from "react-datepicker";
-// import { ToastContainer } from "react-toastify";
 import Link from "next/link";
 
 import "react-toastify/dist/ReactToastify.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { SignUpLogic } from "./logic";
+import { orbitron } from "@/utils/fonts";
 
 export default function SignUp() {
   const { data, methods } = SignUpLogic();
 
   return (
     <>
+      <span
+        className={`
+            ${orbitron.className} 
+            neon-text mb-5 text-2xl            
+            text-center
+          `}
+      >
+        Register
+      </span>
       <form
         className="flex items-center justify-center-safe flex-col gap-y-5"
         onSubmit={methods.handleSubmit(methods.onSubmit)}
@@ -31,20 +40,16 @@ export default function SignUp() {
             methods.setValue("birthDate", date ? date : new Date());
             methods.setDateSelected(date);
           }}
-          className="w-96 text-black"
+          className="inputField"
         />
 
-        <input type="submit" className="w-96 cursor-pointer" />
+        <input type="submit" className="buttonSubmit" />
       </form>
 
-      <div className=" w-full text-center py-3 h-auto">
-        <span className="text-xl text-black">Already Registered? </span>
-        <Link href={"/"} type="button" className="text-xl">
-          Click here.
-        </Link>
+      <div className="text-center mt-5 neon-text text-xl">
+        Already Registered?
+        <Link href={"/"}> Click Here</Link>
       </div>
-
-      {/* <ToastContainer /> */}
     </>
   );
 }

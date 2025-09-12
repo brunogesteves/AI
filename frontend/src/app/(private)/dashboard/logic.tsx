@@ -38,6 +38,7 @@ export const PanelLogic = () => {
 
   function logOut() {
     Cookies.remove("token");
+    router.push(`/`);
   }
 
   useEffect(() => {

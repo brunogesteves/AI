@@ -1,26 +1,20 @@
 @import "tailwindcss";
 
-/* :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer components {
+  .neon-text {
+    @apply text-cyan-400 
+        text-5xl 
+        font-bold 
+        tracking-widest 
+        drop-shadow-[0_0_8px_#22d3ee];
+  }
+  .inputField {
+    @apply w-96 rounded-lg p-2 text-white border-[1px] border-cyan-600;
+  }
+  .buttonSubmit {
+    @apply text-white font-bold  tracking-widest w-96 cursor-pointer p-3 rounded-lg border-cyan-900 bg-linear-to-r from-cyan-700 via-cyan-400 to-cyan-700  uppercase text-2xl;
+  }
+  .bg {
+    @apply bg-gradient-to-r  from-[#0C101C] from-30%  to-black to-75%;
   }
 }
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-} */

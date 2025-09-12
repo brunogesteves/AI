@@ -2,6 +2,10 @@
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { Logic } from "./logic";
 import Link from "next/link";
+import Image from "next/image";
+
+import logo from "./../../public/logotype.png";
+import { orbitron } from "@/utils/fonts";
 
 export default function Home() {
   const { data, methods } = Logic();
@@ -11,40 +15,75 @@ export default function Home() {
       className="flex h-screen content-between items-center
     sm:items-center"
     >
-      <section className="w-1/2">logotipo</section>
-      <section className="w-1/2">
+      <section className="w-1/2 flex flex-col items-center ">
+        <Image src={logo} alt="user" width={600} height={600} />
+        <h1
+          className={`
+        ${orbitron.className} 
+        neon-text
+      `}
+        >
+          NEUROSPARK
+        </h1>
+      </section>
+      <section className="w-1/2 flex flex-col items-center">
+        <span
+          className={`
+        ${orbitron.className} 
+        neon-text mb-5 text-2xl
+      `}
+        >
+          Login
+        </span>
         <form
-          className="flex flex-col gap-y-5"
+          className="flex flex-col gap-y-5 text-center"
           onSubmit={methods.handleSubmit(methods.onSubmit)}
         >
           <div>
             <input
               placeholder="email"
-              className=" w-96 rounded-lg pl-2 placeholder:text-black border-[1px] border-black"
+              className="inputField"
               {...methods.register("email")}
             />
-            <p className="text-red-500 text-md">{data.errors.email?.message}</p>
+            <p
+              className={`
+        ${orbitron.className} 
+        mt-1
+       neon-text
+                `}
+            >
+              {data.errors.email?.message}
+            </p>
           </div>
-          <div className="w-96 relative">
+          <div className="relative">
             <input
               type={data.isPasswordHidden ? "password" : "text"}
               placeholder="password"
-              className="w-full rounded-lg pl-2 placeholder:text-black border-[1px] border-black"
+              className="w-full inputField"
               {...methods.register("password")}
             />
-            <p className="text-red-500 text-md">
+            <p
+              className={`
+        ${orbitron.className} 
+         mt-1
+       neon-text
+                `}
+            >
               {data.errors.password?.message}
             </p>
 
-            <div className="absolute top-1 right-1 hover:cursor-pointer ">
+            <div className="absolute top-3 right-1 hover:cursor-pointer ">
               {data.isPasswordHidden ? (
                 <AiFillEyeInvisible
+                  size={20}
+                  color="white"
                   onClick={() =>
                     methods.setIsPasswordHidden(!data.isPasswordHidden)
                   }
                 />
               ) : (
                 <AiFillEye
+                  color="white"
                   onClick={() =>
                     methods.setIsPasswordHidden(!data.isPasswordHidden)
                   }
@@ -52,9 +91,27 @@ export default function Home() {
               )}
             </div>
           </div>
-          <input type="submit" className="w-96 cursor-pointer" />
+          <p
+            className={`
+        ${orbitron.className} 
+        mt-1
+       neon-text
+       text-lg
+        h-7
+                `}
+          >
+            {data.incorrectMessage ? "Email and/or password incorrect" : null}
+          </p>
+          <input
+            type="submit"
+            className={`
+        ${orbitron.className} 
+        mt-1
+        buttonSubmit
+            `}
+          />
         </form>
-        <div className="w-96 text-center mt-2">
+        <div className="w-96 text-center mt-7 neon-text text-xl">
           have account?
           <Link href={"/signup"}> Click Here</Link>
         </div>

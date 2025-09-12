@@ -20,7 +20,7 @@ export const SignUpLogic = () => {
       <div>
         <input
           placeholder={fieldName}
-          className=" w-96 rounded-lg pl-2 placeholder:text-black border-[1px] border-black"
+          className="inputField"
           {...register(fieldName)}
         />
         <p className="text-red-500 text-md">
@@ -36,20 +36,26 @@ export const SignUpLogic = () => {
         <input
           type={isPasswordHidden ? "password" : "text"}
           placeholder={fieldName}
-          className="w-full rounded-lg pl-2 placeholder:text-black border-[1px] border-black"
+          className="inputField"
           {...register(fieldName)}
         />
         <p className="text-red-500 text-md">
           {errors[fieldName]?.message as string}
         </p>
 
-        <div className="absolute top-1 right-1 hover:cursor-pointer ">
+        <div className="absolute top-3 right-2 hover:cursor-pointer ">
           {isPasswordHidden ? (
             <AiFillEyeInvisible
+              size={20}
+              color="white"
               onClick={() => setIsPasswordHidden(!isPasswordHidden)}
             />
           ) : (
-            <AiFillEye onClick={() => setIsPasswordHidden(!isPasswordHidden)} />
+            <AiFillEye
+              size={20}
+              color="white"
+              onClick={() => setIsPasswordHidden(!isPasswordHidden)}
+            />
           )}
         </div>
       </div>
@@ -70,7 +76,7 @@ export const SignUpLogic = () => {
       api.post("/users", { data }).then((res) => {
         if (res.data.status) {
           console.table("ok");
-          router.push("/panel");
+          router.push("/dashboard");
         }
       });
     } catch (error) {

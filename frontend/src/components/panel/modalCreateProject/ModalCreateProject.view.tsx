@@ -1,10 +1,13 @@
 "use client";
 
+import { MdCancel } from "react-icons/md";
+
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { ModalCreateProjectLogic } from "./modalCreateProject.logic";
 import { ICreateProjectProps } from "@/utils/types";
+import { ButtonAction } from "@/utils/buttons";
 
 export default function ModalCreateProject({
   projectHasBeenCreated,
@@ -20,13 +23,21 @@ export default function ModalCreateProject({
   return (
     <dialog className="min-w-screen min-h-screen flex items-center justify-center bg-black/40 ">
       <form
-        className="flex flex-col p-5 gap-y-5 bg-yellow-500 rounded-2xl w-96"
+        className="flex flex-col p-5 gap-y-5 bg w-auto rounded-2xl border-[1px] border-blue-500"
         onSubmit={methods.handleSubmit(methods.onSubmit)}
       >
+        <MdCancel
+          size={20}
+          color="white"
+          onClick={() => () => closeModal(false)}
+        />
+        <span className="neon-text text-2xl text-center">
+          Create a new project
+        </span>
         <div>
           <input
             placeholder="Type the name of the project"
-            className="w-full rounded-lg pl-2 placeholder:text-black/40 border-[1px] border-black"
+            className="inputField"
             {...methods.register("projectname")}
           />
           <p className="text-red-500 text-md">
@@ -34,14 +45,12 @@ export default function ModalCreateProject({
           </p>
         </div>
         <div className="w-full flex justify-around">
-          <input type="submit" className=" cursor-pointer" />
-          <button
-            type="button"
-            className=" cursor-pointer"
-            onClick={() => closeModal(false)}
-          >
-            Close
-          </button>
+          <input type="submit" className="buttonSubmit w-auto" />
+          <ButtonAction
+            icon={<MdCancel size={20} />}
+            text="Cancel"
+            action={() => closeModal(false)}
+          />
         </div>
       </form>
       <ToastContainer />

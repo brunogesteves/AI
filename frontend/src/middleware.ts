@@ -1,6 +1,10 @@
 import { MiddlewareConfig, NextRequest, NextResponse } from "next/server";
 
-const publicRoutes = [{ path: "/", whenAuthenticated: "redirect" }];
+const publicRoutes = [
+  { path: "/", whenAuthenticated: "redirect" },
+  { path: "/signup", whenAuthenticated: "next" },
+];
+
 const REDIRECT_WHEN_NOT_AUTHENTICATED_ROUTE = "/";
 
 export function middleware(request: NextRequest) {
@@ -21,7 +25,7 @@ export function middleware(request: NextRequest) {
 
   if (authToken && publicRoute && publicRoute.whenAuthenticated == "redirect") {
     const redirectUrl = request.nextUrl.clone();
-    redirectUrl.pathname = "/panel";
+    redirectUrl.pathname = "/dashboard";
 
     return NextResponse.redirect(redirectUrl);
   }

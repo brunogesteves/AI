@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="bg-amber-400 flex flex-col justify-center min-h-screen">
+    <div className="bg-black flex flex-col justify-center min-h-screen">
       {children}
     </div>
   );

@@ -3,6 +3,7 @@ import mysql from "mysql2";
 import cors from "cors";
 import * as dotenv from "dotenv";
 import routes from "./routes";
+const path = require("path");
 
 dotenv.config();
 
@@ -15,26 +16,8 @@ app.use(cors());
 app.use(express.json());
 app.use(routes);
 
-app.use("/src/files", express.static("src/files/"));
+app.use("/files", express.static(path.join(__dirname, "files")));
 
-// Create a MySQL connection
-// const db = mysql.createConnection({
-//   host: "localhost",
-//   user: "root", // replace with your MySQL username
-//   password: "", // replace with your MySQL password
-//   database: "videos", // the name of your database
-// });
-
-// Connect to MySQL
-// db.connect((err) => {
-//   if (err) {
-//     console.error("Error connecting to MySQL:", err);
-//     return;
-//   }
-//   console.log("Connected to MySQL");
-// });
-
-// Start the server
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });

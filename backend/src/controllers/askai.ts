@@ -17,13 +17,42 @@ export const answerQuestion = async (
   res: Response
 ): Promise<void> => {
   const { question, projectId, choosedFiles, userId } = req.body;
-  console.log(question, projectId, choosedFiles, userId);
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  // console.log(question, projectId, choosedFiles, userId);
+  // await new Promise((resolve) => setTimeout(resolve, 2000));
 
   const answer = "alguma resposta longa";
 
+  const wholeContent: string[] = [];
+
+  for (let index = 0; index < choosedFiles.length; index++) {
+    // const filePath = `http://localhost:3001/src/files/${userId}/${projectId}/${choosedFiles[index]}`;
+    // console.log(filePath);
+    const file = {
+      question: question,
+      projectId: projectId,
+      userId: userId,
+      fileName: choosedFiles[index],
+    };
+
+    switch (choosedFiles[index].toLowerCase().split(".").pop()) {
+      case "jpg":
+        return GenerativeAi.askaiImage(file);
+      case "png":
+        return GenerativeAi.askaiImage(file);
+      case "mp3":
+        return GenerativeAi.askaiSong(file);
+      case "csv":
+        return GenerativeAi.askaiExcel(file);
+      case "pdf":
+        return GenerativeAi.askaiPDF(file);
+      default:
+    }
+
+    //     wholeContent.push(file)
+  }
   res.json({ status: true, answer });
 
+  console.log(wholeContent);
   // const history: IChatHistoryProps[] = [];
 
   // const historyChatData = await AskAiRepository.getHistoryChat(projectId);
@@ -47,25 +76,25 @@ export const answerQuestion = async (
   //   history: history,
   // });
 
-  // switch (choosedFile.toLowerCase().split(".").pop()) {
-  //   case "jpg":
-  //     return GenerativeAi.askaiImage(res, question, projectId, choosedFile);
-  //   case "png":
-  //     return GenerativeAi.askaiImage(res, question, projectId, choosedFile);
-  //   case "mp3":
-  //     return GenerativeAi.askaiSong(res, question, projectId, choosedFile);
-  //   case "csv":
-  //     return GenerativeAi.askaiExcel(res, question, projectId, choosedFile);
-  //   case "pdf":
-  //     return GenerativeAi.askaiPDF(res, question, projectId, choosedFile);
-  //   default:
+  //   switch (choosedFile.toLowerCase().split(".").pop()) {
+  //     case "jpg":
+  //       return GenerativeAi.askaiImage(res, question, projectId, choosedFile);
+  //     case "png":
+  //       return GenerativeAi.askaiImage(res, question, projectId, choosedFile);
+  //     case "mp3":
+  //       return GenerativeAi.askaiSong(res, question, projectId, choosedFile);
+  //     case "csv":
+  //       return GenerativeAi.askaiExcel(res, question, projectId, choosedFile);
+  //     case "pdf":
+  //       return GenerativeAi.askaiPDF(res, question, projectId, choosedFile);
+  //     default:
 
-  // console.log(
-  //   "retorno from ai: ",
-  //   await GenerativeAi.askchat(res, question, chat, projectId)
-  // );
-  // return await GenerativeAi.askchat(res, question, chat, projectId);
-  // }
+  //   console.log(
+  //     "retorno from ai: ",
+  //     await GenerativeAi.askchat(res, question, chat, projectId)
+  //   );
+  //   return await GenerativeAi.askchat(res, question, chat, projectId);
+  //   }
 };
 
 export const reloadChat = async (

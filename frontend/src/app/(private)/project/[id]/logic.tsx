@@ -25,7 +25,7 @@ export const ProjectIdLogic = (props: IParamsId) => {
   const [isModalopen, setIsModalopen] = useState<boolean>(false);
   const [fileName, setFileName] = useState<string>("");
   const [conversation, setConversation] = useState<IConversationProps[]>([]);
-  const [question, setQuestion] = useState<string>("");
+  const [question, setQuestion] = useState<string>("teste");
   const [historicHasBeenReloaded, setHistoricHasBeenReloaded] =
     useState<boolean>(false);
   const [files, setFiles] = useState<IFileProps[]>([]);

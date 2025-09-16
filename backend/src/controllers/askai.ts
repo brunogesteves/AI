@@ -1,11 +1,21 @@
 import * as AskAiRepository from "../repository/askai";
 import * as GenerativeAi from "../routes/generativeAi";
-import { Request, Response } from "express";
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { GoogleAIFileManager } from "@google/generative-ai/server";
 
-const genAI = new GoogleGenerativeAI(process.env.API_KEY ?? "");
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+import { Request, Response } from "express";
+
+interface IFileProps {
+  req: Request;
+  res: Response;
+  question: string;
+  projectId: string;
+  userId: string;
+  fileName: string;
+}
+// import { GoogleGenerativeAI } from "@google/generative-ai";
+// import { GoogleAIFileManager } from "@google/generative-ai/server";
+
+// const genAI = new GoogleGenerativeAI(process.env.API_KEY ?? "");
+// const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 interface IChatHistoryProps {
   role: string;
@@ -25,12 +35,10 @@ export const answerQuestion = async (
   const wholeContent: string[] = [];
 
   for (let index = 0; index < choosedFiles.length; index++) {
-    // const filePath = `http://localhost:3001/src/files/${userId}/${projectId}/${choosedFiles[index]}`;
-    // console.log(filePath);
     const file = {
+      userId: userId,
       question: question,
       projectId: projectId,
-      userId: userId,
       fileName: choosedFiles[index],
     };
 
@@ -44,15 +52,16 @@ export const answerQuestion = async (
       case "csv":
         return GenerativeAi.askaiExcel(file);
       case "pdf":
-        return GenerativeAi.askaiPDF(file);
+        wholeContent.push(await GenerativeAi.askaiPDF(file));
+
+      // return GenerativeAi.askaiPDF(file);
       default:
     }
-
-    //     wholeContent.push(file)
   }
-  res.json({ status: true, answer });
 
   console.log(wholeContent);
+  res.json({ status: true, answer: wholeContent });
+
   // const history: IChatHistoryProps[] = [];
 
   // const historyChatData = await AskAiRepository.getHistoryChat(projectId);

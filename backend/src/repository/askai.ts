@@ -11,11 +11,15 @@ export const saveChat = async (data: Omit<Chat, "id">) => {
       user: data.user,
       projectId: data.projectId,
     },
+    select: {
+      user: true,
+      ai: true,
+    },
   });
 };
 
-export const getHistoryChat = async (projectId: number) => {
-  return await db.findMany({
+export const getHistoryChat = async (projectId: any) => {
+  const data = await db.findFirst({
     where: {
       projectId: Number(projectId),
     },
@@ -24,4 +28,6 @@ export const getHistoryChat = async (projectId: number) => {
       user: true,
     },
   });
+  console.log(data);
+  return data;
 };

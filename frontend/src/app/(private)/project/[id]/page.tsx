@@ -4,7 +4,7 @@ import { RiDeleteBin3Fill } from "react-icons/ri";
 import { IoCloseSharp, IoReturnDownBackSharp } from "react-icons/io5";
 import { FaFileUpload } from "react-icons/fa";
 
-import { IParamsId } from "@/utils/types";
+import { IConversationProps, IParamsId } from "@/utils/types";
 import { ProjectIdLogic } from "./logic";
 import User from "@/components/project/user";
 import Ai from "@/components/project/AI";
@@ -12,6 +12,8 @@ import { ButtonAction } from "@/utils/buttons";
 
 export default function ProjectIdPage({ params }: IParamsId) {
   const { data, methods } = ProjectIdLogic({ params });
+  console.log(data.conversation);
+
   return (
     <>
       <aside className="h-[calc(100vh_-_40px)] w-1/5 rounded-l-lg p-2">
@@ -44,11 +46,12 @@ export default function ProjectIdPage({ params }: IParamsId) {
                   <div className="h-full flex flex-col justify-around">
                     <div className="border-[1px] text-center border-blue-500 rounded-lg px-1">
                       <input
-                        type="checkbox"
+                        type="radio"
+                        name="item"
                         // checked={data.files[i].name == file.name ? true : false}
                         className="border-[1px] border-blue-500 rounded-lg px-2"
                         onClick={() => {
-                          methods.addFile(file.name);
+                          methods.setChoosedFile(file.name);
                         }}
                       />
                     </div>
@@ -79,18 +82,21 @@ export default function ProjectIdPage({ params }: IParamsId) {
           {data.conversation
             ?.slice()
             .reverse()
-            .map((item, index: number) => {
-              return (
-                <div key={index}>
-                  <User content={item?.user} />
-                  <Ai
-                    content={item?.ai}
-                    index={index}
-                    historicHasBeenReloaded={data.historicHasBeenReloaded}
-                    loading={data.loading}
-                  />
-                </div>
-              );
+            .map((item: IConversationProps, index: number) => {
+              if (item.role == "user") {
+                return <User content={item?.role} key={index} />;
+              } else if (item.role == "model") {
+                return (
+                  <div key={index}>
+                    <Ai
+                      content={item.parts[0].text}
+                      index={index}
+                      historicHasBeenReloaded={data.historicHasBeenReloaded}
+                      loading={data.loading}
+                    />
+                  </div>
+                );
+              }
             })}
         </div>
         <div className="flex items-center mt-4  gap-x-5">

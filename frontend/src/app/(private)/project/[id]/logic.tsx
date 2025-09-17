@@ -24,12 +24,14 @@ export const ProjectIdLogic = (props: IParamsId) => {
 
   const [isModalopen, setIsModalopen] = useState<boolean>(false);
   const [fileName, setFileName] = useState<string>("");
-  const [conversation, setConversation] = useState<IConversationProps[]>([]);
+  const [conversation, setConversation] = useState<
+    IConversationProps | undefined
+  >();
   const [question, setQuestion] = useState<string>("Nome da pessoa");
   const [historicHasBeenReloaded, setHistoricHasBeenReloaded] =
     useState<boolean>(false);
   const [files, setFiles] = useState<IFileProps[]>([]);
-  const [choosedFiles, setChoosedFiles] = useState<string[]>([]);
+  const [choosedFile, setChoosedFile] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   async function getProJectId() {
@@ -44,7 +46,6 @@ export const ProjectIdLogic = (props: IParamsId) => {
       "image/png": [".png"],
       "image/jpg": [".jpg"],
       "text/pdf": [".pdf"],
-      "text/csv": [".csv"],
       "audio/mpeg3": [".mp3"],
     },
   });
@@ -56,10 +57,6 @@ export const ProjectIdLogic = (props: IParamsId) => {
         setFiles(files.filter((file) => file.id !== id));
       }
     });
-  }
-
-  function addFile(name: string) {
-    setChoosedFiles((files) => [...files, name]);
   }
 
   function openFile(fileName: string) {
@@ -119,24 +116,19 @@ export const ProjectIdLogic = (props: IParamsId) => {
     try {
       setLoading(true);
       setHistoricHasBeenReloaded(true);
-      setConversation((conversation) => [
-        ...conversation,
-        {
-          user: question,
-          ai: "",
-        },
-      ]);
+
       api
-        .post(`/askai`, { question, choosedFiles, projectId, userId })
+        .post(`/askai`, { question, choosedFile, projectId, userId })
         .then((res) => {
           if (res.data.status) {
             setLoading(false);
             console.log(res.data.answer);
-            setConversation((prev) => {
-              const updated = [...prev];
-              updated[updated.length - 1].ai = res.data.answer;
-              return updated;
-            });
+            // setConversation((prev) => {
+            //   const updated = [...prev];
+            //   updated[updated.length - 1].ai = res.data.answer;
+            //   return updated;
+            // });
+            setConversation(res.data.answer);
           }
         });
     } catch (error) {
@@ -172,6 +164,9 @@ export const ProjectIdLogic = (props: IParamsId) => {
         setFiles(res.data.files[0].files);
       });
     }
+    api.get(`/askai/historyChat/${projectId}`).then((res) => {
+      if (res.data.status) setConversation(res.data.chatHistory);
+    });
   }, [projectId]);
 
   useEffect(() => {
@@ -180,9 +175,6 @@ export const ProjectIdLogic = (props: IParamsId) => {
     if (token) {
       const infoToken: IUserProps = jwtDecode(token);
       setUserId(infoToken.id ?? 0);
-      api.get(`/askai/historyChat/:${infoToken.id}`).then((res) => {
-        if (res.data.status) setConversation(res.data.chatHistory);
-      });
     }
   }, []);
 
@@ -203,14 +195,13 @@ export const ProjectIdLogic = (props: IParamsId) => {
       getRootProps,
       getInputProps,
       deleteFile,
-
+      setChoosedFile,
       setIsModalopen,
       setFileName,
       openFile,
       setHistoricHasBeenReloaded,
       setQuestion,
       askAI,
-      addFile,
     },
   };
 };

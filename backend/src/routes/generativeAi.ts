@@ -2,13 +2,8 @@ import * as askAiRepository from "../repository/askai";
 // import { ChatSession, GoogleGenerativeAI } from "@google/generative-ai";
 // import { GoogleAIFileManager } from "@google/generative-ai/server";
 // // const pdfParse = require("pdf-parse");
-import {
-  GoogleGenAI,
-  createUserContent,
-  createPartFromUri,
-} from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
 import fs from "fs";
-import path from "path";
 
 interface IFileProps {
   question: string;
@@ -19,8 +14,7 @@ interface IFileProps {
 
 const ai = new GoogleGenAI({});
 
-export const askaiImage = async (file: IFileProps) => {
-  console.log("chamou image");
+export const askaiImage = async (file: IFileProps): Promise<string> => {
   const imageUrl = `http://localhost:3001/files/${file.userId}/${file.projectId}/${file.fileName}`;
 
   try {
@@ -30,7 +24,7 @@ export const askaiImage = async (file: IFileProps) => {
     const imageArrayBuffer = await response.arrayBuffer();
     const base64ImageData = Buffer.from(imageArrayBuffer).toString("base64");
 
-    const answer = await ai.models.generateContent({
+    const resultsFromAi = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: [
         {
@@ -42,63 +36,71 @@ export const askaiImage = async (file: IFileProps) => {
         { text: file.question },
       ],
     });
-    return answer.text ?? "";
+    if (resultsFromAi.text) {
+      const data = {
+        user: file.question,
+        ai: resultsFromAi.text,
+        projectId: Number(file.projectId),
+      };
+      const hasbeenStoraged = await askAiRepository.saveChat(data);
+      if (hasbeenStoraged) {
+        return resultsFromAi.text;
+      } else {
+        return "Erro ao processar Image";
+      }
+    } else {
+      return "Erro ao processar Image";
+    }
   } catch (error) {
     return "Erro ao processar Image";
   }
-  //   console.log(resultsFromAi);
-  //   if (resultsFromAi) {
-  //     const results = {
-  //       ai: resultsFromAi.response.text(),
-  //       user: file.question,
-  //       projectId: Number(file.projectId),
-  //     };
-  //     const data = askAiRepository.saveChat(results);
-  //     if (!data) {
-  //       Response.json({ status: false });
-  //     } else {
-  //       Response.json({ status: true, answer: resultsFromAi.response.text() });
-  //     }
-  //   }
-  // } catch (error) {}
 };
 
-// export const askaiSong = async (file: IFileProps): Promise<void> => {
-//   try {
-//     const filePath = `http://localhost:3001/src/files/${file.userId}/${file.projectId}/${file.fileName}`;
-//     const base64Buffer = fs.readFileSync(path.join(__dirname, filePath));
+export const askaiSong = async (file: IFileProps): Promise<string> => {
+  try {
+    console.log("chamou MP3");
 
-//     const base64AudioFile = base64Buffer.toString("base64");
+    const filePath = `src/files/${file.userId}/${file.projectId}/${file.fileName}`;
 
-//     const model = genAI.getGenerativeModel({
-//       model: "gemini-1.5-flash",
-//     });
+    const base64AudioFile = fs.readFileSync(filePath, {
+      encoding: "base64",
+    });
 
-//     const resultsFromAi = await model.generateContent([
-//       {
-//         inlineData: {
-//           mimeType: "audio/mp3",
-//           data: base64AudioFile,
-//         },
-//       },
-//       { text: file.question },
-//     ]);
+    const contents = [
+      { text: file.question },
+      {
+        inlineData: {
+          mimeType: "audio/mp3",
+          data: base64AudioFile,
+        },
+      },
+    ];
 
-//     if (resultsFromAi) {
-//       const results = {
-//         ai: resultsFromAi.response.text(),
-//         user: file.question,
-//         projectId: Number(file.projectId),
-//       };
-//       const data = askAiRepository.saveChat(results);
-//       if (!data) {
-//         res.json({ status: false });
-//       } else {
-//         res.json({ status: true, answer: resultsFromAi.response.text() });
-//       }
-//     }
-//   } catch (error) {}
-// };
+    const resultsFromAi = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: contents,
+    });
+    console.log(resultsFromAi.text);
+    return resultsFromAi.text ?? "Erro ao processar essa canção";
+
+    // if (resultsFromAi) {
+    //   const results = {
+    //     ai: resultsFromAi.response.text(),
+    //     user: file.question,
+    //     projectId: Number(file.projectId),
+    //   };
+    //   const data = askAiRepository.saveChat(results);
+    //   if (!data) {
+    //     res.json({ status: false });
+    //   } else {
+    //     res.json({ status: true, answer: resultsFromAi.response.text() });
+    //   }
+    // }
+  } catch (error) {
+    // console.log(error);
+    return "Error ao processar essa canção";
+  }
+};
 
 export const askaiPDF = async (file: IFileProps): Promise<string> => {
   const imageUrl = `http://localhost:3001/files/${file.userId}/${file.projectId}/${file.fileName}`;
@@ -125,48 +127,6 @@ export const askaiPDF = async (file: IFileProps): Promise<string> => {
     return resultsFromAi.text ?? "";
   } catch (error) {
     return "Erro ao processar PDF";
-  }
-};
-
-export const askaiExcel = async (file: IFileProps): Promise<void> => {
-  console.log("chamou Excel");
-  const imageUrl = `http://localhost:3001/files/${file.userId}/${file.projectId}/${file.fileName}`;
-  console.log(imageUrl);
-  console.log(imageUrl.toLowerCase().split(".").pop());
-  try {
-    const pdfResp = await fetch(imageUrl).then((response) =>
-      response.arrayBuffer()
-    );
-
-    const fileContent = [
-      { text: file.question },
-      {
-        inlineData: {
-          mimeType: `application/${imageUrl.toLowerCase().split(".").pop()}`,
-          data: Buffer.from(pdfResp).toString("base64"),
-        },
-      },
-    ];
-
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: fileContent,
-    });
-    console.log(response.text);
-    // if (resultsFromAi) {
-    //   console.log(resultsFromAi);
-    //   const results = {
-    //     ai: resultsFromAi.text,
-    //     user: file.question,
-    //     projectId: Number(file.projectId),
-    //   };
-    //   const data = askAiRepository.saveChat(results);
-    //   if (!data) {
-    //     res.json({ status: false });
-    //   } else {
-    //     res.json({ status: true, answer: resultsFromAi.text() });
-  } catch (error) {
-    console.log(error);
   }
 };
 

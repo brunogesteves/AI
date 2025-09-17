@@ -1,32 +1,10 @@
 import { RefObject } from "react";
 
 export interface IConversationProps {
-  user: string;
-  ai: string;
+  role: "user" | "model";
+  parts: { text: string }[];
 }
-
-// export interface IChatSettingProps {
-//   typeText: string[];
-//   setTypeText: (newState: string[]) => void;
-//   messageAi: string;
-//   setMessageAi: (newState: string) => void;
-//   question: string;
-//   setQuestion: (newState: string) => void;
-//   isButtonDisabled: boolean;
-//   setIsButtonDisabled: (newState: boolean) => void;
-//   contentConversation: IConversationProps[];
-//   setContentConversation: (newState: IConversationProps[]) => void;
-//   projectId: string;
-//   setProjectId: (newState: string) => void;
-//   askAI: (params: string) => void;
-//   modalRef: RefObject<HTMLDialogElement> | null;
-//   isModalopen: boolean;
-//   setIsModalopen: (newState: boolean) => void;
-//   fileName: string;
-//   setfileName: (newState: string) => void;
-//   choosedFile: string;
-//   setChoosedFile: (newState: string) => void;
-// }
+[];
 
 export interface IUserProps {
   id?: number;

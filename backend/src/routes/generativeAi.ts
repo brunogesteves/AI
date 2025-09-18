@@ -12,9 +12,16 @@ interface IFileProps {
   fileName: string;
 }
 
+interface IHistoryChat {
+  ai: string;
+  user: string;
+}
+
 const ai = new GoogleGenAI({});
 
-export const askaiImage = async (file: IFileProps): Promise<string> => {
+export const askaiImage = async (
+  file: IFileProps
+): Promise<string | IHistoryChat> => {
   const imageUrl = `http://localhost:3001/files/${file.userId}/${file.projectId}/${file.fileName}`;
 
   try {
@@ -42,9 +49,9 @@ export const askaiImage = async (file: IFileProps): Promise<string> => {
         ai: resultsFromAi.text,
         projectId: Number(file.projectId),
       };
-      const hasbeenStoraged = await askAiRepository.saveChat(data);
-      if (hasbeenStoraged) {
-        return resultsFromAi.text;
+      const hasbeenStoragedData = await askAiRepository.saveChat(data);
+      if (hasbeenStoragedData) {
+        return hasbeenStoragedData;
       } else {
         return "Erro ao processar Image";
       }
@@ -80,7 +87,7 @@ export const askaiSong = async (file: IFileProps): Promise<string> => {
       model: "gemini-2.5-flash",
       contents: contents,
     });
-    console.log(resultsFromAi.text);
+
     return resultsFromAi.text ?? "Erro ao processar essa canção";
 
     // if (resultsFromAi) {
@@ -102,7 +109,7 @@ export const askaiSong = async (file: IFileProps): Promise<string> => {
   }
 };
 
-export const askaiPDF = async (file: IFileProps): Promise<string> => {
+export const askaiPDF = async (file: IFileProps): Promise<IHistoryChat[]> => {
   const imageUrl = `http://localhost:3001/files/${file.userId}/${file.projectId}/${file.fileName}`;
 
   try {
@@ -124,7 +131,20 @@ export const askaiPDF = async (file: IFileProps): Promise<string> => {
       contents: contents,
     });
 
-    return resultsFromAi.text ?? "";
+    if (resultsFromAi.text) {
+      const data = {
+        user: file.question,
+        ai: resultsFromAi.text,
+        projectId: Number(file.projectId),
+      };
+      const hasbeenStoragedData = await askAiRepository.saveChat(data);
+
+      if (hasbeenStoragedData) {
+        return hasbeenStoragedData;
+      }
+    } else {
+      return "Erro ao processar Image";
+    }
   } catch (error) {
     return "Erro ao processar PDF";
   }

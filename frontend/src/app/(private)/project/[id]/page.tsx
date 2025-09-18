@@ -12,7 +12,6 @@ import { ButtonAction } from "@/utils/buttons";
 
 export default function ProjectIdPage({ params }: IParamsId) {
   const { data, methods } = ProjectIdLogic({ params });
-  console.log(data.conversation);
 
   return (
     <>
@@ -84,7 +83,7 @@ export default function ProjectIdPage({ params }: IParamsId) {
             .reverse()
             .map((item: IConversationProps, index: number) => {
               if (item.role == "user") {
-                return <User content={item?.role} key={index} />;
+                return <User content={item?.parts[0].text} key={index} />;
               } else if (item.role == "model") {
                 return (
                   <div key={index}>

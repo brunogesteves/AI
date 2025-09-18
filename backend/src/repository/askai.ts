@@ -3,31 +3,53 @@ import prisma from "./prisma";
 import { Chat } from "@prisma/client";
 
 const { chat: db } = prisma;
+const { project: proj } = prisma;
 
 export const saveChat = async (data: Omit<Chat, "id">) => {
-  return await db.create({
+  const res = await db.create({
     data: {
       ai: data.ai,
       user: data.user,
       projectId: data.projectId,
     },
     select: {
-      user: true,
-      ai: true,
+      id: false,
+      user: false,
+      ai: false,
+      projectId: false,
+      project: {
+        include: {
+          chats: {
+            where: {
+              projectId: data.projectId,
+            },
+            select: {
+              ai: true,
+              user: true,
+            },
+          },
+        },
+      },
     },
   });
+
+  return res.project.chats;
 };
 
-export const getHistoryChat = async (projectId: any) => {
-  const data = await db.findFirst({
+export const getHistoryChat = async (projectId: number) => {
+  const data = await proj.findFirst({
     where: {
-      projectId: Number(projectId),
+      id: projectId,
     },
+
     select: {
-      ai: true,
-      user: true,
+      chats: {
+        select: {
+          ai: true,
+          user: true,
+        },
+      },
     },
   });
-  console.log(data);
-  return data;
+  return data?.chats;
 };

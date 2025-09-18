@@ -3,28 +3,14 @@ import * as GenerativeAi from "../routes/generativeAi";
 
 import { Request, Response } from "express";
 
-interface IFileProps {
-  req: Request;
-  res: Response;
-  question: string;
-  projectId: string;
-  userId: string;
-  fileName: string;
+interface IHistoryChat {
+  ai: string;
+  user: string;
 }
-// import { GoogleGenerativeAI } from "@google/generative-ai";
-// import { GoogleAIFileManager } from "@google/generative-ai/server";
-
-// const genAI = new GoogleGenerativeAI(process.env.API_KEY ?? "");
-// const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 interface IChatHistoryProps {
   role: string;
   parts: [{ text: string }];
-}
-
-interface IHistoryChat {
-  ai: string;
-  user: string;
 }
 
 export const answerQuestion = async (
@@ -35,7 +21,7 @@ export const answerQuestion = async (
   // console.log(question, projectId, choosedFiles, userId);
   // const answer = "alguma resposta longa";
 
-  const historyChatData = [];
+  let historyChatData: IHistoryChat[] = [];
   const history: IChatHistoryProps[] = [];
 
   const file = {
@@ -49,19 +35,19 @@ export const answerQuestion = async (
 
   switch (choosedFile.toLowerCase().split(".").pop()) {
     case "mp3":
-      historyChatData.push(await GenerativeAi.askaiSong(file));
+      historyChatData = [...(await GenerativeAi.askaiSong(file))];
       break;
 
     case "jpg":
-      historyChatData.push(await GenerativeAi.askaiImage(file));
+      historyChatData = [...(await GenerativeAi.askaiImage(file))];
       break;
 
     case "png":
-      historyChatData.push(await GenerativeAi.askaiImage(file));
+      historyChatData = [...(await GenerativeAi.askaiImage(file))];
       break;
 
     case "pdf":
-      historyChatData.push(await GenerativeAi.askaiPDF(file));
+      historyChatData = [...(await GenerativeAi.askaiPDF(file))];
       break;
 
     default:
@@ -72,11 +58,11 @@ export const answerQuestion = async (
       history.push(
         {
           role: "user",
-          parts: [{ text: item?.toString() }],
+          parts: [{ text: item.user }],
         },
         {
           role: "model",
-          parts: [{ text: item?.toString() }],
+          parts: [{ text: item?.ai }],
         }
       );
     });
@@ -107,24 +93,24 @@ export const reloadChat = async (
     },
   ];
   const { projectId } = req.params;
-  console.log(req.params);
+  // console.log(req.params);
   try {
     const history: IChatHistoryProps[] = [];
 
-    const historyChatData = [
-      await AskAiRepository.getHistoryChat(Number(projectId)),
-    ];
+    const historyChatData = await AskAiRepository.getHistoryChat(
+      Number(projectId)
+    );
 
     if (historyChatData) {
-      historyChatData.forEach((item) => {
+      historyChatData?.forEach((item) => {
         history.push(
           {
             role: "user",
-            parts: [{ text: item?.user ?? "" }],
+            parts: [{ text: item.user }],
           },
           {
             role: "model",
-            parts: [{ text: item?.ai ?? "" }],
+            parts: [{ text: item?.ai }],
           }
         );
       });

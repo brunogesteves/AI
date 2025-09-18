@@ -51,7 +51,6 @@ export const ProjectIdLogic = (props: IParamsId) => {
   });
 
   function deleteFile(id: number) {
-    console.log(id);
     api.delete(`/files/${id}`).then((res) => {
       if (res.data.status) {
         setFiles(files.filter((file) => file.id !== id));

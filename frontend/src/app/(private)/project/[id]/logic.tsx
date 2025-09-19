@@ -24,9 +24,7 @@ export const ProjectIdLogic = (props: IParamsId) => {
 
   const [isModalopen, setIsModalopen] = useState<boolean>(false);
   const [fileName, setFileName] = useState<string>("");
-  const [conversation, setConversation] = useState<
-    IConversationProps | undefined
-  >();
+  const [conversation, setConversation] = useState<IConversationProps[]>([]);
   const [question, setQuestion] = useState<string>("Nome da pessoa");
   const [historicHasBeenReloaded, setHistoricHasBeenReloaded] =
     useState<boolean>(false);
@@ -116,17 +114,21 @@ export const ProjectIdLogic = (props: IParamsId) => {
       setLoading(true);
       setHistoricHasBeenReloaded(true);
 
+      setConversation((prev) => {
+        const newcontent: IConversationProps[] = [
+          { role: "user", parts: [{ text: question }] },
+          { role: "model", parts: [{ text: "" }] },
+        ];
+        const updated = [...prev, ...newcontent];
+
+        return updated;
+      });
+
       api
         .post(`/askai`, { question, choosedFile, projectId, userId })
         .then((res) => {
           if (res.data.status) {
             setLoading(false);
-            console.log(res.data.answer);
-            // setConversation((prev) => {
-            //   const updated = [...prev];
-            //   updated[updated.length - 1].ai = res.data.answer;
-            //   return updated;
-            // });
             setConversation(res.data.answer);
           }
         });
@@ -177,11 +179,11 @@ export const ProjectIdLogic = (props: IParamsId) => {
     }
   }, []);
 
+  console.log(conversation);
   return {
     data: {
       projectId,
       files,
-
       isModalopen,
       fileName,
       conversation,

@@ -4,6 +4,7 @@ import { MdCancel } from "react-icons/md";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { orbitron } from "@/utils/fonts";
 
 import { ModalCreateProjectLogic } from "./modalCreateProject.logic";
 import { ICreateProjectProps } from "@/utils/types";
@@ -40,16 +41,20 @@ export default function ModalCreateProject({
             className="inputField"
             {...methods.register("projectname")}
           />
-          <p className="text-red-500 text-md">
+          <p className={`${orbitron.className} messageError neon-text text-sm`}>
             {data.errors.projectname?.message}
           </p>
         </div>
         <div className="w-full flex justify-around">
-          <input type="submit" className="buttonSubmit w-auto" />
+          <input
+            type="submit"
+            className={`${orbitron.className} buttonSubmit w-40 text-sm`}
+          />
           <ButtonAction
             icon={<MdCancel size={20} />}
             text="Cancel"
             action={() => closeModal(false)}
+            disable={false}
           />
         </div>
       </form>

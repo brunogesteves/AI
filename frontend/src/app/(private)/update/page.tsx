@@ -35,7 +35,11 @@ export default function SignUp() {
           className="inputField"
         />
 
-        <input type="submit" className="buttonSubmit" />
+        <input
+          type="submit"
+          value={data.isUpdating == true ? "Loading" : "Update"}
+          className="buttonSubmit"
+        />
       </form>
 
       <div className="neon-text text-center">

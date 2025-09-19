@@ -5,6 +5,7 @@ import { remove } from "remove-accents";
 
 export const saveFiles = async (req: Request, res: Response): Promise<void> => {
   const { projectId, userId } = req.body;
+
   try {
     if (req.file) {
       const filename = remove(
@@ -13,7 +14,7 @@ export const saveFiles = async (req: Request, res: Response): Promise<void> => {
           .replace(/Ã©/g, "é")
           .replace(/ /g, "_")
       );
-      const folderUser = `./src/files/${userId}`;
+      const folderUser = `./src/files/${userId}/${projectId}`;
       const oldPath = `./src/files/temp/${filename}`;
       const newPath = `./src/files/${userId}/${projectId}/${filename}`;
 

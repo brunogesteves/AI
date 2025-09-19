@@ -1,10 +1,7 @@
-import { RefObject } from "react";
-
 export interface IConversationProps {
   role: "user" | "model";
   parts: { text: string }[];
 }
-[];
 
 export interface IUserProps {
   id?: number;

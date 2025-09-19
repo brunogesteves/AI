@@ -9,7 +9,7 @@ import { api } from "@/utils/api";
 
 export const Logic = () => {
   const router = useRouter();
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
   const [incorrectMessage, setIncorrectMessage] = useState<boolean>(false);
 
@@ -26,6 +26,7 @@ export const Logic = () => {
     },
   });
   const onSubmit: SubmitHandler<signInFormData> = async (data) => {
+    setIsLoading(true);
     try {
       api
         .post(`/users/${data.email}/${data.password}`, { data })
@@ -35,6 +36,7 @@ export const Logic = () => {
             router.push("/dashboard");
           } else {
             setIncorrectMessage(true);
+            setIsLoading(false);
           }
         });
     } catch (error) {
@@ -43,7 +45,7 @@ export const Logic = () => {
   };
 
   return {
-    data: { errors, isPasswordHidden, incorrectMessage },
+    data: { errors, isPasswordHidden, incorrectMessage, isLoading },
     methods: { register, handleSubmit, watch, onSubmit, setIsPasswordHidden },
   };
 };

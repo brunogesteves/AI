@@ -48,8 +48,8 @@ export default function Home() {
             <p
               className={`
         ${orbitron.className} 
-        mt-1
-       neon-text
+             messageError neon-text
+
                 `}
             >
               {data.errors.email?.message}
@@ -65,8 +65,8 @@ export default function Home() {
             <p
               className={`
         ${orbitron.className} 
-         mt-1
-       neon-text
+             messageError neon-text
+
                 `}
             >
               {data.errors.password?.message}
@@ -94,16 +94,14 @@ export default function Home() {
           <p
             className={`
         ${orbitron.className} 
-        mt-1
-       neon-text
-       text-lg
-        h-7
+        messageError neon-text
                 `}
           >
             {data.incorrectMessage ? "Email and/or password incorrect" : null}
           </p>
           <input
             type="submit"
+            value={data.isLoading ? "LOADING..." : "Sign In"}
             className={`
         ${orbitron.className} 
         mt-1

@@ -13,6 +13,7 @@ import Cookies from "js-cookie";
 import { updateFormData, updateSchema } from "@/utils/yup";
 
 export const UpdateProfileLogic = () => {
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState<boolean>(true);
   const [dateSelected, setDateSelected] = useState<Date | null>(new Date());
 
@@ -68,15 +69,15 @@ export const UpdateProfileLogic = () => {
     resolver: yupResolver(updateSchema),
   });
   const onSubmit: SubmitHandler<updateFormData> = async (data) => {
+    setIsUpdating(true);
     try {
       api.put("/users", { data }).then((res) => {
         if (res.data.status) {
-          console.table("ok");
           toast("You've Updated");
+          setIsUpdating(false);
         } else {
-          console.table("no ok");
-
           toast("Type the original Password");
+          setIsUpdating(false);
         }
       });
     } catch (error) {
@@ -100,7 +101,7 @@ export const UpdateProfileLogic = () => {
   }, []);
 
   return {
-    data: { dateSelected },
+    data: { dateSelected, isUpdating },
     methods: {
       register,
       handleSubmit,

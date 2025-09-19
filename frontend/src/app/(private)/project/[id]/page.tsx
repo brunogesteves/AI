@@ -22,6 +22,7 @@ export default function ProjectIdPage({ params }: IParamsId) {
           }}
           icon={<IoReturnDownBackSharp />}
           text="return"
+          disable={false}
         />
 
         <div {...methods.getRootProps({ className: "dropzone mt-5" })}>
@@ -30,6 +31,7 @@ export default function ProjectIdPage({ params }: IParamsId) {
             action={() => {}}
             icon={<FaFileUpload />}
             text="Upload File"
+            disable={false}
           />
         </div>
 

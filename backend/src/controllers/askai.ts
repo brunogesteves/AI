@@ -1,25 +1,17 @@
-import * as AskAiRepository from "../repository/askai";
-import * as GenerativeAi from "../routes/generativeAi";
-
 import { Request, Response } from "express";
+import { GoogleGenAI } from "@google/genai";
 
-interface IHistoryChat {
-  ai: string;
-  user: string;
-}
+import * as AskAiRepository from "../repository/askai";
+import * as GenerativeAi from "./generativeAi";
+import { IChatHistoryProps, IHistoryChat } from "../utils/types";
 
-interface IChatHistoryProps {
-  role: string;
-  parts: [{ text: string }];
-}
+const ai = new GoogleGenAI({});
 
 export const answerQuestion = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   const { question, projectId, choosedFile, userId } = req.body;
-  // console.log(question, projectId, choosedFiles, userId);
-  // const answer = "alguma resposta longa";
 
   let historyChatData: IHistoryChat[] = [];
   const history: IChatHistoryProps[] = [];
@@ -31,26 +23,56 @@ export const answerQuestion = async (
     fileName: choosedFile,
   };
 
-  console.table(file);
-
   switch (choosedFile.toLowerCase().split(".").pop()) {
     case "mp3":
-      historyChatData = [...(await GenerativeAi.askaiSong(file))];
+      const MP3Data = await GenerativeAi.askaiPDF(file);
+
+      if (typeof MP3Data == "string") {
+        const oi = MP3Data;
+      } else {
+        historyChatData = [...MP3Data];
+      }
       break;
 
     case "jpg":
-      historyChatData = [...(await GenerativeAi.askaiImage(file))];
+      const JPGData = await GenerativeAi.askaiImage(file);
+
+      if (typeof JPGData == "string") {
+        const oi = JPGData;
+      } else {
+        historyChatData = [...JPGData];
+      }
       break;
 
     case "png":
-      historyChatData = [...(await GenerativeAi.askaiImage(file))];
+      const PNGData = await GenerativeAi.askaiImage(file);
+
+      if (typeof PNGData == "string") {
+        const oi = PNGData;
+      } else {
+        historyChatData = [...PNGData];
+      }
       break;
 
     case "pdf":
-      historyChatData = [...(await GenerativeAi.askaiPDF(file))];
+      const pdfData = await GenerativeAi.askaiPDF(file);
+
+      if (typeof pdfData == "string") {
+        const oi = pdfData;
+      } else {
+        historyChatData = [...pdfData];
+      }
+
       break;
 
     default:
+      const justAsk = await GenerativeAi.askchat(file);
+
+      if (typeof justAsk == "string") {
+        const oi = justAsk;
+      } else {
+        historyChatData = [...justAsk];
+      }
   }
 
   if (historyChatData) {
@@ -68,38 +90,28 @@ export const answerQuestion = async (
     });
   }
 
-  res.json({ status: true, answer: history });
+  const chat = ai.chats.create({
+    model: "gemini-2.5-flash",
+    history: [...history],
+  });
 
-  // const chat = model.startChat({
-  //   history: history,
-  // });
-
-  //   return await GenerativeAi.askchat(res, question, chat, projectId);
-  //   }
+  res.json({ status: true, answer: chat });
 };
 
 export const reloadChat = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const historyTeste = [
-    {
-      user: "Pergunta 1",
-      ai: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    },
-    {
-      user: "Pergunta 2",
-      ai: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    },
-  ];
   const { projectId } = req.params;
-  // console.log(req.params);
+
   try {
     const history: IChatHistoryProps[] = [];
 
     const historyChatData = await AskAiRepository.getHistoryChat(
       Number(projectId)
     );
+
+    // console.log(historyChatData);
 
     if (historyChatData) {
       historyChatData?.forEach((item) => {
@@ -115,6 +127,7 @@ export const reloadChat = async (
         );
       });
     }
+
     res.json({ status: true, chatHistory: history });
   } catch (error) {
     console.log(error);

@@ -4,24 +4,13 @@ import * as askAiRepository from "../repository/askai";
 // // const pdfParse = require("pdf-parse");
 import { GoogleGenAI } from "@google/genai";
 import fs from "fs";
-
-interface IFileProps {
-  question: string;
-  projectId: string;
-  userId: string;
-  fileName: string;
-}
-
-interface IHistoryChat {
-  ai: string;
-  user: string;
-}
+import { IChatHistoryProps, IFileProps, IHistoryChat } from "../utils/types";
 
 const ai = new GoogleGenAI({});
 
 export const askaiImage = async (
   file: IFileProps
-): Promise<string | IHistoryChat> => {
+): Promise<string | IHistoryChat[]> => {
   const imageUrl = `http://localhost:3001/files/${file.userId}/${file.projectId}/${file.fileName}`;
 
   try {
@@ -63,7 +52,9 @@ export const askaiImage = async (
   }
 };
 
-export const askaiSong = async (file: IFileProps): Promise<string> => {
+export const askaiSong = async (
+  file: IFileProps
+): Promise<string | IHistoryChat[]> => {
   try {
     console.log("chamou MP3");
 
@@ -88,28 +79,31 @@ export const askaiSong = async (file: IFileProps): Promise<string> => {
       contents: contents,
     });
 
-    return resultsFromAi.text ?? "Erro ao processar essa canção";
+    if (resultsFromAi.text) {
+      const data = {
+        user: file.question,
+        ai: resultsFromAi.text,
+        projectId: Number(file.projectId),
+      };
+      const hasbeenStoragedData = await askAiRepository.saveChat(data);
 
-    // if (resultsFromAi) {
-    //   const results = {
-    //     ai: resultsFromAi.response.text(),
-    //     user: file.question,
-    //     projectId: Number(file.projectId),
-    //   };
-    //   const data = askAiRepository.saveChat(results);
-    //   if (!data) {
-    //     res.json({ status: false });
-    //   } else {
-    //     res.json({ status: true, answer: resultsFromAi.response.text() });
-    //   }
-    // }
+      if (hasbeenStoragedData) {
+        return hasbeenStoragedData;
+      } else {
+        return "Erro ao processar áudio";
+      }
+    } else {
+      return "Erro ao processar áudio";
+    }
   } catch (error) {
     // console.log(error);
     return "Error ao processar essa canção";
   }
 };
 
-export const askaiPDF = async (file: IFileProps): Promise<IHistoryChat[]> => {
+export const askaiPDF = async (
+  file: IFileProps
+): Promise<string | IHistoryChat[]> => {
   const imageUrl = `http://localhost:3001/files/${file.userId}/${file.projectId}/${file.fileName}`;
 
   try {
@@ -141,31 +135,63 @@ export const askaiPDF = async (file: IFileProps): Promise<IHistoryChat[]> => {
 
       if (hasbeenStoragedData) {
         return hasbeenStoragedData;
+      } else {
+        return "Erro ao processar Image";
       }
     } else {
-      return "Erro ao processar Image";
+      return "Erro ao processar PDF";
     }
   } catch (error) {
     return "Erro ao processar PDF";
   }
 };
 
-// export const askchat = async (file: IFileProps): Promise<void> => {
-//   try {
-//     let resultsFromAi = await chat.sendMessage(file.question);
-//     if (resultsFromAi) {
-//       const results = {
-//         ai: resultsFromAi.response.text(),
-//         user: file.question,
-//         projectId: Number(file.projectId),
-//       };
+export const askchat = async (
+  file: IFileProps
+): Promise<string | IHistoryChat[]> => {
+  try {
+    const history: IChatHistoryProps[] = [];
+    const historyChatData = await askAiRepository.getHistoryChat(
+      Number(file.projectId)
+    );
+    if (historyChatData) {
+      historyChatData?.forEach((item) => {
+        history.push(
+          {
+            role: "user",
+            parts: [{ text: item.user }],
+          },
+          {
+            role: "model",
+            parts: [{ text: item?.ai }],
+          }
+        );
+      });
+    }
 
-//       const data = askAiRepository.saveChat(results);
-//       if (!data) {
-//         res.json({ status: false });
-//       } else {
-//         res.json({ status: true, answer: results.ai });
-//       }
-//     }
-//   } catch (error) {}
-// };
+    const chat = ai.chats.create({
+      model: "gemini-2.5-flash",
+      history: [...history],
+    });
+    const resultsFromAi = await chat.sendMessage({
+      message: file.question,
+    });
+    if (resultsFromAi.text) {
+      const data = {
+        user: file.question,
+        ai: resultsFromAi.text,
+        projectId: Number(file.projectId),
+      };
+      const hasbeenStoragedData = await askAiRepository.saveChat(data);
+      if (hasbeenStoragedData) {
+        return hasbeenStoragedData;
+      } else {
+        return "Erro ao processar Image";
+      }
+    } else {
+      return "Erro ao processar Image";
+    }
+  } catch (error) {
+    return "error";
+  }
+};

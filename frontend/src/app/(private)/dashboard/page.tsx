@@ -11,11 +11,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ButtonAction } from "@/utils/buttons";
 import ModalCreateProject from "@/components/panel/modalCreateProject/ModalCreateProject.view";
 import ModalDeleteProject from "@/components/panel/modalDeleteProject/modalDeleteProject.view";
-import { PanelLogic } from "./logic";
+import { DashBoardLogic } from "./logic";
 import { orbitron } from "@/utils/fonts";
 
-export default function SignUp() {
-  const { data, methods } = PanelLogic();
+export default function DashBoard() {
+  const { data, methods } = DashBoardLogic();
 
   return (
     <>
@@ -30,17 +30,20 @@ export default function SignUp() {
               icon={<RxUpdate size={20} color="cyan" />}
               text="Update Profile"
               action={() => methods.updateProfile()}
+              disable={false}
             />
             <ButtonAction
               icon={<FaPlus size={20} color="cyan" />}
               text="Create Project"
               action={() => methods.setOpenNewProjectModal(true)}
+              disable={false}
             />
 
             <ButtonAction
               icon={<CiLogout size={20} color="cyan" />}
               text="Logout"
               action={() => methods.logOut()}
+              disable={false}
             />
           </div>
         </div>
@@ -59,11 +62,13 @@ export default function SignUp() {
                     icon={<IoOpenSharp size={20} />}
                     text="Open"
                     action={() => methods.openProject(project.id)}
+                    disable={false}
                   />
 
                   <ButtonAction
                     icon={<MdDelete size={20} />}
                     text="Delete"
+                    disable={false}
                     action={() => {
                       methods.setProjectSettings({
                         id: project.id,

@@ -10,7 +10,7 @@ import {
 } from "@/utils/types";
 import { api } from "@/utils/api";
 
-export const PanelLogic = () => {
+export const DashBoardLogic = () => {
   const router = useRouter();
 
   const [userSettings, setUserSettings] = useState<IUserProps>();

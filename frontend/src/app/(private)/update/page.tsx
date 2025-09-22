@@ -38,13 +38,13 @@ export default function SignUp() {
         <input
           type="submit"
           value={data.isUpdating == true ? "Loading" : "Update"}
-          className="buttonSubmit"
+          className="buttonSubmit w-96"
         />
       </form>
 
       <div className="neon-text text-center">
         <Link href={"/dashboard"} type="button" className="text-xl">
-          go Back
+          Go Back
         </Link>
       </div>
 

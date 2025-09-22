@@ -22,8 +22,9 @@ export default function DashBoard() {
       <main className="min-w-screen min-h-screen p-5 ">
         <div>
           <span className="neon-text text-xl">
-            Welcome {data?.userSettings?.firstname}{" "}
-            {data?.userSettings?.lastname}
+            {/* Welcome {data?.userSettings?.firstname}{" "}
+            {data?.userSettings?.lastname} */}
+            Welcome User
           </span>
           <div className="flex gap-x-2 my-5">
             <ButtonAction

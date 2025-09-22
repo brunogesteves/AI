@@ -25,7 +25,7 @@ export const ProjectIdLogic = (props: IParamsId) => {
   const [isModalopen, setIsModalopen] = useState<boolean>(false);
   const [fileName, setFileName] = useState<string>("");
   const [conversation, setConversation] = useState<IConversationProps[]>([]);
-  const [question, setQuestion] = useState<string>("Nome da pessoa");
+  const [question, setQuestion] = useState<string>("");
   const [historicHasBeenReloaded, setHistoricHasBeenReloaded] =
     useState<boolean>(false);
   const [files, setFiles] = useState<IFileProps[]>([]);
@@ -110,6 +110,7 @@ export const ProjectIdLogic = (props: IParamsId) => {
   }
 
   async function askAI(question: string) {
+    console.log("perguntou para AI");
     try {
       setLoading(true);
       setHistoricHasBeenReloaded(true);
@@ -129,7 +130,8 @@ export const ProjectIdLogic = (props: IParamsId) => {
         .then((res) => {
           if (res.data.status) {
             setLoading(false);
-            setConversation(res.data.answer);
+            setConversation(res.data.answer.history);
+            setQuestion("");
           }
         });
     } catch (error) {
@@ -179,7 +181,7 @@ export const ProjectIdLogic = (props: IParamsId) => {
     }
   }, []);
 
-  console.log(conversation);
+  // console.log(conversation);
   return {
     data: {
       projectId,

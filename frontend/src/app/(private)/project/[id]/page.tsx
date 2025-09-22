@@ -42,10 +42,10 @@ export default function ProjectIdPage({ params }: IParamsId) {
               return (
                 <div
                   key={i}
-                  className="flex justify-center items-center h-30 gap-x-3 my-5 first:mt-0 p-2"
+                  className="flex justify-center items-center h-30 gap-x-3 my-5 first:mt-0 p-2 w-full2"
                 >
                   <div className="h-full flex flex-col justify-around">
-                    <div className="border-[1px] text-center border-blue-500 rounded-lg px-1">
+                    <div className="border-[1px] text-center  border-blue-500 rounded-lg px-1">
                       <input
                         type="radio"
                         name="item"
@@ -64,7 +64,7 @@ export default function ProjectIdPage({ params }: IParamsId) {
                     />
                   </div>
                   <button
-                    className="my-5 py-2 text-sm border-[1px] border-blue-500 h-full rounded-lg text-center text-white cursor-pointer w-full"
+                    className="my-5 py-2 text-sm border-[1px] border-blue-500 h-full rounded-lg text-center text-white cursor-pointer w-full break-words truncate px-2"
                     onClick={() => {
                       methods.setFileName(file.name);
                       methods.setIsModalopen(true);
@@ -80,29 +80,32 @@ export default function ProjectIdPage({ params }: IParamsId) {
       </aside>
       <main className="pl-5 w-4/5">
         <div className=" w-full h-[calc(100vh_-_115px)] p-4 rounded-lg flex flex-col-reverse text-black  overflow-y-auto borderChat">
-          {data.conversation
-            ?.slice()
-            .reverse()
-            .map((item: IConversationProps, index: number) => {
-              if (item.role == "user") {
-                return <User content={item?.parts[0].text} key={index} />;
-              } else if (item.role == "model") {
-                return (
-                  <div key={index}>
-                    <Ai
-                      content={item.parts[0].text}
-                      index={index}
-                      historicHasBeenReloaded={data.historicHasBeenReloaded}
-                      loading={data.loading}
-                    />
-                  </div>
-                );
-              }
-            })}
+          {data?.conversation
+            ? data?.conversation
+                ?.slice()
+                .reverse()
+                .map((item: IConversationProps, index: number) => {
+                  if (item.role == "user") {
+                    return <User content={item?.parts[0].text} key={index} />;
+                  } else if (item.role == "model") {
+                    return (
+                      <div key={index}>
+                        <Ai
+                          content={item.parts[0].text}
+                          index={index}
+                          historicHasBeenReloaded={data.historicHasBeenReloaded}
+                          loading={data.loading}
+                        />
+                      </div>
+                    );
+                  }
+                })
+            : null}
         </div>
         <div className="flex items-center mt-4  gap-x-5">
           <input
             type="text"
+            placeholder="Make a question"
             className="inputField w-full h-14"
             onChange={(e) => methods.setQuestion(e.target.value)}
             onKeyDown={(event) => {

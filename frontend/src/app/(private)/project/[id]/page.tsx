@@ -49,7 +49,6 @@ export default function ProjectIdPage({ params }: IParamsId) {
                       <input
                         type="radio"
                         name="item"
-                        // checked={data.files[i].name == file.name ? true : false}
                         className="border-[1px] border-blue-500 rounded-lg px-2"
                         onClick={() => {
                           methods.setChoosedFile(file.name);
@@ -60,11 +59,11 @@ export default function ProjectIdPage({ params }: IParamsId) {
                       color="red"
                       size={30}
                       onClick={() => methods.deleteFile(file.id)}
-                      className="border-[1px] border-blue-500 rounded-lg px-1"
+                      className="border-[1px] border-blue-500 rounded-lg px-1 cursor-pointer"
                     />
                   </div>
                   <button
-                    className="my-5 py-2 text-sm border-[1px] border-blue-500 h-full rounded-lg text-center text-white cursor-pointer w-full break-words truncate px-2"
+                    className="my-5 py-2 text-sm border-[1px] border-blue-500 hover:bg-blue-500 h-full rounded-lg text-center text-white cursor-pointer w-full break-words truncate px-2"
                     onClick={() => {
                       methods.setFileName(file.name);
                       methods.setIsModalopen(true);
@@ -133,7 +132,7 @@ export default function ProjectIdPage({ params }: IParamsId) {
           {data.fileName != "" && methods.openFile(data.fileName)}
           <IoCloseSharp
             color="white"
-            size={20}
+            size={40}
             className="m-3 cursor-pointer"
             onClick={() => methods.setIsModalopen(false)}
           />

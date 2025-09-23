@@ -5,7 +5,6 @@ export default function PDFFile({
   projectId,
   userId,
 }: IOpenFileProps) {
-  console.log(fileName);
   return (
     <div className="w-full h-screen flex justify-center items-center">
       <iframe

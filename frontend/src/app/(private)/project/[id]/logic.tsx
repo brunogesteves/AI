@@ -40,6 +40,7 @@ export const ProjectIdLogic = (props: IParamsId) => {
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
     // noClick: true,
     // noKeyboard: true,
+    multiple: true,
     accept: {
       "image/png": [".png"],
       "image/jpg": [".jpg"],
@@ -142,7 +143,10 @@ export const ProjectIdLogic = (props: IParamsId) => {
   useEffect(() => {
     if (acceptedFiles.length > 0) {
       const formData = new FormData();
-      formData.append("file", acceptedFiles[0]);
+
+      for (let index = 0; index < acceptedFiles.length; index++) {
+        formData.append("allFiles", acceptedFiles[index]);
+      }
       formData.append("projectId", projectId.toString());
       formData.append("userId", userId.toString());
       try {
@@ -153,7 +157,7 @@ export const ProjectIdLogic = (props: IParamsId) => {
             },
           })
           .then((res) => {
-            setFiles((files) => [...files, res.data.files]);
+            setFiles((files) => [...files, ...res.data.files]);
           });
       } catch (error) {
         console.log(error);

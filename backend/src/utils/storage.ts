@@ -1,4 +1,5 @@
 import multer from "multer";
+import path from "path";
 
 import { remove } from "remove-accents";
 
@@ -7,15 +8,16 @@ const storage = multer.diskStorage({
     cb(null, "./src/files/temp");
   },
   filename: (req, file, cb) => {
-    console.log(file);
+    const removeSpecialCharacters = remove(
+      file.originalname
+        .replace(/A©/g, "é")
+        .replace(/Ã©/g, "é")
+        .replace(/ /g, "_")
+    );
+
     cb(
       null,
-      remove(
-        file.originalname
-          .replace(/A©/g, "é")
-          .replace(/Ã©/g, "é")
-          .replace(/ /g, "_")
-      )
+      removeSpecialCharacters + Date.now() + path.extname(file.originalname)
     );
   },
 });

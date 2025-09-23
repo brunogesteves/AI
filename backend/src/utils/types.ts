@@ -15,6 +15,10 @@ export interface IFileProps {
   fileName: string;
 }
 
+export interface IFileDataProps {
+  name: string;
+  id: number;
+}
 export interface IHistoryChat {
   ai: string;
   user: string;

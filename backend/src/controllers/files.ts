@@ -2,38 +2,44 @@ import * as FilesRepository from "../repository/files";
 import { Request, Response } from "express";
 import fs from "fs";
 import { remove } from "remove-accents";
+import { IFileDataProps } from "../utils/types";
+import path from "path";
 
 export const saveFiles = async (req: Request, res: Response): Promise<void> => {
   const { projectId, userId } = req.body;
 
   try {
-    if (req.file) {
-      const filename = remove(
-        req.file.originalname
-          .replace(/A©/g, "é")
-          .replace(/Ã©/g, "é")
-          .replace(/ /g, "_")
-      );
-      const folderUser = `./src/files/${userId}/${projectId}`;
-      const oldPath = `./src/files/temp/${filename}`;
-      const newPath = `./src/files/${userId}/${projectId}/${filename}`;
+    const data: IFileDataProps[] = [];
+    if (req.files) {
+      const allFiles = req.files as Express.Multer.File[];
+      for (let index = 0; index < allFiles.length; index++) {
+        const filename = remove(allFiles[index].filename);
+        const folderUser = `./src/files/${userId}/${projectId}`;
+        const oldPath = `./src/files/temp/${filename}`;
+        const newPath = `./src/files/${userId}/${projectId}/${filename}`;
 
-      if (!fs.existsSync(folderUser)) {
-        fs.mkdirSync(folderUser);
+        if (!fs.existsSync(folderUser)) {
+          fs.mkdirSync(folderUser);
+        }
+
+        fs.renameSync(oldPath, newPath);
+
+        const settingsFile = {
+          name: filename,
+          projectId: Number(projectId),
+        };
+
+        const hasbeenSaved = await FilesRepository.saveFiles(settingsFile);
+        if (hasbeenSaved) {
+          data.push(hasbeenSaved);
+        } else {
+          fs.unlinkSync(oldPath);
+        }
       }
-
-      fs.renameSync(oldPath, newPath);
-
-      const settingsFile = {
-        name: filename,
-        projectId: Number(projectId),
-      };
-      const data = await FilesRepository.saveFiles(settingsFile);
-
+      console.log("api data: ", data);
       if (data) {
         res.json({ status: true, files: data });
       } else {
-        fs.unlinkSync(oldPath);
         res.json({ status: false });
       }
     }

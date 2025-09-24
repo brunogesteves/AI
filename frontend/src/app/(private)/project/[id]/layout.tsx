@@ -13,6 +13,8 @@ export default function UpdateLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="bg flex p-5 justify-center min-h-screen">{children}</div>
+    <div className="bg flex p-5 justify-center min-h-screen max-[440px]:flex-col">
+      {children}
+    </div>
   );
 }

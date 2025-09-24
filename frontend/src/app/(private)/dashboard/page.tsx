@@ -19,12 +19,11 @@ export default function DashBoard() {
 
   return (
     <>
-      <main className="min-w-screen min-h-screen p-5 ">
+      <main className="min-w-screen min-h-screen  p-5 max-[440px]:p-1">
         <div>
           <span className="neon-text text-xl">
-            {/* Welcome {data?.userSettings?.firstname}{" "}
-            {data?.userSettings?.lastname} */}
-            Welcome User
+            Welcome {data?.userSettings?.firstname}{" "}
+            {data?.userSettings?.lastname}
           </span>
           <div className="flex gap-x-2 my-5">
             <ButtonAction
@@ -48,7 +47,10 @@ export default function DashBoard() {
             />
           </div>
         </div>
-        <div className="h-[calc(100vh_-_180px)] p-4 rounded-2xl border-2 border-blue-500 ">
+        <div
+          className="h-[calc(100vh_-_180px)] p-4 rounded-2xl border-2 border-blue-500 
+        max-[440px]:min-h-screen"
+        >
           <div className="h-[calc(100vh_-_213px)] overflow-y-auto">
             {data?.allProJects?.map((project, i: number) => {
               return (

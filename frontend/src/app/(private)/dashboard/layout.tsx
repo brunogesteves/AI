@@ -12,9 +12,5 @@ export default function PanelLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <div className="bg flex flex-col justify-center min-h-screen">
-      {children}
-    </div>
-  );
+  return <div className="bg flex flex-col justify-center">{children}</div>;
 }

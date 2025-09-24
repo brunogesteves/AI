@@ -7,7 +7,7 @@ import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
 import { Text, View } from "react-native";
 
-export const SignUpLogic = () => {
+export const IndexLogic = () => {
   const router = useRouter();
 
   const { setUserSettings } = useInfoIUserSettingsInfo();

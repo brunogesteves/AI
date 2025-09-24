@@ -12,15 +12,16 @@ export default function Home() {
 
   return (
     <main
-      className="flex h-screen content-between items-center
+      className="flex h-screen content-between items-center max-[440px]:flex-col
     sm:items-center"
     >
-      <section className="w-1/2 flex flex-col items-center ">
+      <section className="w-1/2 flex flex-col  items-center ">
         <Image src={logo} alt="user" width={600} height={600} />
         <h1
           className={`
         ${orbitron.className} 
         neon-text
+        max-[440px]:text-lg mb-5
       `}
         >
           NEUROSPARK

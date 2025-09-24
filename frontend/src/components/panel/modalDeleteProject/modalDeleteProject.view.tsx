@@ -18,7 +18,7 @@ export default function ModalDeleteProject({
 
   return (
     <dialog className="min-w-screen min-h-screen flex flex-col items-center justify-center bg-black/40 ">
-      <main className="bg border-[1px] rounded-2xl p-5 border-blue-500 w-1/2">
+      <main className="bg border-[1px] rounded-2xl p-5 border-blue-500 w-1/2 max-[400px]:w-full">
         <MdCancel
           size={20}
           color="white"

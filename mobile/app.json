@@ -50,7 +50,30 @@
         {
           "iCloudContainerEnvironment": "Production"
         }
-      ]
+      ],
+      "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Orbitron-VariableFont_wght.ttf"
+          ],
+          "android": {
+            "fonts": [
+              {
+                "fontFamily": "orbitron",
+                "fontDefinitions": [
+                  {
+                    "path": "./assets/fonts/Orbitron-VariableFont_wght.ttf",
+                    "weight": 700,
+                    "style": "italic"
+                  }                  
+                ]
+              }
+            ]
+          },
+          "ios": {
+            "fonts": ["./assets/fonts/Inter-Bold.ttf", "./assets/fonts/Orbitron-VariableFont_wght.ttf"]
+          }
+        }
     ],
     "experiments": {
       "typedRoutes": true

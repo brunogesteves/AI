@@ -17,18 +17,20 @@ export default function Ai({
   loading,
 }: IContentAI) {
   return (
-    <div className="flex justify-between items-start gap-x-5 p-2 ">
+    <div className="flex justify-between items-start gap-x-5 p-2">
       <Image src="/globe.svg" alt="user" width={25} height={30} />
 
       <div
         className={`${orbitron.className} 
-        neon-text text-sm flex justify-start items-start text-justify  text-white  w-full border-[1px] border-blue-500 rounded-xl p-6`}
+        neon-text text-sm flex justify-start items-start text-justify  text-white  w-full border-[1px] border-blue-500 rounded-xl p-6  max-[440px]:w-11/12`}
       >
         {index === 0 && historicHasBeenReloaded ? (
           <TypewriterText text={content} index={index} loading={loading} />
         ) : (
-          <div className="flex">
-            <p>{content}</p>
+          <div className="flex w-full">
+            <span className="whitespace-normal block break-words w-full">
+              {content}
+            </span>
           </div>
         )}
       </div>

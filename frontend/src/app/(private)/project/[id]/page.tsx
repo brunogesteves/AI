@@ -15,7 +15,7 @@ export default function ProjectIdPage({ params }: IParamsId) {
 
   return (
     <>
-      <aside className="h-[calc(100vh_-_40px)] w-1/5 rounded-l-lg p-2">
+      <aside className="h-[calc(100vh_-_40px)] max-[440px]:h-auto w-1/5 max-[440px]:w-full rounded-l-lg p-2 max-[440px]:p-0">
         <ButtonAction
           action={() => {
             data.router.back();
@@ -35,9 +35,9 @@ export default function ProjectIdPage({ params }: IParamsId) {
           />
         </div>
 
-        <div className="h-[calc(100vh_-_220px)]">
+        <section className="h-auto">
           <h4 className="text-center">Choose a file</h4>
-          <div className="h-[calc(100vh_-_220px)] overflow-y-auto">
+          <div className="h-[calc(100vh_-_500px)] overflow-y-auto">
             {data.files?.map((file, i) => {
               return (
                 <div
@@ -75,9 +75,9 @@ export default function ProjectIdPage({ params }: IParamsId) {
               );
             })}
           </div>
-        </div>
+        </section>
       </aside>
-      <main className="pl-5 w-4/5">
+      <main className="pl-5 w-4/5 max-[440px]:w-full max-[440px]:pl-0 max-[440px]:mt-5">
         <div className=" w-full h-[calc(100vh_-_115px)] p-4 rounded-lg flex flex-col-reverse text-black  overflow-y-auto borderChat">
           {data?.conversation
             ? data?.conversation

@@ -1,6 +1,6 @@
 "use client";
 import { Formik } from "formik";
-import { SignUpLogic } from "./signUp.logic";
+import { SignUpLogic } from "../../../app/logic";
 import { SignUpSchema } from "@/utils/yup";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import DateTimePicker from "@react-native-community/datetimepicker";

@@ -22,9 +22,9 @@ export default function ModalCreateProject({
   });
 
   return (
-    <dialog className="min-w-screen min-h-screen flex items-center justify-center bg-black/40 ">
+    <dialog className="min-w-screen max-[440px]:w-full  min-h-screen flex flex-col items-center justify-center bg-black/40">
       <form
-        className="flex flex-col p-5 gap-y-5 bg w-auto rounded-2xl border-[1px] border-blue-500"
+        className="flex flex-col p-5 gap-y-5 bg w-1/2 max-[440px]:w-full rounded-2xl border-[1px] border-blue-500"
         onSubmit={methods.handleSubmit(methods.onSubmit)}
       >
         <MdCancel

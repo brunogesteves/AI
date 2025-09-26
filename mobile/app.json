@@ -5,9 +5,14 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "mobile",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
     "ios": {
       "supportsTablet": true
     },
@@ -15,7 +20,9 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false
     },
     "web": {
       "bundler": "metro",
@@ -25,55 +32,34 @@
     "plugins": [
       "expo-router",
       [
-        "expo-splash-screen",
-        {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
-        }
-      ],
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
-        }
-      ],
-      [
-      "expo-image-picker",
-        {
-          "cameraPermission":	"Allow $(PRODUCT_NAME) to access your camera"
-        }
-      ],
-      [
-        "expo-document-picker",
-        {
-          "iCloudContainerEnvironment": "Production"
-        }
-      ],
-      "expo-font",
+        "expo-font",
         {
           "fonts": [
-            "./assets/fonts/Orbitron-VariableFont_wght.ttf"
+            "./assets/fonts/Orbitron-Medium.ttf"
           ],
           "android": {
             "fonts": [
               {
-                "fontFamily": "orbitron",
+                "fontFamily": "Orbitron",
                 "fontDefinitions": [
                   {
-                    "path": "./assets/fonts/Orbitron-VariableFont_wght.ttf",
-                    "weight": 700,
-                    "style": "italic"
-                  }                  
+                    "path": "./assets/fonts/Orbitron-Medium.ttf",
+                    "weight": 700
+                    
+                  },
+                  {
+                    "path": "./assets/fonts/Orbitron-Bold.ttf",
+                    "weight": 700
+                  }
                 ]
               }
             ]
           },
           "ios": {
-            "fonts": ["./assets/fonts/Inter-Bold.ttf", "./assets/fonts/Orbitron-VariableFont_wght.ttf"]
+            "fonts": ["./assets/fonts/Orbitron-Bold.ttf", "./assets/fonts/Orbitron-Medium.ttf"]
           }
         }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

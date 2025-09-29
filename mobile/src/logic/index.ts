@@ -25,20 +25,23 @@ export const Logic = () => {
       password: "123",
     },
   });
+
   const onSubmit: SubmitHandler<signInFormData> = async (data) => {
     setIsLoading(true);
+    console.log("api");
     try {
-      api
-        .post(`/users/${data.email}/${data.password}`, { data })
-        .then((res: { data: { status: any } }) => {
-          if (res.data.status) {
-            // Cookies.set("token", res.data.token, { expires: 7 });
-            // router.navigate("/dashboard");
-          } else {
-            setIncorrectMessage(true);
-            setIsLoading(false);
-          }
-        });
+      router.navigate("/update");
+      // api
+      //   .post(`/users/${data.email}/${data.password}`, { data })
+      //   .then((res: { data: { status: any } }) => {
+      //     if (res.data.status) {
+      //       // Cookies.set("token", res.data.token, { expires: 7 });
+      //       // router.navigate("/dashboard");
+      //     } else {
+      //       setIncorrectMessage(true);
+      //       setIsLoading(false);
+      //     }
+      //   });
     } catch (error) {
       console.warn(error);
     }

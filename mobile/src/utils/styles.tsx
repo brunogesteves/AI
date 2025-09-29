@@ -1,9 +1,11 @@
-import React, { Children, ReactNode, useState } from "react";
+import React, { useState } from "react";
 
-import { Button, Pressable, StyleSheet, TextInput, View } from "react-native";
+import { Image, Pressable, StyleSheet, TextInput, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Colors, TextNeon } from "./fonts";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { ButtonSubmitProps, IContainerProps, IInputBoxProps } from "./type";
 
 export const styles = StyleSheet.create({
   container: {
@@ -14,11 +16,7 @@ export const styles = StyleSheet.create({
   logo: { height: 250, width: 400 },
 });
 
-interface IBGProps {
-  children: React.ReactNode;
-}
-
-export const Bg = ({ children }: IBGProps) => {
+export const Container = ({ children }: IContainerProps) => {
   return (
     <LinearGradient
       colors={["rgba(12,16,28,0.5)", "rgba(12,16,28,0.8)"]}
@@ -33,18 +31,23 @@ export const Bg = ({ children }: IBGProps) => {
         flex: 1,
       }}
     >
-      {children}
+      <SafeAreaProvider>
+        <SafeAreaView>
+          <View style={styles.container}>{children}</View>
+        </SafeAreaView>
+      </SafeAreaProvider>
     </LinearGradient>
   );
 };
 
-interface IInputBox {
-  placeholder: string;
-  value: string;
-  onChangeText: (text: string) => void;
-  onBlur?: () => void;
-  hasSecureTextEntry: boolean;
-}
+export const Logotype = () => {
+  return (
+    <Image
+      source={require("./../../assets/images/logotype.png")}
+      style={styles.logo}
+    />
+  );
+};
 
 export const InputBox = ({
   placeholder,
@@ -52,7 +55,7 @@ export const InputBox = ({
   onChangeText,
   value,
   hasSecureTextEntry,
-}: IInputBox) => {
+}: IInputBoxProps) => {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
   return (
@@ -72,6 +75,7 @@ export const InputBox = ({
           hasSecureTextEntry ? (isPasswordHidden ? true : false) : false
         }
         placeholder={placeholder}
+        placeholderTextColor={Colors.White}
         onBlur={onBlur}
         onChangeText={onChangeText}
         value={value}
@@ -98,7 +102,6 @@ export const InputBox = ({
             name={isPasswordHidden ? "eye" : "eye-off"}
             size={32}
             color="#fff"
-            // style={{ position: "absolute", right: 4, top: 9 }}
             onPress={() => setIsPasswordHidden(!isPasswordHidden)}
           />
         </View>
@@ -107,37 +110,17 @@ export const InputBox = ({
   );
 };
 
-interface ButtonSubmitProps {
-  title: string;
-  onPress: () => void;
-}
-
 export const ButtonSubmit = ({ title, onPress }: ButtonSubmitProps) => {
   return (
-    // <Pressable
-    //   onPress={onPress}
-    //   style={{
-    //     width: "90%",
-    //     alignItems: "center",
-    //     padding: 8,
-    //     borderColor: "rgb(59,130,246)",
-    //     backgroundColor: "rgb(11,15,26)",
-    //   }}
-    // >
-    //   <TextNeon text={title} fontSize={20} />
-    // </Pressable>
     <Pressable
-      onPress={() => alert("Clicou!")}
+      onPress={onPress}
       style={{
         width: "90%",
-        // alignItems: "center",
-        // // borderColor: "rgb(59,130,246)",
-        // borderWidth: 0,
-        // // backgroundColor: "rgb(11,15,26)",
+        marginVertical: 20,
       }}
     >
       <LinearGradient
-        colors={["#22d3ee", "#0891b2"]} // gradiente cyan-400 → cyan-600
+        colors={["#22d3ee", "#0891b2"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         style={{
@@ -145,7 +128,6 @@ export const ButtonSubmit = ({ title, onPress }: ButtonSubmitProps) => {
           height: 50,
           borderRadius: 10,
           alignItems: "center",
-          // borderWidth: 0,
         }}
       >
         <TextNeon text={title} fontSize={25} color={Colors.White} />
@@ -153,35 +135,3 @@ export const ButtonSubmit = ({ title, onPress }: ButtonSubmitProps) => {
     </Pressable>
   );
 };
-// w-full h-full flex items-center gap-x-2 px-10 py-4 bg-[#0B0F1A]
-//     border-1    border-blue-500 text-white rounded-lg
-//     hover:bg-linear-to-r     hover:from-cyan-700      hover:via-cyan-400      hover:to-cyan-700
-//     uppercase text-2xl;
-
-// @import "tailwindcss";
-
-// @layer components {
-//   .neon-text {
-//     @apply text-cyan-400
-//         text-5xl
-//         font-bold
-
-//         tracking-widest
-//         drop-shadow-[0_0_8px_#22d3ee];
-//   }
-//   .inputField {
-//     @apply w-96 rounded-lg p-2 text-white border-[1px] border-cyan-600;
-//   }
-//   .buttonSubmit {
-//     @apply cursor-pointer
-//   }
-//   .bg {
-//     @apply bg-gradient-to-r  from-[#0C101C] from-30%  to-black to-75%;
-//   }
-//   .borderChat {
-//     @apply border-[1px] border-blue-500;
-//   }
-//   .messageError {
-//     @apply mt-1       text-lg        h-7;
-//   }
-// }

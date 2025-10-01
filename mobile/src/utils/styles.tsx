@@ -1,11 +1,20 @@
 import React, { useState } from "react";
 
-import { Image, Pressable, StyleSheet, TextInput, View } from "react-native";
+import {
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  View,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Colors, TextNeon } from "./fonts";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { ButtonSubmitProps, IContainerProps, IInputBoxProps } from "./type";
+import { ButtonSubmitProps, IInputBoxProps } from "./types";
 
 export const styles = StyleSheet.create({
   container: {
@@ -16,7 +25,7 @@ export const styles = StyleSheet.create({
   logo: { height: 250, width: 400 },
 });
 
-export const Container = ({ children }: IContainerProps) => {
+export const Container = (children: React.ReactNode) => {
   return (
     <LinearGradient
       colors={["rgba(12,16,28,0.5)", "rgba(12,16,28,0.8)"]}
@@ -28,12 +37,34 @@ export const Container = ({ children }: IContainerProps) => {
         height: "100%",
         justifyContent: "center",
         alignItems: "center",
-        flex: 1,
       }}
     >
       <SafeAreaProvider>
-        <SafeAreaView>
-          <View style={styles.container}>{children}</View>
+        <SafeAreaView style={{ flex: 1 }}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{ flex: 1 }}
+          >
+            <ScrollView
+              contentContainerStyle={{
+                flexGrow: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                padding: 16,
+              }}
+            >
+              <View
+                style={{
+                  width: "100%",
+                  maxWidth: 400,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                {children}
+              </View>
+            </ScrollView>
+          </KeyboardAvoidingView>
         </SafeAreaView>
       </SafeAreaProvider>
     </LinearGradient>

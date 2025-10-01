@@ -45,7 +45,6 @@
                   {
                     "path": "./assets/fonts/Orbitron-Medium.ttf",
                     "weight": 700
-                    
                   },
                   {
                     "path": "./assets/fonts/Orbitron-Bold.ttf",
@@ -56,10 +55,14 @@
             ]
           },
           "ios": {
-            "fonts": ["./assets/fonts/Orbitron-Bold.ttf", "./assets/fonts/Orbitron-Medium.ttf"]
+            "fonts": [
+              "./assets/fonts/Orbitron-Bold.ttf",
+              "./assets/fonts/Orbitron-Medium.ttf"
+            ]
           }
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true

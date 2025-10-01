@@ -9,20 +9,20 @@ import DateTimePicker, {
 import { yupResolver } from "@hookform/resolvers/yup";
 
 // import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-// import { jwtDecode } from "jwt-decode";
-// import Cookies from "js-cookie";
+import { getItemAsync } from "expo-secure-store";
 
 import { updateFormData, updateSchema } from "@/utils/yup";
 import { InputBox } from "@/utils/styles";
 import React from "react";
 import { router } from "expo-router";
 import { Colors, TextNeon } from "@/utils/fonts";
-import { TextInput, View } from "react-native";
+import { Pressable, TextInput, View } from "react-native";
 
 export const UpdateProfileLogic = () => {
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState<boolean>(true);
   const [dateSelected, setDateSelected] = useState<Date | null>(new Date());
+  const [oi, setOi] = useState<any>("");
 
   const {
     register,
@@ -146,28 +146,40 @@ export const UpdateProfileLogic = () => {
             }}
           />
         )}
-        <InputBox
-          placeholder={"birthday"}
-          onChangeText={() => console.log("object")}
-          value={date.toString()}
-          hasSecureTextEntry={false}
+        <Pressable
+          // placeholder={"birthda"}
+          // placeholderTextColor={Colors.White}
+          // onChangeText={() => console.log("object")}
+          // value={date.toString()}
+          style={{
+            width: "100%",
+            height: 100,
+            marginTop: 10,
+            borderWidth: 1,
+            borderColor: "#0891b2",
+            borderRadius: 1,
+            padding: 8,
+            paddingStart: 20,
+            backgroundColor: "red",
+          }}
         />
       </View>
     );
   }
 
-  // useEffect(() => {
-  //   const token = Cookies.get("token");
-  //   if (token) {
-  //     const infoProfile: updateFormData = jwtDecode(token);
-  //     reset({
-  //       birthDate: infoProfile?.birthDate,
-  //       firstname: infoProfile?.firstname,
-  //       lastname: infoProfile?.lastname,
-  //       id: infoProfile?.id,
-  //     });
-  //   }
-  // }, []);
+  useEffect(() => {
+    //   const token = Cookies.get("token");
+    //   if (token) {
+    //     const infoProfile: updateFormData = jwtDecode(token);
+    //     reset({
+    //       birthDate: infoProfile?.birthDate,
+    //       firstname: infoProfile?.firstname,
+    //       lastname: infoProfile?.lastname,
+    //       id: infoProfile?.id,
+    //     });
+    //   }
+    // async function getToken() {
+  }, []);
 
   return {
     data: { dateSelected, isUpdating },

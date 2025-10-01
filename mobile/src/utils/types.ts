@@ -1,7 +1,3 @@
-export interface IContainerProps {
-  children: React.ReactNode;
-}
-
 export interface IInputBoxProps {
   placeholder: string;
   value: any;

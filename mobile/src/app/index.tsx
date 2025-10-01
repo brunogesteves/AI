@@ -3,14 +3,18 @@ import { Pressable, Text, View } from "react-native";
 import { Controller } from "react-hook-form";
 
 import { ButtonSubmit, Container, InputBox, Logotype } from "@/utils/styles";
-import { Logic } from "@/logic/index";
+import { Logic } from "@/screens/index";
 import { Colors, TextNeon } from "@/utils/fonts";
-import { router } from "expo-router";
+import { Redirect, router } from "expo-router";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function App() {
   const { data, methods } = Logic();
+  const { session } = useAuth();
+  console.log("session: ", session);
+  if (session) return <Redirect href={"/dashboard"} />;
   return (
-    <Container>
+    <>
       <Logotype />
 
       <TextNeon text="NEUROSPARK" fontSize={50} color={Colors.Neon} />
@@ -72,6 +76,6 @@ export default function App() {
           color={Colors.Neon}
         />
       </Pressable>
-    </Container>
+    </>
   );
 }

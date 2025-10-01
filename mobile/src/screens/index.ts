@@ -2,15 +2,17 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { router } from "expo-router";
-// import Cookies from "js-cookie";
+import { setItemAsync } from "expo-secure-store";
 
 import { signInFormData, signInSchema } from "@/utils/yup";
 import { api } from "@/utils/api";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const Logic = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
   const [incorrectMessage, setIncorrectMessage] = useState(false);
+  const { setSession } = useAuth();
 
   const {
     register,
@@ -22,26 +24,25 @@ export const Logic = () => {
     resolver: yupResolver(signInSchema),
     defaultValues: {
       email: "n3586@hotmail.com",
-      password: "123",
+      password: "1234",
     },
   });
 
   const onSubmit: SubmitHandler<signInFormData> = async (data) => {
     setIsLoading(true);
-    console.log("api");
     try {
-      router.navigate("/update");
-      // api
-      //   .post(`/users/${data.email}/${data.password}`, { data })
-      //   .then((res: { data: { status: any } }) => {
-      //     if (res.data.status) {
-      //       // Cookies.set("token", res.data.token, { expires: 7 });
-      //       // router.navigate("/dashboard");
-      //     } else {
-      //       setIncorrectMessage(true);
-      //       setIsLoading(false);
-      //     }
-      //   });
+      api
+        .post(`/users/${data.email}/${data.password}`, { data })
+        .then((res: { data: { status: boolean; token: string } }) => {
+          if (res.data.status) {
+            setItemAsync("token", res.data?.token);
+            setSession(true);
+            router.navigate("/update");
+          } else {
+            setIncorrectMessage(true);
+            setIsLoading(false);
+          }
+        });
     } catch (error) {
       console.warn(error);
     }

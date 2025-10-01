@@ -25,7 +25,6 @@ export const createUser = async (
 
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.params;
-  console.table(req.params);
 
   try {
     const loginUserData = await UsersRepository.loginUser(email);

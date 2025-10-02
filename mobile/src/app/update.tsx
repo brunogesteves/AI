@@ -11,7 +11,7 @@ export default function Update() {
 
   return (
     <>
-      <TextNeon text="Update Profile2" fontSize={20} color={Colors.Neon} />
+      <TextNeon text="Update Profile" fontSize={20} color={Colors.Neon} />
       {methods.inputModel("firstname")}
       {methods.inputModel("lastname")}
       {methods.inputPasswordModel("oldPassword")}

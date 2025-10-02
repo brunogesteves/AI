@@ -16,13 +16,12 @@ import { InputBox } from "@/utils/styles";
 import React from "react";
 import { router } from "expo-router";
 import { Colors, TextNeon } from "@/utils/fonts";
-import { Pressable, TextInput, View } from "react-native";
+import { Pressable, Text, TextInput, View } from "react-native";
 
 export const UpdateProfileLogic = () => {
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState<boolean>(true);
   const [dateSelected, setDateSelected] = useState<Date | null>(new Date());
-  const [oi, setOi] = useState<any>("");
 
   const {
     register,
@@ -96,6 +95,72 @@ export const UpdateProfileLogic = () => {
     );
   }
 
+  function DatePicker() {
+    const [currentDate, setCurrentDate] = useState(new Date());
+    const [showPicker, setShowPicker] = useState(false);
+    return (
+      <View
+        style={{
+          width: "90%",
+          height: 50,
+          display: "flex",
+          alignContent: "center",
+          alignItems: "center",
+          flexDirection: "row",
+          marginTop: 20,
+          gap: 10,
+        }}
+      >
+        {showPicker && (
+          <DateTimePicker
+            value={currentDate}
+            title="calendar"
+            is24Hour={true}
+            minimumDate={
+              new Date(new Date().setFullYear(new Date().getFullYear() - 18))
+            }
+            onChange={(
+              { type }: DateTimePickerEvent,
+              date?: Date | undefined
+            ) => {
+              if (type == "set") {
+                const currentDate = date;
+
+                setValue("birthDate", currentDate ? currentDate : new Date());
+                setCurrentDate(currentDate ? currentDate : new Date());
+              } else {
+                setShowPicker(false);
+              }
+              console.log(event);
+              console.log(date);
+            }}
+          />
+        )}
+        <Text
+          style={{
+            width: "90%",
+            height: 50,
+            borderWidth: 1,
+            borderColor: "#0891b2",
+            borderRadius: 8,
+            padding: 8,
+            paddingStart: 20,
+            fontSize: 20,
+            color: "#fff",
+            textShadowColor: "#22d3ee",
+            textShadowOffset: { width: 0, height: 0 },
+            textShadowRadius: 12,
+            opacity: 0.7,
+            textAlign: "left",
+          }}
+          onPress={() => setShowPicker(true)}
+        >
+          {currentDate.toLocaleDateString()}
+        </Text>
+      </View>
+    );
+  }
+
   const onSubmit: SubmitHandler<updateFormData> = async (data) => {
     setIsUpdating(true);
     try {
@@ -116,56 +181,6 @@ export const UpdateProfileLogic = () => {
       //   reset;
     }
   };
-
-  function DatePicker() {
-    const [date, setDate] = useState(new Date());
-    const [showPicker, setShowPicker] = useState(false);
-    return (
-      <View>
-        {showPicker && (
-          <DateTimePicker
-            value={date}
-            title="calendar"
-            is24Hour={true}
-            minimumDate={
-              new Date(new Date().setFullYear(new Date().getFullYear() - 18))
-            }
-            onChange={(
-              { type }: DateTimePickerEvent,
-              date?: Date | undefined
-            ) => {
-              if (type == "set") {
-                const currentDate = date;
-
-                setValue("birthDate", currentDate ? currentDate : new Date());
-              } else {
-                setShowPicker(false);
-              }
-              console.log(event);
-              console.log(date);
-            }}
-          />
-        )}
-        <Pressable
-          // placeholder={"birthda"}
-          // placeholderTextColor={Colors.White}
-          // onChangeText={() => console.log("object")}
-          // value={date.toString()}
-          style={{
-            width: "100%",
-            height: 100,
-            marginTop: 10,
-            borderWidth: 1,
-            borderColor: "#0891b2",
-            borderRadius: 1,
-            padding: 8,
-            paddingStart: 20,
-            backgroundColor: "red",
-          }}
-        />
-      </View>
-    );
-  }
 
   useEffect(() => {
     //   const token = Cookies.get("token");

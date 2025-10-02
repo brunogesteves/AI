@@ -17,7 +17,7 @@ interface ITextProps {
   color: Colors;
 }
 
-export const TextNeon = ({ text, fontSize, color }: ITextProps) => {
+export const CustomText = ({ text, fontSize, color }: ITextProps) => {
   const [loaded, error] = useFonts({
     Orbitron: require("./../../assets/fonts/Orbitron-Medium.ttf"),
   });
@@ -40,9 +40,10 @@ export const TextNeon = ({ text, fontSize, color }: ITextProps) => {
         color,
         textShadowColor: color,
         textShadowOffset: { width: 0, height: 0 },
-        textShadowRadius: 12,
+        textShadowRadius: 6,
         opacity: 0.7,
-        marginTop: 10,
+        marginTop: 0,
+        fontFamily: "Orbitron",
       }}
     >
       {text}

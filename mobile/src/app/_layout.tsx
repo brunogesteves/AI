@@ -2,14 +2,22 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { LinearGradient } from "expo-linear-gradient";
 import { Slot, Redirect } from "expo-router";
 import React from "react";
-import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  View,
+  Dimensions,
+} from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 export default function AppLayout() {
   return (
     <AuthProvider>
       <LinearGradient
-        colors={["rgba(12,16,28,0.5)", "rgba(12,16,28,0.8)"]}
+        colors={["#0a0f1c", "#0f172a", "#09111f"]}
+        start={{ x: 0.0, y: 0.0 }}
+        end={{ x: 1.0, y: 1.0 }}
         style={{
           position: "absolute",
           left: 0,
@@ -21,7 +29,13 @@ export default function AppLayout() {
         }}
       >
         <SafeAreaProvider>
-          <SafeAreaView style={{ flex: 1 }}>
+          <SafeAreaView
+            style={{
+              flex: 1,
+
+              width: Dimensions.get("window").width,
+            }}
+          >
             <KeyboardAvoidingView
               behavior={Platform.OS === "ios" ? "padding" : "height"}
               style={{ flex: 1 }}

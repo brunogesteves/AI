@@ -19,13 +19,12 @@ export default function DashBoard() {
 
   return (
     <>
-      <main className="min-w-screen min-h-screen  p-5 max-[440px]:p-1">
-        <div>
+      
           <span className="neon-text text-xl">
             Welcome {data?.userSettings?.firstname}{" "}
             {data?.userSettings?.lastname}
           </span>
-          <div className="flex gap-x-2 my-5">
+          {/* <div className="flex gap-x-2 my-5">
             <ButtonAction
               icon={<RxUpdate size={20} color="cyan" />}
               text="Update Profile"
@@ -85,8 +84,7 @@ export default function DashBoard() {
               );
             })}
           </div>
-        </div>
-      </main>
+        
 
       {data.openNewProjectModal && (
         <ModalCreateProject
@@ -102,7 +100,7 @@ export default function DashBoard() {
           projectSettings={data.projectSettings}
           closeModal={(e: boolean) => methods.setOpenDeleteProjectModal(e)}
           isDeleteConfirmed={(e: boolean) => methods.setIsDeleteConfirmed(e)}
-        />
+        /> */}
       )}
     </>
   );

@@ -37,7 +37,7 @@ export const Logic = () => {
           if (res.data.status) {
             setItemAsync("token", res.data?.token);
             setSession(true);
-            router.navigate("/update");
+            router.navigate("/dashboard");
           } else {
             setIncorrectMessage(true);
             setIsLoading(false);

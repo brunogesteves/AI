@@ -4,24 +4,26 @@ import { getItemAsync } from "expo-secure-store";
 const AuthContext = createContext({
   session: false,
   setSession: (newState: boolean) => {},
+  user: "",
 });
 
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [session, setSession] = useState(false);
-  const [user, setUser] = useState<string | null>("");
+  const [user, setUser] = useState<string>("");
 
   useEffect(() => {
     const getToken = async () => {
-      if (session) setUser(await getItemAsync("token"));
+      const token = await getItemAsync("token");
+      setUser(token ?? "");
     };
 
     getToken();
-  }, []);
+  }, [session]);
 
-  const contextData = { session, setSession };
+  const contextData = { session, setSession, user };
   return (
     <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>
   );

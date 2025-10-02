@@ -2,9 +2,9 @@ import React from "react";
 import { Pressable, Text, View } from "react-native";
 import { Controller } from "react-hook-form";
 
-import { ButtonSubmit, Container, InputBox, Logotype } from "@/utils/styles";
+import { ButtonSubmit, InputBox, Logotype } from "@/utils/styles";
 import { Logic } from "@/screens/index";
-import { Colors, TextNeon } from "@/utils/fonts";
+import { Colors, CustomText } from "@/utils/fonts";
 import { Redirect, router } from "expo-router";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -17,8 +17,8 @@ export default function App() {
     <>
       <Logotype />
 
-      <TextNeon text="NEUROSPARK" fontSize={50} color={Colors.Neon} />
-      <TextNeon text="Sign In" fontSize={20} color={Colors.Neon} />
+      <CustomText text="NEUROSPARK" fontSize={40} color={Colors.Neon} />
+      <CustomText text="Sign In" fontSize={20} color={Colors.Neon} />
 
       <Controller
         control={data.control}
@@ -38,7 +38,11 @@ export default function App() {
       />
 
       {data.errors.email && (
-        <TextNeon text="This is required." color={Colors.White} fontSize={20} />
+        <CustomText
+          text="This is required."
+          color={Colors.White}
+          fontSize={20}
+        />
       )}
 
       <Controller
@@ -58,9 +62,13 @@ export default function App() {
         name="password"
       />
       {data.errors.password && (
-        <TextNeon text="This is required." color={Colors.White} fontSize={20} />
+        <CustomText
+          text="This is required."
+          color={Colors.White}
+          fontSize={20}
+        />
       )}
-      <TextNeon
+      <CustomText
         text={data.incorrectMessage ? "Email and/or password incorrect" : ""}
         color={Colors.Neon}
         fontSize={20}
@@ -70,7 +78,7 @@ export default function App() {
         onPress={methods.handleSubmit(methods.onSubmit)}
       />
       <Pressable onPress={() => router.back()}>
-        <TextNeon
+        <CustomText
           text="Don´t thave account?"
           fontSize={25}
           color={Colors.Neon}

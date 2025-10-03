@@ -2,7 +2,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import React from "react";
 import { useEffect } from "react";
-import { Text, StyleSheet } from "react-native";
+import { Text } from "react-native";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -17,7 +17,7 @@ interface ITextProps {
   color: Colors;
 }
 
-export const CustomText = ({ text, fontSize, color }: ITextProps) => {
+export const orbitronFont = () => {
   const [loaded, error] = useFonts({
     Orbitron: require("./../../assets/fonts/Orbitron-Medium.ttf"),
   });
@@ -31,6 +31,10 @@ export const CustomText = ({ text, fontSize, color }: ITextProps) => {
   if (!loaded && !error) {
     return null;
   }
+};
+
+export const CustomText = ({ text, fontSize, color }: ITextProps) => {
+  orbitronFont();
 
   return (
     <Text
@@ -42,7 +46,7 @@ export const CustomText = ({ text, fontSize, color }: ITextProps) => {
         textShadowOffset: { width: 0, height: 0 },
         textShadowRadius: 6,
         opacity: 0.7,
-        marginTop: 0,
+        marginTop: 8,
         fontFamily: "Orbitron",
       }}
     >

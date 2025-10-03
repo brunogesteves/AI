@@ -3,24 +3,25 @@ import { Pressable } from "react-native";
 import { router } from "expo-router";
 
 import { ButtonSubmit } from "@/utils/styles";
-import { UpdateProfileLogic } from "@/screens/update";
+
 import { Colors, CustomText } from "@/utils/fonts";
+import { SignUpLogic } from "@/screens/signup";
 
 export default function Update() {
-  const { data, methods } = UpdateProfileLogic();
+  const { data, methods } = SignUpLogic();
 
   return (
     <>
-      <CustomText text="Update Profile" fontSize={20} color={Colors.Neon} />
+      <CustomText text="Sign Up" fontSize={20} color={Colors.Neon} />
       {methods.inputModel("firstname")}
       {methods.inputModel("lastname")}
-      {methods.inputPasswordModel("oldPassword")}
-      {methods.inputPasswordModel("newPassword")}
-      {methods.inputPasswordModel("confirmNewPassword")}
+      {methods.inputModel("email")}
+      {methods.inputPasswordModel("password")}
+      {methods.inputPasswordModel("confirmPassword")}
       {methods.DatePicker()}
 
       <ButtonSubmit
-        title={data.isUpdating == true ? "Loading" : "Update"}
+        title={data.isUpdating == true ? "Loading" : "Sign Up"}
         onPress={methods.handleSubmit(methods.onSubmit)}
       />
       <Pressable onPress={() => router.back()}>

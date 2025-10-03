@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
 
-import { IProjectProps, IUserProps } from "@/utils/types";
+import { IProjectProps } from "@/utils/types";
 import { api } from "@/utils/api";
 import { useAuth } from "@/contexts/AuthContext";
+import { router } from "expo-router";
+import { deleteItemAsync } from "expo-secure-store";
 
 export const DashBoardLogic = () => {
   // // const router = useRouter();
-  const { user } = useAuth();
+  const { userSettings, verifyToken } = useAuth();
 
-  const [userSettings, setUserSettings] = useState<IUserProps>();
   // const [openNewProjectModal, setOpenNewProjectModal] =
   //   useState<boolean>(false);
   // const [openUpdateProfileModal, setOpenUpdateProfileModal] =
@@ -28,19 +28,15 @@ export const DashBoardLogic = () => {
   //   router.push(`/project/${id}`);
   // }
 
-  // function updateProfile() {
-  //   router.push(`/update`);
-  // }
+  function updateProfile() {
+    router.navigate(`/update`);
+  }
 
-  // function logOut() {
-  //   Cookies.remove("token");
-  //   router.push(`/`);
-  // }
-
-  useEffect(() => {
-    const settings: IUserProps = jwtDecode(user);
-    if (settings) setUserSettings(settings);
-  }, []);
+  function logOut() {
+    deleteItemAsync("token");
+    verifyToken();
+    router.navigate(`/`);
+  }
 
   useEffect(() => {
     if (userSettings?.id || projectHasBeenCreated) {
@@ -50,7 +46,6 @@ export const DashBoardLogic = () => {
     }
   }, [userSettings, projectHasBeenCreated, isDeleteConfirmed]);
 
-  console.log("allProJects: ", allProJects);
   return {
     data: {
       userSettings,
@@ -66,9 +61,9 @@ export const DashBoardLogic = () => {
       // openProject,
       // setProjectSettings,
       // setOpenDeleteProjectModal,
-      // updateProfile,
+      updateProfile,
       // setProjectHasBeenCreated,
-      // logOut,
+      logOut,
       // setIsDeleteConfirmed,
     },
   };

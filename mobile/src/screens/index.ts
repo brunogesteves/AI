@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { router } from "expo-router";
-import { setItemAsync } from "expo-secure-store";
+import { getItemAsync, setItemAsync } from "expo-secure-store";
 
 import { signInFormData, signInSchema } from "@/utils/yup";
 import { api } from "@/utils/api";
@@ -12,7 +12,7 @@ export const Logic = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
   const [incorrectMessage, setIncorrectMessage] = useState(false);
-  const { setSession } = useAuth();
+  const { verifyToken } = useAuth();
 
   const {
     register,
@@ -36,7 +36,8 @@ export const Logic = () => {
         .then((res: { data: { status: boolean; token: string } }) => {
           if (res.data.status) {
             setItemAsync("token", res.data?.token);
-            setSession(true);
+            verifyToken();
+
             router.navigate("/dashboard");
           } else {
             setIncorrectMessage(true);

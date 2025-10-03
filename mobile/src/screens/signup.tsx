@@ -5,21 +5,16 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
 
-// import { toast } from "react-toastify";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-// import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { getItemAsync } from "expo-secure-store";
-
-import { updateFormData, updateSchema } from "@/utils/yup";
+import { signUpFormData, signUpSchema } from "@/utils/yup";
 import { InputBox } from "@/utils/styles";
 import React from "react";
 import { router } from "expo-router";
 import { Colors, CustomText, orbitronFont } from "@/utils/fonts";
-import { Pressable, Text, TextInput, View } from "react-native";
-import { toast } from "@/utils/toast";
+import { Text, View } from "react-native";
 
-export const UpdateProfileLogic = () => {
+export const SignUpLogic = () => {
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState<boolean>(true);
   const [dateSelected, setDateSelected] = useState<Date | null>(new Date());
@@ -32,10 +27,10 @@ export const UpdateProfileLogic = () => {
     formState: { errors },
     reset,
   } = useForm({
-    resolver: yupResolver(updateSchema),
+    resolver: yupResolver(signUpSchema),
   });
 
-  function inputModel(fieldName: keyof updateFormData) {
+  function inputModel(fieldName: keyof signUpFormData) {
     return (
       <>
         <Controller
@@ -66,7 +61,7 @@ export const UpdateProfileLogic = () => {
     );
   }
 
-  function inputPasswordModel(fieldName: keyof updateFormData) {
+  function inputPasswordModel(fieldName: keyof signUpFormData) {
     return (
       <>
         <Controller
@@ -109,8 +104,8 @@ export const UpdateProfileLogic = () => {
           alignContent: "center",
           alignItems: "center",
           flexDirection: "row",
-          marginTop: 20,
           gap: 10,
+          marginTop: 20,
         }}
       >
         {showPicker && (
@@ -165,38 +160,17 @@ export const UpdateProfileLogic = () => {
     );
   }
 
-  const onSubmit: SubmitHandler<updateFormData> = async (data) => {
-    setIsUpdating(true);
+  const onSubmit: SubmitHandler<signUpFormData> = async (data) => {
     try {
-      api.put("/users", { data }).then((res) => {
+      api.post("/users", { data }).then((res) => {
         if (res.data.status) {
-          toast("You've Updated");
-          setIsUpdating(false);
-        } else {
-          toast("Type the original Password");
-          setIsUpdating(false);
+          router.navigate("/dashboard");
         }
       });
     } catch (error) {
       console.warn(error);
-    } finally {
-      router.navigate("/dashboard");
     }
   };
-
-  useEffect(() => {
-    //   const token = Cookies.get("token");
-    //   if (token) {
-    //     const infoProfile: updateFormData = jwtDecode(token);
-    //     reset({
-    //       birthDate: infoProfile?.birthDate,
-    //       firstname: infoProfile?.firstname,
-    //       lastname: infoProfile?.lastname,
-    //       id: infoProfile?.id,
-    //     });
-    //   }
-    // async function getToken() {
-  }, []);
 
   return {
     data: { dateSelected, isUpdating },
@@ -207,7 +181,6 @@ export const UpdateProfileLogic = () => {
       setIsPasswordHidden,
       inputModel,
       inputPasswordModel,
-      // setValue,
       setDateSelected,
       DatePicker,
     },

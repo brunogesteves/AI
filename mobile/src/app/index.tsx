@@ -17,8 +17,8 @@ export default function App() {
     <>
       <Logotype />
 
-      <CustomText text="NEUROSPARK" fontSize={40} color={Colors.Neon} />
-      <CustomText text="Sign In" fontSize={20} color={Colors.Neon} />
+      <CustomText text="NEUROSPARK" fontSize={29} color={Colors.Neon} />
+      <CustomText text="Sign In" fontSize={22} color={Colors.Neon} />
 
       <Controller
         control={data.control}
@@ -77,10 +77,18 @@ export default function App() {
         title={data.isLoading == true ? "Loading" : "Submit"}
         onPress={methods.handleSubmit(methods.onSubmit)}
       />
-      <Pressable onPress={() => router.back()}>
+      <Pressable
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        onPress={() => router.navigate("/signup")}
+      >
         <CustomText
           text="Don´t thave account?"
-          fontSize={25}
+          fontSize={16}
           color={Colors.Neon}
         />
       </Pressable>

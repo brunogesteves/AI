@@ -1,20 +1,14 @@
 import React, { useState } from "react";
 
-import {
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  View,
-} from "react-native";
+import { Image, Pressable, StyleSheet, TextInput, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Colors, CustomText } from "./fonts";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { Colors, CustomText, orbitronFont } from "./fonts";
+import * as SplashScreen from "expo-splash-screen";
+
 import { ButtonSubmitProps, IInputBoxProps } from "./types";
+
+SplashScreen.preventAutoHideAsync();
 
 export const styles = StyleSheet.create({
   container: {
@@ -42,6 +36,8 @@ export const InputBox = ({
   hasSecureTextEntry,
 }: IInputBoxProps) => {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+
+  orbitronFont();
 
   return (
     <View
@@ -72,13 +68,14 @@ export const InputBox = ({
           borderRadius: 8,
           padding: 8,
           paddingStart: 20,
-          fontSize: 20,
+          fontSize: 17,
           color: "#fff",
           textShadowColor: "#22d3ee",
           textShadowOffset: { width: 0, height: 0 },
           textShadowRadius: 12,
           opacity: 0.7,
           textAlign: "left",
+          fontFamily: "Orbitron",
         }}
       />
       {hasSecureTextEntry ? (
@@ -115,7 +112,7 @@ export const ButtonSubmit = ({ title, onPress }: ButtonSubmitProps) => {
           alignItems: "center",
         }}
       >
-        <CustomText text={title} fontSize={25} color={Colors.White} />
+        <CustomText text={title} fontSize={20} color={Colors.White} />
       </LinearGradient>
     </Pressable>
   );

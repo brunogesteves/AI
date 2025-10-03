@@ -19,7 +19,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default function Dashboard() {
   const { data, methods } = DashBoardLogic();
-  const { session, user } = useAuth();
+  const { session } = useAuth();
   if (!session) return <Redirect href={"/"} />;
 
   return (
@@ -55,52 +55,108 @@ export default function Dashboard() {
         }}
       >
         <ButtonAction
-          action={() => alert("oi")}
+          action={() => methods.updateProfile()}
           text="Update Profile"
+          fontSize={20}
           icon={
             <Ionicons
               name={"refresh-outline"}
               size={32}
               color="#fff"
-              style={{ marginRight: 10 }}
+              style={{ marginRight: 10, marginTop: 5 }}
             />
           }
         />
         <ButtonAction
           action={() => alert("oi")}
           text="Create Project"
+          fontSize={20}
           icon={
             <Ionicons
               name={"create-outline"}
               size={32}
               color="#fff"
-              style={{ marginRight: 10 }}
+              style={{ marginRight: 10, marginTop: 5 }}
             />
           }
         />
         <ButtonAction
-          action={() => alert("oi")}
+          action={() => methods.logOut()}
+          fontSize={20}
           text="Logout"
           icon={
             <Ionicons
               name={"log-out-outline"}
               size={32}
               color="#fff"
-              style={{ marginRight: 10 }}
+              style={{ marginRight: 10, marginTop: 5 }}
             />
           }
         />
       </View>
-      <View style={{ width: "100%", flex: 1, backgroundColor: "red" }}>
-        <FlatList
-          data={data.allProJects}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <View style={{ width: "100%", backgroundColor: "red" }}>
-              <CustomText color={Colors.White} fontSize={10} text={item.name} />
+      <View style={{ width: "100%" }}>
+        {data.allProJects.map((item) => (
+          <View
+            key={item.id}
+            style={{
+              width: "100%",
+              marginVertical: 5,
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                width: "100%",
+              }}
+            >
+              <Ionicons
+                name={"folder-outline"}
+                size={20}
+                color="#fff"
+                style={{ marginTop: 10, marginEnd: 10 }}
+              />
+              <CustomText color={Colors.White} fontSize={20} text={item.name} />
             </View>
-          )}
-        />
+
+            <View
+              style={{
+                width: "100%",
+                flexDirection: "row",
+                justifyContent: "space-around",
+                marginVertical: 20,
+              }}
+            >
+              <ButtonAction
+                text="Open"
+                action={() => alert("oi")}
+                fontSize={15}
+                icon={
+                  <Ionicons
+                    name={"open-outline"}
+                    size={20}
+                    color="#fff"
+                    style={{ marginRight: 10, marginTop: 7 }}
+                  />
+                }
+              />
+              <ButtonAction
+                text="Delete"
+                action={() => alert("oi")}
+                fontSize={15}
+                icon={
+                  <Ionicons
+                    name={"trash-outline"}
+                    size={20}
+                    color="#fff"
+                    style={{ marginRight: 10, marginTop: 7 }}
+                  />
+                }
+              />
+            </View>
+          </View>
+        ))}
       </View>
     </>
   );

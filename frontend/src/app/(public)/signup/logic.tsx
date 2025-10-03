@@ -75,7 +75,6 @@ export const SignUpLogic = () => {
     try {
       api.post("/users", { data }).then((res) => {
         if (res.data.status) {
-          console.table("ok");
           router.push("/dashboard");
         }
       });
